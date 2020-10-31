@@ -1,0 +1,23 @@
+{
+  "name": "@booksapp/test-utils",
+  "version": "0.0.1",
+  "private": true,
+  "license": "UNLICENSED",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "dependencies": {
+    "@booksapp/babel": "^0.0.1",
+    "@booksapp/types": "^0.0.1",
+    "@koa/router": "^9.3.1",
+    "babel-jest": "^26.1.0",
+    "graphql-relay": "0.6.0",
+    "koa": "^2.13.0",
+    "koa-bodyparser": "^4.3.0",
+    "mongoose": "^5.10.7",
+    "supertest": "^5.0.0"
+  }
+}

@@ -1,0 +1,180 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Book queries should get book from node interface 1`] = `
+Object {
+  "book": Object {
+    "author": "author 1",
+    "description": "description 1",
+    "id": "FROZEN-ID",
+    "name": "name 1",
+  },
+}
+`;
+
+exports[`Book queries should query a connection of books 1`] = `
+Object {
+  "books": Object {
+    "count": 6,
+    "edges": Array [
+      Object {
+        "node": Object {
+          "author": "author 6",
+          "description": "description 6",
+          "id": "FROZEN-ID",
+          "name": "name 6",
+        },
+      },
+      Object {
+        "node": Object {
+          "author": "author 5",
+          "description": "description 5",
+          "id": "FROZEN-ID",
+          "name": "name 5",
+        },
+      },
+      Object {
+        "node": Object {
+          "author": "author 4",
+          "description": "description 4",
+          "id": "FROZEN-ID",
+          "name": "name 4",
+        },
+      },
+      Object {
+        "node": Object {
+          "author": "author 3",
+          "description": "description 3",
+          "id": "FROZEN-ID",
+          "name": "name 3",
+        },
+      },
+      Object {
+        "node": Object {
+          "author": "author 2",
+          "description": "description 2",
+          "id": "FROZEN-ID",
+          "name": "name 2",
+        },
+      },
+    ],
+  },
+}
+`;
+
+exports[`Book queries should query a connection of books with category filter 1`] = `
+Object {
+  "books": Object {
+    "count": 5,
+    "edges": Array [
+      Object {
+        "node": Object {
+          "author": "author 5",
+          "description": "description 5",
+          "id": "FROZEN-ID",
+          "name": "name 5",
+        },
+      },
+      Object {
+        "node": Object {
+          "author": "author 4",
+          "description": "description 4",
+          "id": "FROZEN-ID",
+          "name": "name 4",
+        },
+      },
+      Object {
+        "node": Object {
+          "author": "author 3",
+          "description": "description 3",
+          "id": "FROZEN-ID",
+          "name": "name 3",
+        },
+      },
+      Object {
+        "node": Object {
+          "author": "author 2",
+          "description": "description 2",
+          "id": "FROZEN-ID",
+          "name": "name 2",
+        },
+      },
+      Object {
+        "node": Object {
+          "author": "author 1",
+          "description": "description 1",
+          "id": "FROZEN-ID",
+          "name": "name 1",
+        },
+      },
+    ],
+  },
+}
+`;
+
+exports[`Book queries should query a connection of books with orderBy filter 1`] = `
+Object {
+  "books": Object {
+    "count": 3,
+    "edges": Array [
+      Object {
+        "node": Object {
+          "author": "author 1",
+          "description": "description 1",
+          "id": "FROZEN-ID",
+          "name": "name 1",
+        },
+      },
+      Object {
+        "node": Object {
+          "author": "author 2",
+          "description": "description 2",
+          "id": "FROZEN-ID",
+          "name": "name 2",
+        },
+      },
+      Object {
+        "node": Object {
+          "author": "author 3",
+          "description": "description 3",
+          "id": "FROZEN-ID",
+          "name": "name 3",
+        },
+      },
+    ],
+  },
+}
+`;
+
+exports[`Book queries should query a connection of books with search filter 1`] = `
+Object {
+  "books": Object {
+    "count": 3,
+    "edges": Array [
+      Object {
+        "node": Object {
+          "author": "author 3",
+          "description": "TEST 2",
+          "id": "FROZEN-ID",
+          "name": "name 3",
+        },
+      },
+      Object {
+        "node": Object {
+          "author": "TEST 3",
+          "description": "description 2",
+          "id": "FROZEN-ID",
+          "name": "name 2",
+        },
+      },
+      Object {
+        "node": Object {
+          "author": "author 1",
+          "description": "description 1",
+          "id": "FROZEN-ID",
+          "name": "TEST 1",
+        },
+      },
+    ],
+  },
+}
+`;

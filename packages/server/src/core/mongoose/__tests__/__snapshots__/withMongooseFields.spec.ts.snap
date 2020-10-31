@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should snapshot mongoose fields 1`] = `
+Object {
+  "isActiveMongooseField": Object {
+    "isActive": Object {
+      "default": true,
+      "description": "Soft delete. Usually when users want to hide something from public view.",
+      "index": true,
+      "required": true,
+      "type": [Function],
+    },
+  },
+  "removedAtMongooseField": Object {
+    "removedAt": Object {
+      "default": null,
+      "description": "Hard delete",
+      "type": [Function],
+    },
+  },
+}
+`;

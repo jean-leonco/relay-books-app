@@ -1,0 +1,13 @@
+{
+  "name": "@booksapp/hooks",
+  "version": "0.0.1",
+  "private": true,
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "dependencies": {
+    "react": "0.0.0-experimental-e5d06e34b"
+  },
+  "devDependencies": {
+    "@booksapp/babel": "^0.0.1"
+  }
+}

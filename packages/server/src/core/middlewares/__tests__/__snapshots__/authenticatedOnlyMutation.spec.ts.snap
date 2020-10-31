@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should execute mutation if authenticatedOnly false and return error null 1`] = `
+Object {
+  "data": Object {
+    "TestNoAuthenticatedMiddlewareMutation": Object {
+      "error": "EMPTY",
+    },
+  },
+}
+`;
+
+exports[`should execute mutation if authenticatedOnly true and return error null 1`] = `
+Object {
+  "data": Object {
+    "TestAuthenticatedMiddlewareMutation": Object {
+      "error": "EMPTY",
+    },
+  },
+}
+`;
+
+exports[`should not execute mutation if authenticatedOnly true and return error auth.userUnauthenticated 1`] = `
+Object {
+  "data": Object {
+    "TestAuthenticatedMiddlewareMutation": Object {
+      "error": "Unauthorized",
+    },
+  },
+}
+`;

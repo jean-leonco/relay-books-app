@@ -1,0 +1,676 @@
+"""Represents a Book"""
+type Book implements Node {
+  """The ID of an object"""
+  id: ID!
+
+  """MongoDB _id"""
+  _id: String!
+
+  """The book name. ex: O Alienista"""
+  name: String
+
+  """The book author. ex: Machado de Assis"""
+  author: String
+
+  """The book description."""
+  description: String
+
+  """The book release year. ex: 1882"""
+  releaseYear: Int
+
+  """The book total page. ex: 96"""
+  pages: Int
+
+  """The book banner url."""
+  bannerUrl: String
+
+  """The book banner ISBN. ex: 9780850515060"""
+  ISBN: Int
+
+  """The book language. ex: Portuguese"""
+  language: String
+
+  """The book average rating based on user reviews"""
+  rating: Float
+
+  """The book reviews"""
+  reviews(after: String, first: Int, before: String, last: Int, filters: ReviewFilters): ReviewConnection
+
+  """Retuns if the context user can review the book"""
+  meCanReview: Boolean
+
+  """The soft delete status."""
+  isActive: Boolean
+
+  """The hard delete status."""
+  removedAt: String
+
+  """The date that the node was created."""
+  createdAt: String
+
+  """The date that the node was last updated."""
+  updatedAt: String
+}
+
+"""A connection to a list of items."""
+type BookConnection {
+  """Number of items in this connection"""
+  count: Int!
+
+  """
+  A count of the total number of objects in this connection, ignoring pagination.
+    This allows a client to fetch the first five objects by passing "5" as the
+    argument to "first", then fetch the total count so it could display "5 of 83",
+    for example.
+  """
+  totalCount: Int!
+
+  """Offset from start"""
+  startCursorOffset: Int!
+
+  """Offset till end"""
+  endCursorOffset: Int!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfoExtended!
+
+  """A list of edges."""
+  edges: [BookEdge]!
+}
+
+"""An edge in a connection."""
+type BookEdge {
+  """The item at the end of the edge"""
+  node: Book!
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+"""Used to filter books"""
+input BookFilters {
+  OR: [BookFilters]
+  AND: [BookFilters]
+
+  """Order reviews by StatusDateOrderingInputType."""
+  orderBy: [StatusDateOrdering!]
+
+  """Filter by search string. Name, author or description."""
+  search: String
+
+  """Filter by category."""
+  category: ID
+
+  """Filter by trending."""
+  trending: Boolean
+}
+
+"""Represents a Category"""
+type Category implements Node {
+  """The ID of an object"""
+  id: ID!
+
+  """The category name. ex: Horror"""
+  name: String
+
+  """MongoDB _id"""
+  _id: String!
+
+  """The soft delete status."""
+  isActive: Boolean
+
+  """The hard delete status."""
+  removedAt: String
+
+  """The date that the node was created."""
+  createdAt: String
+
+  """The date that the node was last updated."""
+  updatedAt: String
+}
+
+"""A connection to a list of items."""
+type CategoryConnection {
+  """Number of items in this connection"""
+  count: Int!
+
+  """
+  A count of the total number of objects in this connection, ignoring pagination.
+    This allows a client to fetch the first five objects by passing "5" as the
+    argument to "first", then fetch the total count so it could display "5 of 83",
+    for example.
+  """
+  totalCount: Int!
+
+  """Offset from start"""
+  startCursorOffset: Int!
+
+  """Offset till end"""
+  endCursorOffset: Int!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfoExtended!
+
+  """A list of edges."""
+  edges: [CategoryEdge]!
+}
+
+"""An edge in a connection."""
+type CategoryEdge {
+  """The item at the end of the edge"""
+  node: Category!
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+"""Used to filter categories"""
+input CategoryFilters {
+  OR: [CategoryFilters]
+  AND: [CategoryFilters]
+
+  """Order reviews by StatusDateOrderingInputType."""
+  orderBy: [StatusDateOrdering!]
+}
+
+enum DirectionEnum {
+  ASC
+  DESC
+}
+
+input MeEditInput {
+  """User name. ex: Jean"""
+  name: String
+
+  """User email to be used on login. ex: jean@gmail.com"""
+  email: String
+
+  """User password."""
+  password: String
+  clientMutationId: String
+}
+
+type MeEditPayload {
+  me: User
+
+  """Default error field resolver for mutations"""
+  error: String
+  clientMutationId: String
+}
+
+type Mutation {
+  UserLogin(input: UserLoginInput!): UserLoginPayload
+  UserRegistration(input: UserRegistrationInput!): UserRegistrationPayload
+  MeEdit(input: MeEditInput!): MeEditPayload
+  UserForgotPassword(input: UserForgotPasswordInput!): UserForgotPasswordPayload
+  ReviewAdd(input: ReviewAddInput!): ReviewAddPayload
+  ReviewEdit(input: ReviewEditInput!): ReviewEditPayload
+  ReviewRemove(input: ReviewRemoveInput!): ReviewRemovePayload
+  ReadingAdd(input: ReadingAddInput!): ReadingAddPayload
+  ReadingEditPage(input: ReadingEditPageInput!): ReadingEditPagePayload
+  ReadingRemove(input: ReadingRemoveInput!): ReadingRemovePayload
+}
+
+"""An object with an ID"""
+interface Node {
+  """The id of the object."""
+  id: ID!
+}
+
+"""Information about pagination in a connection."""
+type PageInfoExtended {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+}
+
+"""The root of all... queries"""
+type Query {
+  """The ID of an object"""
+  id: ID!
+
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID
+  ): Node
+
+  """Fetches objects given their IDs"""
+  nodes(
+    """The IDs of objects"""
+    ids: [ID!]!
+  ): [Node]!
+
+  """Me is the logged User"""
+  me: User
+  status: Status
+
+  """Connection to all books"""
+  books(after: String, first: Int, before: String, last: Int, filters: BookFilters): BookConnection!
+
+  """Connection to all reviews"""
+  reviews(after: String, first: Int, before: String, last: Int, filters: ReviewFilters): ReviewConnection!
+
+  """Connection to all categories"""
+  categories(after: String, first: Int, before: String, last: Int, filters: CategoryFilters): CategoryConnection!
+
+  """Connection to all me readings"""
+  readings(after: String, first: Int, before: String, last: Int, filters: ReadingFilters): ReadingConnection!
+}
+
+"""Represents a Reading"""
+type Reading implements Node {
+  """The ID of an object"""
+  id: ID!
+
+  """MongoDB _id"""
+  _id: String!
+
+  """The book being read."""
+  book: Book
+
+  """The total read pages. ex: 50"""
+  readPages: Int
+
+  """The soft delete status."""
+  isActive: Boolean
+
+  """The hard delete status."""
+  removedAt: String
+
+  """The date that the node was created."""
+  createdAt: String
+
+  """The date that the node was last updated."""
+  updatedAt: String
+}
+
+input ReadingAddInput {
+  """The book being read global id."""
+  bookId: ID!
+  clientMutationId: String
+}
+
+type ReadingAddPayload {
+  readingEdge: ReadingEdge
+
+  """Default error field resolver for mutations"""
+  error: String
+  clientMutationId: String
+}
+
+"""A connection to a list of items."""
+type ReadingConnection {
+  """Number of items in this connection"""
+  count: Int!
+
+  """
+  A count of the total number of objects in this connection, ignoring pagination.
+    This allows a client to fetch the first five objects by passing "5" as the
+    argument to "first", then fetch the total count so it could display "5 of 83",
+    for example.
+  """
+  totalCount: Int!
+
+  """Offset from start"""
+  startCursorOffset: Int!
+
+  """Offset till end"""
+  endCursorOffset: Int!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfoExtended!
+
+  """A list of edges."""
+  edges: [ReadingEdge]!
+}
+
+"""An edge in a connection."""
+type ReadingEdge {
+  """The item at the end of the edge"""
+  node: Reading!
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+input ReadingEditPageInput {
+  """The global Reading id."""
+  id: ID!
+
+  """The current user page. ex: 2"""
+  currentPage: Int
+  clientMutationId: String
+}
+
+type ReadingEditPagePayload {
+  readingEdge: ReadingEdge
+
+  """Default error field resolver for mutations"""
+  error: String
+  clientMutationId: String
+}
+
+"""Used to filter readings"""
+input ReadingFilters {
+  OR: [ReadingFilters]
+  AND: [ReadingFilters]
+
+  """Order reviews by StatusDateOrderingInputType."""
+  orderBy: [StatusDateOrdering!]
+
+  """Filter by book finished status."""
+  finished: Boolean
+
+  """Filter by book."""
+  book: ID
+}
+
+input ReadingRemoveInput {
+  """The global Reading id."""
+  id: ID!
+  clientMutationId: String
+}
+
+type ReadingRemovePayload {
+  deletedID: String
+
+  """Default success field resolver for mutations"""
+  success: String
+
+  """Default error field resolver for mutations"""
+  error: String
+  clientMutationId: String
+}
+
+"""Represents a Review"""
+type Review implements Node {
+  """The ID of an object"""
+  id: ID!
+
+  """MongoDB _id"""
+  _id: String!
+
+  """The user who created this review."""
+  user: User
+
+  """The book rated on this review."""
+  book: Book
+
+  """The rating of the review. ex: 4.5"""
+  rating: Float
+
+  """The review description. ex: This book is awesome"""
+  description: String
+
+  """The soft delete status."""
+  isActive: Boolean
+
+  """The hard delete status."""
+  removedAt: String
+
+  """The date that the node was created."""
+  createdAt: String
+
+  """The date that the node was last updated."""
+  updatedAt: String
+}
+
+input ReviewAddInput {
+  """The book rated on this review."""
+  bookId: ID!
+
+  """The rating of the review. ex: 4.5"""
+  rating: Float!
+
+  """The review description. ex: This book is awesome"""
+  description: String
+  clientMutationId: String
+}
+
+type ReviewAddPayload {
+  reviewEdge: ReviewEdge
+
+  """Default error field resolver for mutations"""
+  error: String
+  clientMutationId: String
+}
+
+"""A connection to a list of items."""
+type ReviewConnection {
+  """Number of items in this connection"""
+  count: Int!
+
+  """
+  A count of the total number of objects in this connection, ignoring pagination.
+    This allows a client to fetch the first five objects by passing "5" as the
+    argument to "first", then fetch the total count so it could display "5 of 83",
+    for example.
+  """
+  totalCount: Int!
+
+  """Offset from start"""
+  startCursorOffset: Int!
+
+  """Offset till end"""
+  endCursorOffset: Int!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfoExtended!
+
+  """A list of edges."""
+  edges: [ReviewEdge]!
+}
+
+"""An edge in a connection."""
+type ReviewEdge {
+  """The item at the end of the edge"""
+  node: Review!
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+input ReviewEditInput {
+  """The global review id."""
+  id: ID!
+
+  """The rating of the review. ex: 4.5"""
+  rating: Float
+
+  """The review description. ex: This book is awesome"""
+  description: String
+  clientMutationId: String
+}
+
+type ReviewEditPayload {
+  reviewEdge: ReviewEdge
+
+  """Default error field resolver for mutations"""
+  error: String
+  clientMutationId: String
+}
+
+"""Used to filter reviews"""
+input ReviewFilters {
+  OR: [ReviewFilters]
+  AND: [ReviewFilters]
+
+  """Order reviews by ReviewOrderingInputType."""
+  orderBy: [ReviewOrdering!]
+
+  """Filter by book."""
+  book: ID
+
+  """Filter by user."""
+  user: ID
+}
+
+"""Used to order reviews."""
+input ReviewOrdering {
+  """the field used to sort. Ex: CREATED_AT."""
+  sort: ReviewSortEnumType!
+
+  """the direction used to sort. Ex: ASC."""
+  direction: DirectionEnum!
+}
+
+input ReviewRemoveInput {
+  """The global review id."""
+  id: ID!
+  clientMutationId: String
+}
+
+type ReviewRemovePayload {
+  """Default success field resolver for mutations"""
+  success: String
+
+  """Default error field resolver for mutations"""
+  error: String
+  clientMutationId: String
+}
+
+enum ReviewSortEnumType {
+  """The rating of the review. ex: 4.5"""
+  RATING
+
+  """The creation date."""
+  CREATED_AT
+
+  """The last date that the document was updated"""
+  UPDATED_AT
+}
+
+"""Status"""
+type Status {
+  """Books app environment"""
+  env: String
+
+  """Server build version"""
+  version: String
+
+  """Server commit sha, GITHUB_SHA"""
+  commitSha: String
+
+  """Books app environment"""
+  e: String
+
+  """Server build version"""
+  v: String
+
+  """Server commit sha, GITHUB_SHA"""
+  c: String
+}
+
+"""Used to order by createdAt or updatedAt."""
+input StatusDateOrdering {
+  """the field used to sort. Ex: CREATED_AT."""
+  field: StatusDateSortEnumType!
+
+  """the direction used to sort. Ex: ASC."""
+  direction: DirectionEnum!
+}
+
+enum StatusDateSortEnumType {
+  """The creation date."""
+  CREATED_AT
+
+  """The last date that the document was updated"""
+  UPDATED_AT
+}
+
+"""Represents an user"""
+type User implements Node {
+  """The ID of an object"""
+  id: ID!
+
+  """MongoDB _id"""
+  _id: String!
+
+  """User name resolver"""
+  name: String
+
+  """User surname resolver"""
+  surname: String
+
+  """User name resolver"""
+  fullName: String
+
+  """User email resolver"""
+  email: String
+
+  """User email resolver"""
+  emailWasVerified: String
+  lang: String
+
+  """Connection to all me reviews"""
+  reviews(after: String, first: Int, before: String, last: Int, filters: ReviewFilters): ReviewConnection!
+
+  """The soft delete status."""
+  isActive: Boolean
+
+  """The hard delete status."""
+  removedAt: String
+
+  """The date that the node was created."""
+  createdAt: String
+
+  """The date that the node was last updated."""
+  updatedAt: String
+}
+
+input UserForgotPasswordInput {
+  email: String!
+  clientMutationId: String
+}
+
+type UserForgotPasswordPayload {
+  """Default error field resolver for mutations"""
+  error: String
+  clientMutationId: String
+}
+
+input UserLoginInput {
+  """User email to be used on login. ex: jean@gmail.com"""
+  email: String!
+
+  """User password."""
+  password: String!
+  clientMutationId: String
+}
+
+type UserLoginPayload {
+  token: String
+
+  """Default error field resolver for mutations"""
+  error: String
+  clientMutationId: String
+}
+
+input UserRegistrationInput {
+  """User name. ex: Jean"""
+  name: String!
+
+  """User email to be used on login. ex: jean@gmail.com"""
+  email: String!
+
+  """User password."""
+  password: String!
+  clientMutationId: String
+}
+
+type UserRegistrationPayload {
+  token: String
+
+  """Default error field resolver for mutations"""
+  error: String
+  clientMutationId: String
+}

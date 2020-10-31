@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UserLoginMutation should check for invalid credentials 1`] = `
+Object {
+  "data": Object {
+    "UserLogin": Object {
+      "error": "Invalid credentials.",
+      "token": "EMPTY",
+    },
+  },
+}
+`;
+
+exports[`UserLoginMutation should login an user 1`] = `
+Object {
+  "data": Object {
+    "UserLogin": Object {
+      "error": "EMPTY",
+      "token": "FROZEN-TOKEN",
+    },
+  },
+}
+`;

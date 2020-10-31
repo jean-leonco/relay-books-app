@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "rootDirs": ["src", "scripts"],
+    "composite": true,
+    "noEmit": true,
+    "plugins": [
+      {
+        "name": "ts-graphql-plugin",
+        "schema": "../schemas/graphql/schema.graphql",
+        "tag": "graphql"
+      }
+    ],
+  },
+  "exclude": ["package.json"],
+  "extends": "../../tsconfig.json",
+  "include": ["src", "src/**/*", "migrations", "migrations/**/*", "scripts", "scripts/**/*", "test", "test/**/*", "@types", "@types/**/*"]
+}

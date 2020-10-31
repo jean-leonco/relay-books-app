@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SessionTokenLoader should load a valid session token 1`] = `
+Object {
+  "__v": 0,
+  "_id": "ObjectId",
+  "channel": "APP",
+  "createdAt": "FROZEN-CREATEDAT",
+  "ip": "::ffff:127.0.0.1",
+  "isActive": true,
+  "isBlocked": false,
+  "scope": "BOOKSAPP:SESSION",
+  "updatedAt": "FROZEN-UPDATEDAT",
+  "user": "ObjectId",
+}
+`;

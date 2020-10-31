@@ -1,0 +1,78 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Category queries should get category from node interface 1`] = `
+Object {
+  "category": Object {
+    "id": "FROZEN-ID",
+    "name": "category 1",
+  },
+}
+`;
+
+exports[`Category queries should query a connection of categories 1`] = `
+Object {
+  "categories": Object {
+    "count": 6,
+    "edges": Array [
+      Object {
+        "node": Object {
+          "id": "FROZEN-ID",
+          "name": "category 6",
+        },
+      },
+      Object {
+        "node": Object {
+          "id": "FROZEN-ID",
+          "name": "category 5",
+        },
+      },
+      Object {
+        "node": Object {
+          "id": "FROZEN-ID",
+          "name": "category 4",
+        },
+      },
+      Object {
+        "node": Object {
+          "id": "FROZEN-ID",
+          "name": "category 3",
+        },
+      },
+      Object {
+        "node": Object {
+          "id": "FROZEN-ID",
+          "name": "category 2",
+        },
+      },
+    ],
+  },
+}
+`;
+
+exports[`Category queries should query a connection of categories with orderBy filter 1`] = `
+Object {
+  "categories": Object {
+    "count": 3,
+    "edges": Array [
+      Object {
+        "node": Object {
+          "id": "FROZEN-ID",
+          "name": "category 1",
+        },
+      },
+      Object {
+        "node": Object {
+          "id": "FROZEN-ID",
+          "name": "category 2",
+        },
+      },
+      Object {
+        "node": Object {
+          "id": "FROZEN-ID",
+          "name": "category 3",
+        },
+      },
+    ],
+  },
+}
+`;

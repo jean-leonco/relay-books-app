@@ -1,0 +1,130 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Review queries should get review from node interface 1`] = `
+Object {
+  "review": Object {
+    "book": Object {
+      "name": "name 1",
+    },
+    "id": "FROZEN-ID",
+    "rating": 1,
+    "user": Object {
+      "name": "User #1",
+    },
+  },
+}
+`;
+
+exports[`Review queries should query a connection of reviews 1`] = `
+Object {
+  "reviews": Object {
+    "edges": Array [
+      Object {
+        "node": Object {
+          "book": Object {
+            "name": "name 1",
+          },
+          "id": "FROZEN-ID",
+          "rating": 6,
+          "user": Object {
+            "name": "User #1",
+          },
+        },
+      },
+      Object {
+        "node": Object {
+          "book": Object {
+            "name": "name 1",
+          },
+          "id": "FROZEN-ID",
+          "rating": 5,
+          "user": Object {
+            "name": "User #1",
+          },
+        },
+      },
+      Object {
+        "node": Object {
+          "book": Object {
+            "name": "name 1",
+          },
+          "id": "FROZEN-ID",
+          "rating": 4,
+          "user": Object {
+            "name": "User #1",
+          },
+        },
+      },
+      Object {
+        "node": Object {
+          "book": Object {
+            "name": "name 1",
+          },
+          "id": "FROZEN-ID",
+          "rating": 3,
+          "user": Object {
+            "name": "User #1",
+          },
+        },
+      },
+      Object {
+        "node": Object {
+          "book": Object {
+            "name": "name 1",
+          },
+          "id": "FROZEN-ID",
+          "rating": 2,
+          "user": Object {
+            "name": "User #1",
+          },
+        },
+      },
+    ],
+  },
+}
+`;
+
+exports[`Review queries should query a connection of reviews with orderBy filter 1`] = `
+Object {
+  "reviews": Object {
+    "edges": Array [
+      Object {
+        "node": Object {
+          "book": Object {
+            "name": "name 1",
+          },
+          "id": "FROZEN-ID",
+          "rating": 1,
+          "user": Object {
+            "name": "User #1",
+          },
+        },
+      },
+      Object {
+        "node": Object {
+          "book": Object {
+            "name": "name 1",
+          },
+          "id": "FROZEN-ID",
+          "rating": 2,
+          "user": Object {
+            "name": "User #1",
+          },
+        },
+      },
+      Object {
+        "node": Object {
+          "book": Object {
+            "name": "name 1",
+          },
+          "id": "FROZEN-ID",
+          "rating": 3,
+          "user": Object {
+            "name": "User #1",
+          },
+        },
+      },
+    ],
+  },
+}
+`;

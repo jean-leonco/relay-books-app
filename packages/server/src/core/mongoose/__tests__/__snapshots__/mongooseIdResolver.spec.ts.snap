@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Mongoose Id Resolver should get myType with mongooseIdResolver 1`] = `
+Object {
+  "myType": Object {
+    "_id": "ObjectId",
+    "field": "value",
+    "id": "FROZEN-ID",
+  },
+}
+`;

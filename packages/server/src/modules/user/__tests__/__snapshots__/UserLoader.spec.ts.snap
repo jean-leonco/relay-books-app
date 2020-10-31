@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UserLoader functions should find user by e-mail 1`] = `
+Object {
+  "__v": 0,
+  "_id": "ObjectId",
+  "createdAt": "FROZEN-CREATEDAT",
+  "email": Object {
+    "email": "jean@gmail.io",
+    "wasVerified": true,
+  },
+  "isActive": true,
+  "name": "User #1",
+  "password": "FROZEN-PASSWORD",
+  "removedAt": "EMPTY",
+  "updatedAt": "FROZEN-UPDATEDAT",
+}
+`;

@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ReviewLoader should be able to load a list of reviews 1`] = `
+Object {
+  "count": 11,
+  "edges": Array [
+    Object {
+      "cursor": "bW9uZ286MA==",
+      "node": Object {},
+    },
+    Object {
+      "cursor": "bW9uZ286MQ==",
+      "node": Object {},
+    },
+    Object {
+      "cursor": "bW9uZ286Mg==",
+      "node": Object {},
+    },
+    Object {
+      "cursor": "bW9uZ286Mw==",
+      "node": Object {},
+    },
+    Object {
+      "cursor": "bW9uZ286NA==",
+      "node": Object {},
+    },
+    Object {
+      "cursor": "bW9uZ286NQ==",
+      "node": Object {},
+    },
+    Object {
+      "cursor": "bW9uZ286Ng==",
+      "node": Object {},
+    },
+    Object {
+      "cursor": "bW9uZ286Nw==",
+      "node": Object {},
+    },
+    Object {
+      "cursor": "bW9uZ286OA==",
+      "node": Object {},
+    },
+    Object {
+      "cursor": "bW9uZ286OQ==",
+      "node": Object {},
+    },
+  ],
+  "endCursorOffset": 10,
+  "pageInfo": Object {
+    "endCursor": "bW9uZ286OQ==",
+    "hasNextPage": true,
+    "hasPreviousPage": false,
+    "startCursor": "bW9uZ286MA==",
+  },
+  "startCursorOffset": 0,
+}
+`;

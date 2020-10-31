@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`authMiddleware should allow requests with known appplatform 1`] = `
+Object {
+  "data": Object {
+    "me": Object {
+      "id": "FROZEN-ID",
+      "name": "User #1",
+    },
+  },
+}
+`;
+
+exports[`authMiddleware should allow requests with sessionToken scope being SESSION_TOKEN_SCOPES.SESSION 1`] = `
+Object {
+  "data": Object {
+    "me": Object {
+      "email": "user1@example.com",
+    },
+  },
+}
+`;
+
+exports[`authMiddleware should not allow requests if sessionToken has different scope than SESSION_TOKEN_SCOPES.SESSION 1`] = `
+Object {
+  "data": null,
+  "errors": Array [
+    Object {
+      "message": "Invalid token.",
+      "severity": "WARNING",
+    },
+  ],
+}
+`;
+
+exports[`authMiddleware should not allow requests with blocked SessionToken 1`] = `
+Object {
+  "data": null,
+  "errors": Array [
+    Object {
+      "message": "Invalid session.",
+      "severity": "WARNING",
+    },
+  ],
+}
+`;
+
+exports[`authMiddleware should not allow requests without appplatform 1`] = `
+Object {
+  "data": null,
+  "errors": Array [
+    Object {
+      "message": "Forbidden",
+      "severity": "WARNING",
+    },
+  ],
+}
+`;

@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MeEditMutation should edit me 1`] = `
+Object {
+  "data": Object {
+    "MeEdit": Object {
+      "error": "EMPTY",
+      "me": Object {
+        "email": "email@newmail.com",
+        "fullName": "Awesome Name",
+        "id": "FROZEN-ID",
+      },
+    },
+  },
+}
+`;

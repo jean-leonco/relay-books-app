@@ -1,0 +1,265 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Reading queries should get reading from node interface 1`] = `
+Object {
+  "reading": Object {
+    "book": Object {
+      "name": "name 1",
+    },
+    "id": "FROZEN-ID",
+    "readPages": 1,
+  },
+}
+`;
+
+exports[`Reading queries should query a connection of finished readings 1`] = `
+Object {
+  "readings": Object {
+    "edges": Array [
+      Object {
+        "node": Object {
+          "book": Object {
+            "name": "name 13",
+          },
+          "id": "FROZEN-ID",
+          "readPages": 10,
+        },
+      },
+      Object {
+        "node": Object {
+          "book": Object {
+            "name": "name 12",
+          },
+          "id": "FROZEN-ID",
+          "readPages": 9,
+        },
+      },
+      Object {
+        "node": Object {
+          "book": Object {
+            "name": "name 11",
+          },
+          "id": "FROZEN-ID",
+          "readPages": 8,
+        },
+      },
+      Object {
+        "node": Object {
+          "book": Object {
+            "name": "name 10",
+          },
+          "id": "FROZEN-ID",
+          "readPages": 7,
+        },
+      },
+      Object {
+        "node": Object {
+          "book": Object {
+            "name": "name 9",
+          },
+          "id": "FROZEN-ID",
+          "readPages": 6,
+        },
+      },
+      Object {
+        "node": Object {
+          "book": Object {
+            "name": "name 8",
+          },
+          "id": "FROZEN-ID",
+          "readPages": 5,
+        },
+      },
+      Object {
+        "node": Object {
+          "book": Object {
+            "name": "name 7",
+          },
+          "id": "FROZEN-ID",
+          "readPages": 4,
+        },
+      },
+      Object {
+        "node": Object {
+          "book": Object {
+            "name": "name 6",
+          },
+          "id": "FROZEN-ID",
+          "readPages": 3,
+        },
+      },
+      Object {
+        "node": Object {
+          "book": Object {
+            "name": "name 5",
+          },
+          "id": "FROZEN-ID",
+          "readPages": 2,
+        },
+      },
+      Object {
+        "node": Object {
+          "book": Object {
+            "name": "name 4",
+          },
+          "id": "FROZEN-ID",
+          "readPages": 1,
+        },
+      },
+    ],
+  },
+}
+`;
+
+exports[`Reading queries should query a connection of readings 1`] = `
+Object {
+  "readings": Object {
+    "edges": Array [
+      Object {
+        "node": Object {
+          "book": Object {
+            "name": "name 1",
+          },
+          "id": "FROZEN-ID",
+          "readPages": 6,
+        },
+      },
+      Object {
+        "node": Object {
+          "book": Object {
+            "name": "name 1",
+          },
+          "id": "FROZEN-ID",
+          "readPages": 5,
+        },
+      },
+      Object {
+        "node": Object {
+          "book": Object {
+            "name": "name 1",
+          },
+          "id": "FROZEN-ID",
+          "readPages": 4,
+        },
+      },
+      Object {
+        "node": Object {
+          "book": Object {
+            "name": "name 1",
+          },
+          "id": "FROZEN-ID",
+          "readPages": 3,
+        },
+      },
+      Object {
+        "node": Object {
+          "book": Object {
+            "name": "name 1",
+          },
+          "id": "FROZEN-ID",
+          "readPages": 2,
+        },
+      },
+    ],
+  },
+}
+`;
+
+exports[`Reading queries should query a connection of readings with orderBy filter 1`] = `
+Object {
+  "readings": Object {
+    "edges": Array [
+      Object {
+        "node": Object {
+          "book": Object {
+            "name": "name 1",
+          },
+          "id": "FROZEN-ID",
+          "readPages": 5,
+        },
+      },
+      Object {
+        "node": Object {
+          "book": Object {
+            "name": "name 1",
+          },
+          "id": "FROZEN-ID",
+          "readPages": 3,
+        },
+      },
+      Object {
+        "node": Object {
+          "book": Object {
+            "name": "name 1",
+          },
+          "id": "FROZEN-ID",
+          "readPages": 200,
+        },
+      },
+    ],
+  },
+}
+`;
+
+exports[`Reading queries should query a connection of unfinished readings 1`] = `
+Object {
+  "readings": Object {
+    "edges": Array [
+      Object {
+        "node": Object {
+          "book": Object {
+            "name": "name 6",
+          },
+          "id": "FROZEN-ID",
+          "readPages": 6,
+        },
+      },
+      Object {
+        "node": Object {
+          "book": Object {
+            "name": "name 5",
+          },
+          "id": "FROZEN-ID",
+          "readPages": 5,
+        },
+      },
+      Object {
+        "node": Object {
+          "book": Object {
+            "name": "name 4",
+          },
+          "id": "FROZEN-ID",
+          "readPages": 4,
+        },
+      },
+      Object {
+        "node": Object {
+          "book": Object {
+            "name": "name 3",
+          },
+          "id": "FROZEN-ID",
+          "readPages": 3,
+        },
+      },
+      Object {
+        "node": Object {
+          "book": Object {
+            "name": "name 2",
+          },
+          "id": "FROZEN-ID",
+          "readPages": 2,
+        },
+      },
+      Object {
+        "node": Object {
+          "book": Object {
+            "name": "name 1",
+          },
+          "id": "FROZEN-ID",
+          "readPages": 1,
+        },
+      },
+    ],
+  },
+}
+`;

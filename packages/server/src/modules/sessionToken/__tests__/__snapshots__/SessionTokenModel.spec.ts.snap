@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SessionTokenModel should create as many session token records as needed 1`] = `
+Object {
+  "0": Object {
+    "__v": 0,
+    "_id": "ObjectId",
+    "channel": "APP",
+    "createdAt": "FROZEN-CREATEDAT",
+    "ip": "::ffff:127.0.0.1",
+    "isActive": true,
+    "isBlocked": false,
+    "scope": "BOOKSAPP:SESSION",
+    "updatedAt": "FROZEN-UPDATEDAT",
+  },
+  "1": Object {
+    "__v": 0,
+    "_id": "ObjectId",
+    "channel": "APP",
+    "createdAt": "FROZEN-CREATEDAT",
+    "ip": "::ffff:127.0.0.1",
+    "isActive": true,
+    "isBlocked": false,
+    "scope": "BOOKSAPP:SESSION",
+    "updatedAt": "FROZEN-UPDATEDAT",
+  },
+  "2": Object {
+    "__v": 0,
+    "_id": "ObjectId",
+    "channel": "APP",
+    "createdAt": "FROZEN-CREATEDAT",
+    "ip": "::ffff:127.0.0.1",
+    "isActive": true,
+    "isBlocked": false,
+    "scope": "BOOKSAPP:SESSION",
+    "updatedAt": "FROZEN-UPDATEDAT",
+  },
+  "3": Object {
+    "__v": 0,
+    "_id": "ObjectId",
+    "channel": "APP",
+    "createdAt": "FROZEN-CREATEDAT",
+    "ip": "::ffff:127.0.0.1",
+    "isActive": true,
+    "isBlocked": false,
+    "scope": "BOOKSAPP:SESSION",
+    "updatedAt": "FROZEN-UPDATEDAT",
+  },
+  "4": Object {
+    "__v": 0,
+    "_id": "ObjectId",
+    "channel": "APP",
+    "createdAt": "FROZEN-CREATEDAT",
+    "ip": "::ffff:127.0.0.1",
+    "isActive": true,
+    "isBlocked": false,
+    "scope": "BOOKSAPP:SESSION",
+    "updatedAt": "FROZEN-UPDATEDAT",
+  },
+}
+`;

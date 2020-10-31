@@ -1,0 +1,24 @@
+* text=auto
+
+schema.json       linguist-generated
+__generated__     linguist-generated
+
+# If new extensions are added, please refresh the repo with the following commands.
+# Reference: https://git-scm.com/docs/gitattributes
+# > rm .git/index     # Remove the index to force Git to
+# > git reset         # re-scan the working directory
+# > git status        # Show files that will be normalized
+# > git add -u
+# > git add .gitattributes
+
+*.gif             binary
+*.ico             binary
+*.jpg             binary
+*.jpeg            binary
+*.png             binary
+*.ttf             binary
+*.woff            binary
+
+yarn.lock         merge=binary
+
+*.json            linguist-language=JSON-with-Comments
