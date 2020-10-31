@@ -33,7 +33,6 @@
     "server:test": "yarn workspace @booksapp/server test",
     "startup": "./scripts/startup.sh",
     "test": "jest --maxWorkers=4",
-    "tsc": "tsc --pretty",
     "update": "yarn update-schema && yarn relay",
     "update-schema": "yarn workspace @booksapp/server update-schema"
   },
