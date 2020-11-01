@@ -1,6 +1,6 @@
 import React, { useCallback, useRef } from 'react';
 import { Animated, TouchableOpacity } from 'react-native';
-import { useTheme } from 'styled-components';
+import styled from 'styled-components/native';
 
 import star from '../../assets/star.png';
 
@@ -10,9 +10,17 @@ interface IStar {
   fill: boolean;
   size?: number;
   disabled?: boolean;
+  index: number;
 }
 
-const Star = ({ position, handleRatingChange, fill, size = 20, disabled }: IStar) => {
+const StarPlaceholder = styled(Animated.Image)<IStar>`
+  margin: ${(p) => (p.index === 0 ? `0 3px 0 0` : '0 3px')};
+  tint-color: ${(p) => (p.fill ? p.theme.colors.primary : p.theme.colors.c1)};
+  width: ${(p) => `${p.size}px`};
+  height: ${(p) => `${p.size}px`};
+`;
+
+const Star = ({ position, handleRatingChange, size = 20, disabled, ...props }: IStar) => {
   const springValue = useRef(new Animated.Value(1)).current;
 
   const handleRated = useCallback(() => {
@@ -28,20 +36,9 @@ const Star = ({ position, handleRatingChange, fill, size = 20, disabled }: IStar
     handleRatingChange(position);
   }, [handleRatingChange, position, springValue]);
 
-  const theme = useTheme();
-
   return (
     <TouchableOpacity activeOpacity={1} onPress={handleRated} disabled={disabled}>
-      <Animated.Image
-        source={star}
-        style={{
-          marginHorizontal: 3,
-          tintColor: fill ? theme.colors.primary : theme.colors.c1,
-          width: size,
-          height: size,
-          transform: [{ scale: springValue }],
-        }}
-      />
+      <StarPlaceholder source={star} size={size} style={{ transform: [{ scale: springValue }] }} {...props} />
     </TouchableOpacity>
   );
 };

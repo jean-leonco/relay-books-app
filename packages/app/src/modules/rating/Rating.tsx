@@ -33,6 +33,7 @@ const Rating = ({ initialRating = 3, onFinishRating, ...props }: RatingProps) =>
           key={index}
           position={index + 1}
           fill={rating >= index + 1}
+          index={index}
           handleRatingChange={handleRatingChange}
           {...props}
         />
