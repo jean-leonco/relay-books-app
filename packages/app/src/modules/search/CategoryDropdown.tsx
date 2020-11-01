@@ -27,7 +27,7 @@ interface CategoryDropdownProps extends ModalProps {
 }
 
 const CategoryDropdown = ({ handleClose, handleSelectCategory, catogories, ...props }: CategoryDropdownProps) => {
-  // @TODO - fix problem with skip when model is closed
+  // @TODO - fix problem with skip when modal is closed
   const data = useFragment<CategoryDropdown_query$key>(
     graphql`
       fragment CategoryDropdown_query on Query {

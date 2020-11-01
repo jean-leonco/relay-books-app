@@ -60,6 +60,7 @@ const SearchBook = (props: SearchBookProps) => {
           </Text>
           <Space height={8} />
           <Text color="c2">Based on {data.reviews?.count} reviews</Text>
+          <Space height={4} />
           <Rating disabled initialRating={data.rating} />
           <Space height={4} />
         </Column>

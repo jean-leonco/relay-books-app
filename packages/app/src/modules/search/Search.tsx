@@ -1,17 +1,15 @@
-import React, { useCallback, useState, useTransition } from 'react';
-import { FlatList, Modal, TouchableOpacity } from 'react-native';
-import { graphql, useLazyLoadQuery, usePaginationFragment } from 'react-relay/hooks';
+import React, { Suspense, useState } from 'react';
+import { Modal, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { graphql, useLazyLoadQuery } from 'react-relay/hooks';
 import { css, useTheme } from 'styled-components/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { Column, FlatListLoader, Space, Text, TextInput } from '@booksapp/ui';
-import { useDebounce } from '@booksapp/hooks';
+import { Column, Space, Text, TextInput } from '@booksapp/ui';
 
 import { SearchQuery } from './__generated__/SearchQuery.graphql';
-import { SearchRefetchQuery, SearchRefetchQueryVariables } from './__generated__/SearchRefetchQuery.graphql';
-import { Search_query$key } from './__generated__/Search_query.graphql';
+
 import CategoryDropdown from './CategoryDropdown';
-import SearchBook from './SearchBook';
+import SearchList from './SearchList';
 
 const containerCss = css`
   padding: 24px 8px 0;
@@ -22,101 +20,25 @@ const Search = () => {
   const [searchValue, setSearchValue] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<any>(null);
   const [isDropdownVisible, setDropdownVisible] = useState(false);
-  const [startTransition, isPending] = useTransition({ timeoutMs: 2000 });
+
+  const theme = useTheme();
 
   const query = useLazyLoadQuery<SearchQuery>(
     graphql`
       query SearchQuery {
-        ...Search_query
+        ...SearchList_query
         ...CategoryDropdown_query
       }
     `,
     { visible: isDropdownVisible },
   );
 
-  // @TODO - fix useTransition
-  const { data, hasNext, loadNext, isLoadingNext, refetch } = usePaginationFragment<
-    SearchRefetchQuery,
-    Search_query$key
-  >(
-    graphql`
-      fragment Search_query on Query
-      @argumentDefinitions(
-        first: { type: Int, defaultValue: 20 }
-        after: { type: String }
-        filters: { type: BookFilters, defaultValue: { search: "" } }
-      )
-      @refetchable(queryName: "SearchRefetchQuery") {
-        books(first: $first, after: $after, filters: $filters) @connection(key: "Search_books") {
-          endCursorOffset
-          startCursorOffset
-          count
-          pageInfo {
-            hasNextPage
-            hasPreviousPage
-            startCursor
-            endCursor
-          }
-          edges {
-            cursor
-            node {
-              id
-              ...SearchBook_book
-            }
-          }
-        }
-      }
-    `,
-    query,
-  );
-
-  const refetchSearch = useCallback(
-    (value: string) => {
-      startTransition(() => {
-        const variables: SearchRefetchQueryVariables = { first: 20, filters: { search: value } };
-
-        refetch(variables, { fetchPolicy: 'store-or-network' });
-      });
-    },
-    [refetch],
-  );
-
-  const handleSearch = useDebounce(refetchSearch, 500, { leading: false });
-
-  const handleSelectCategory = useCallback(
-    (category?: any) => {
-      setSelectedCategory(category);
-      startTransition(() => {
-        const variables: SearchRefetchQueryVariables = {
-          first: 20,
-          filters: { search: searchValue, ...(category ? { category: category.id } : {}) },
-        };
-
-        refetch(variables, { fetchPolicy: 'store-or-network' });
-      });
-    },
-    [refetch, searchValue],
-  );
-
-  const loadMore = useCallback(() => {
-    if (isLoadingNext || !hasNext) {
-      return;
-    }
-
-    loadNext(20);
-  }, [hasNext, isLoadingNext, loadNext]);
-
-  const theme = useTheme();
-
   return (
     <Column flex={1} css={containerCss}>
       <Column>
         <TextInput
           value={searchValue}
-          onChangeText={(value) => {
-            setSearchValue(value);
-            handleSearch(value);
-          }}
+          onChangeText={setSearchValue}
           placeholder="Search for movie, author, etc."
           showErrorContainer={false}
           icon={<Ionicons name="ios-search-outline" size={20} color={theme.colors.c3} />}
@@ -128,17 +50,16 @@ const Search = () => {
           </Text>
         </TouchableOpacity>
       </Column>
-      <Space height={4} />
-      <FlatList
-        showsVerticalScrollIndicator={false}
-        data={data.books.edges}
-        keyExtractor={(item) => item.node.id}
-        renderItem={({ item }) => <SearchBook book={item?.node} />}
-        onEndReached={loadMore}
-        onEndReachedThreshold={0.1}
-        ListFooterComponent={isLoadingNext ? <FlatListLoader height={60} /> : null}
-      />
-      <Space height={4} />
+      <Suspense
+        fallback={
+          <Column align="center">
+            <Space height={10} />
+            <ActivityIndicator size={28} color={theme.colors.primary} />
+          </Column>
+        }
+      >
+        <SearchList query={query} category={selectedCategory} search={searchValue} />
+      </Suspense>
       <Modal
         transparent
         animationType="slide"
@@ -148,7 +69,7 @@ const Search = () => {
         <CategoryDropdown
           catogories={query}
           handleClose={() => setDropdownVisible(false)}
-          handleSelectCategory={handleSelectCategory}
+          handleSelectCategory={setSelectedCategory}
         />
       </Modal>
     </Column>
