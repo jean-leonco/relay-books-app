@@ -14,6 +14,7 @@ import LibraryShimmer from '../modules/library/LibraryShimmer';
 import Profile from '../modules/profile/Profile';
 import ProfileShimmer from '../modules/profile/ProfileShimmer';
 import BookDetails from '../modules/book/BookDetails';
+import Reading from '../modules/reading/Reading';
 import Review from '../modules/review/Review';
 import EditProfile from '../modules/profile/EditProfile';
 
@@ -95,6 +96,7 @@ const App = () => {
     <Stack.Navigator screenOptions={{ headerBackTitle: false, headerShown: false }} mode="modal">
       <Stack.Screen name="App" component={AppTabs} />
       <Stack.Screen name="Book" component={BookDetails} />
+      <Stack.Screen name="Reading" component={Reading} />
       <Stack.Screen name="Review" component={Review} />
       <Stack.Screen name="EditProfile" component={EditProfile} />
     </Stack.Navigator>

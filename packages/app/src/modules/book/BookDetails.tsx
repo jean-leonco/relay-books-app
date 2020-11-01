@@ -4,7 +4,7 @@ import { graphql, useLazyLoadQuery, usePaginationFragment } from 'react-relay/ho
 import { useRoute } from '@react-navigation/native';
 import { css } from 'styled-components/native';
 
-import { BottomSheet, Button, Column, FlatListLoader, Space } from '@booksapp/ui';
+import { BottomSheet, Column, FlatListLoader, Space } from '@booksapp/ui';
 
 import { BookDetailsQuery } from './__generated__/BookDetailsQuery.graphql';
 import { BookDetailsPaginationQuery } from './__generated__/BookDetailsPaginationQuery.graphql';
@@ -14,17 +14,11 @@ import ReviewCard from './ReviewCard';
 import BookInfo from './BookInfo';
 import OptionBottomSheet from './OptionBottomSheet';
 import BookHeader from './BookHeader';
+import ReadButton from './ReadButton';
 
 const containerCss = css`
   padding: 48px 24px 0;
   background: ${(p) => p.theme.colors.background};
-`;
-
-const buttonCss = css`
-  position: absolute;
-  bottom: 10px;
-  left: 24px;
-  right: 24px;
 `;
 
 const BookDetails = () => {
@@ -36,7 +30,7 @@ const BookDetails = () => {
 
   const query = useLazyLoadQuery<BookDetailsQuery>(
     graphql`
-      query BookDetailsQuery($id: ID!) {
+      query BookDetailsQuery($id: ID!, $readingFilters: ReadingFilters) {
         book: node(id: $id) {
           ... on Book {
             ...BookHeader_book
@@ -44,9 +38,10 @@ const BookDetails = () => {
             ...BookDetails_book
           }
         }
+        ...ReadButton_query @arguments(filters: $readingFilters)
       }
     `,
-    { id: route.params.id },
+    { id: route.params.id, readingFilters: { book: route.params.id } },
   );
 
   const { data, loadNext, isLoadingNext, hasNext } = usePaginationFragment<
@@ -57,7 +52,7 @@ const BookDetails = () => {
       fragment BookDetails_book on Book
       @argumentDefinitions(first: { type: Int, defaultValue: 10 }, after: { type: String })
       @refetchable(queryName: "BookDetailsPaginationQuery") {
-        reviews(first: $first, after: $after) @connection(key: "BookDetails_reviews") {
+        reviews(first: $first, after: $after) @connection(key: "BookDetails_reviews", filters: []) {
           endCursorOffset
           startCursorOffset
           count
@@ -118,7 +113,7 @@ const BookDetails = () => {
           )
         }
       />
-      <Button buttonCss={buttonCss}>Read</Button>
+      <ReadButton query={query} bookId={route.params.id} />
       <BottomSheet
         isVisible={isBottomSheetOpen}
         swipeDirection="down"

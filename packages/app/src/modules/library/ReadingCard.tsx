@@ -1,7 +1,8 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { graphql, useFragment } from 'react-relay/hooks';
 import styled, { css } from 'styled-components/native';
+import { useNavigation } from '@react-navigation/native';
 
 import { Column, PercentageCompletedBar, Row, Space, Text } from '@booksapp/ui';
 
@@ -24,6 +25,8 @@ interface ReadingCardProps {
 }
 
 const ReadingCard = (props: ReadingCardProps) => {
+  const navigation = useNavigation();
+
   const data = useFragment<ReadingCard_reading$key>(
     graphql`
       fragment ReadingCard_reading on Reading {
@@ -45,8 +48,12 @@ const ReadingCard = (props: ReadingCardProps) => {
     return Number(percentage);
   }, [data]);
 
+  const handlePress = useCallback(() => {
+    navigation.navigate('Reading', { id: data.id });
+  }, [data.id, navigation]);
+
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={handlePress}>
       <Row align="flex-end" css={containerCss}>
         <Banner source={{ uri: data.book?.bannerUrl }} />
         <Space width={12} />
