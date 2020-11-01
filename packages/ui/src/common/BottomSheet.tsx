@@ -1,5 +1,4 @@
 import React from 'react';
-import { StatusBar } from 'react-native';
 import Modal, { ModalProps } from 'react-native-modal';
 import { css } from 'styled-components';
 

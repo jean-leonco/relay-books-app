@@ -36,6 +36,7 @@ const OptionBottomSheet = ({ handleClose }: BottomSheetProps) => {
               id
               readPages
               book {
+                id
                 pages
                 meCanReview
               }

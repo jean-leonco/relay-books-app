@@ -62,7 +62,7 @@ const ContinueReading = (props: ContinueReadingProps) => {
       renderItem={({ item, index }) => <ReadingCard query={item.node} index={index} />}
       onEndReached={loadMore}
       onEndReachedThreshold={0.1}
-      ListFooterComponent={isLoadingNext ? <FlatListLoader /> : null}
+      ListFooterComponent={isLoadingNext ? <FlatListLoader height={50} /> : null}
     />
   );
 };

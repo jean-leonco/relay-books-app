@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { graphql, useFragment } from 'react-relay/hooks';
+import { useNavigation } from '@react-navigation/native';
 
 import MainBookCard from './MainBookCard';
 import { TodaysSuggestion_query$key } from './__generated__/TodaysSuggestion_query.graphql';
@@ -9,6 +10,8 @@ interface TodaysSuggestionProps {
 }
 
 const TodaysSuggestion = (props: TodaysSuggestionProps) => {
+  const navigation = useNavigation();
+
   const data = useFragment<TodaysSuggestion_query$key>(
     graphql`
       fragment TodaysSuggestion_query on Query {
@@ -26,7 +29,11 @@ const TodaysSuggestion = (props: TodaysSuggestionProps) => {
     props.suggestion,
   );
 
-  return <MainBookCard book={data.suggestion.edges[0]?.node} />;
+  const handlePress = useCallback(() => {
+    navigation.navigate('Book', { id: data.suggestion.edges[0].node.id });
+  }, [data.suggestion.edges, navigation]);
+
+  return <MainBookCard book={data.suggestion.edges[0]?.node} onPress={handlePress} />;
 };
 
 export default TodaysSuggestion;

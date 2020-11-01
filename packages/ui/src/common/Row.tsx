@@ -1,5 +1,5 @@
 import React from 'react';
-import { ViewProps, Animated } from 'react-native';
+import { ViewProps, Animated, TouchableOpacityProps } from 'react-native';
 import styled, { css } from 'styled-components/native';
 
 const commonCss = css<RowProps>`
@@ -19,7 +19,11 @@ const AnimatedContainer = styled(Animated.View)`
   ${commonCss}
 `;
 
-interface RowProps extends ViewProps {
+const TouchableContainer = styled.TouchableOpacity<RowProps>`
+  ${commonCss}
+`;
+
+interface RowProps extends ViewProps, TouchableOpacityProps {
   justify?: 'flex-start' | 'flex-end' | 'center' | 'space-between' | 'space-around' | 'space-evenly';
   align?: 'flex-start' | 'flex-end' | 'center' | 'stretch' | 'baseline';
   flexWrap?: 'no-wrap' | 'wrap' | 'wrap-reverse';
@@ -27,14 +31,19 @@ interface RowProps extends ViewProps {
   children?: React.ReactNode;
   css?: any;
   animated?: boolean;
+  touchable?: boolean;
 }
 
-const Row = ({ children, animated, ...props }: RowProps) => {
-  return animated ? (
-    <AnimatedContainer {...props}>{children}</AnimatedContainer>
-  ) : (
-    <Container {...props}>{children}</Container>
-  );
+const Row = ({ children, animated, touchable, ...props }: RowProps) => {
+  if (touchable) {
+    return <TouchableContainer {...props}>{children}</TouchableContainer>;
+  }
+
+  if (animated) {
+    return <AnimatedContainer {...props}>{children}</AnimatedContainer>;
+  }
+
+  return <Container {...props}>{children}</Container>;
 };
 
 export default Row;

@@ -1,4 +1,5 @@
 import React from 'react';
+import { GestureResponderEvent } from 'react-native';
 import { useFragment, graphql } from 'react-relay/hooks';
 import styled from 'styled-components/native';
 
@@ -17,9 +18,10 @@ interface MainBookCardProps {
   book: MainBookCard_book$key;
   percentageCompleted?: number;
   footer?: React.ReactNode;
+  onPress?: (event: GestureResponderEvent) => void;
 }
 
-const MainBookCard = ({ percentageCompleted, footer, ...props }: MainBookCardProps) => {
+const MainBookCard = ({ percentageCompleted, footer, onPress, ...props }: MainBookCardProps) => {
   const data = useFragment<MainBookCard_book$key>(
     graphql`
       fragment MainBookCard_book on Book {
@@ -33,7 +35,7 @@ const MainBookCard = ({ percentageCompleted, footer, ...props }: MainBookCardPro
   );
 
   return (
-    <Row align="flex-end">
+    <Row align="flex-end" touchable onPress={onPress}>
       <Column span={11}>
         <Banner source={{ uri: data?.bannerUrl }} />
       </Column>

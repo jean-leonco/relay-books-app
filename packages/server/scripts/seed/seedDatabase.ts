@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-import faker from 'faker';
 
 import connectDatabase from '../../src/common/database';
 
@@ -8,8 +7,7 @@ import { IBook } from '../../src/models';
 import createUser from './createUser';
 import createCategory from './createCategory';
 import createBook from './createBook';
-import createReview from './createReview';
-import createReading from './createReading';
+import createReadingAndReview from './createReadingAndReview';
 
 const categories = [
   'Science and Nature',
@@ -54,18 +52,11 @@ const runScript = async () => {
     for (let i = 0; i < bookArr.length; i++) {
       const book = bookArr[i];
 
-      const shouldFinishBook = faker.random.boolean();
+      const readingAndReview = await createReadingAndReview({ book, user: jeanUser });
 
-      await createReading({
-        bookId: book._id,
-        userId: jeanUser._id,
-        readPages: shouldFinishBook ? book.pages : faker.random.number({ min: 1, max: book.pages - 1 }),
-      });
-
-      if (shouldFinishBook) {
-        await createReview({ bookId: book._id, userId: jeanUser._id });
+      if (readingAndReview && readingAndReview.finished) {
         finishedReadings += 1;
-      } else {
+      } else if (readingAndReview && !readingAndReview.finished) {
         unfinishedReadings += 1;
       }
     }
@@ -76,18 +67,11 @@ const runScript = async () => {
       for (let j = 0; j < bookArr.length; j++) {
         const book = bookArr[j];
 
-        const shouldFinishBook = faker.random.boolean();
+        const readingAndReview = await createReadingAndReview({ book, user });
 
-        await createReading({
-          bookId: book._id,
-          userId: user._id,
-          readPages: shouldFinishBook ? book.pages : faker.random.number({ min: 1, max: book.pages - 1 }),
-        });
-
-        if (shouldFinishBook) {
-          await createReview({ bookId: book._id, userId: user._id });
+        if (readingAndReview && readingAndReview.finished) {
           finishedReadings += 1;
-        } else {
+        } else if (readingAndReview && !readingAndReview.finished) {
           unfinishedReadings += 1;
         }
       }
