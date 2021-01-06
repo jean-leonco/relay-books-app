@@ -1,36 +1,31 @@
-import {
-  GraphQLObjectType,
-  GraphQLObjectTypeConfig,
-  GraphQLNonNull,
-  GraphQLString,
-  GraphQLFloat,
-  GraphQLInt,
-  GraphQLBoolean,
-} from 'graphql';
+import { GraphQLObjectType, GraphQLString, GraphQLFloat, GraphQLInt, GraphQLBoolean } from 'graphql';
 import { globalIdField, toGlobalId } from 'graphql-relay';
+import {
+  connectionArgs,
+  connectionDefinitions,
+  objectIdResolver,
+  timestampResolver,
+} from '@entria/graphql-mongo-helpers';
 
 import { GraphQLContext } from '../../types';
 
-import { registerType, NodeInterface } from '../../interface/NodeInterface';
+import { nodeInterface, registerTypeLoader } from '../node/typeRegister';
 
-import { connectionArgs, connectionDefinitions } from '../../graphql/connection/CustomConnectionType';
-import { mongooseIdResolver } from '../../core/mongoose/mongooseIdResolver';
-import { mongoDocumentStatusResolvers } from '../../core/graphql/mongoDocumentStatusResolvers';
-
-import { ReadingLoader, ReviewLoader } from '../../loader';
+import * as ReviewLoader from '../review/ReviewLoader';
 import { ReviewConnection } from '../review/ReviewType';
 import ReviewFiltersInputType from '../review/filters/ReviewFiltersInputType';
 
-import Book from './BookLoader';
+import * as ReadingLoader from '../reading/ReadingLoader';
 
-type ConfigType = GraphQLObjectTypeConfig<Book, GraphQLContext>;
+import { IBook } from './BookModel';
+import { load } from './BookLoader';
 
-const BookTypeConfig: ConfigType = {
+const BookType = new GraphQLObjectType<IBook, GraphQLContext>({
   name: 'Book',
-  description: 'Represents a Book',
+  description: 'Book data',
   fields: () => ({
     id: globalIdField('Book'),
-    ...mongooseIdResolver,
+    ...objectIdResolver,
     name: {
       type: GraphQLString,
       description: 'The book name. ex: O Alienista',
@@ -74,16 +69,14 @@ const BookTypeConfig: ConfigType = {
     rating: {
       type: GraphQLFloat,
       description: 'The book average rating based on user reviews',
-      resolve: (obj, args, context) => ReviewLoader.loadBookAverageRating(context, obj._id),
+      resolve: (obj, _args, context) => ReviewLoader.loadBookAverageRating(context, obj._id),
     },
     reviews: {
       type: ReviewConnection.connectionType,
       description: 'The book reviews',
       args: {
         ...connectionArgs,
-        filters: {
-          type: ReviewFiltersInputType,
-        },
+        filters: { type: ReviewFiltersInputType },
       },
       resolve: (obj, args, context) => {
         const filters = { ...args.filters, book: toGlobalId('Book', obj._id) };
@@ -93,18 +86,18 @@ const BookTypeConfig: ConfigType = {
     meCanReview: {
       type: GraphQLBoolean,
       description: 'Retuns if the context user can review the book',
-      resolve: async (obj, args, context) => ReadingLoader.loadMeCanReview(context, obj),
+      resolve: async (obj, _args, context) => ReadingLoader.loadMeCanReview(context, obj),
     },
-    ...mongoDocumentStatusResolvers,
+    ...timestampResolver,
   }),
-  interfaces: () => [NodeInterface],
-};
+  interfaces: () => [nodeInterface],
+});
 
-const BookType = registerType(new GraphQLObjectType(BookTypeConfig));
+registerTypeLoader(BookType, load);
 
 export const BookConnection = connectionDefinitions({
   name: 'Book',
-  nodeType: GraphQLNonNull(BookType),
+  nodeType: BookType,
 });
 
 export default BookType;

@@ -6,17 +6,13 @@ interface Header {
   appplatform?: string;
 }
 
-export async function httpRequestGraphql(payload: any, header: Header, app: Koa<any, any>) {
-  const { authorization, appplatform, ...rest } = header;
-
-  return await request(app.callback())
+export const httpRequestGraphql = async (payload: any, header: Header, app: Koa<any, any>) => {
+  return request(app.callback())
     .post('/graphql')
     .set({
       Accept: 'application/json',
       'Content-Type': 'application/json',
-      ...(authorization ? { authorization } : {}),
-      ...(appplatform ? { appplatform } : {}),
-      ...rest,
+      ...header,
     })
     .send(JSON.stringify(payload));
-}
+};

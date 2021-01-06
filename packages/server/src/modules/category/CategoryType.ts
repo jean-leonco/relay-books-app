@@ -1,39 +1,35 @@
-import { GraphQLObjectType, GraphQLObjectTypeConfig, GraphQLNonNull, GraphQLString } from 'graphql';
+import { GraphQLObjectType, GraphQLString } from 'graphql';
 import { globalIdField } from 'graphql-relay';
+import { connectionDefinitions, objectIdResolver, timestampResolver } from '@entria/graphql-mongo-helpers';
 
 import { GraphQLContext } from '../../types';
 
-import { registerType, NodeInterface } from '../../interface/NodeInterface';
+import { nodeInterface, registerTypeLoader } from '../node/typeRegister';
 
-import { connectionDefinitions } from '../../graphql/connection/CustomConnectionType';
-import { mongooseIdResolver } from '../../core/mongoose/mongooseIdResolver';
-import { mongoDocumentStatusResolvers } from '../../core/graphql/mongoDocumentStatusResolvers';
+import { load } from './CategoryLoader';
+import { ICategory } from './CategoryModel';
 
-import Category from './CategoryLoader';
-
-type ConfigType = GraphQLObjectTypeConfig<Category, GraphQLContext>;
-
-const CategoryTypeConfig: ConfigType = {
+const CategoryType = new GraphQLObjectType<ICategory, GraphQLContext>({
   name: 'Category',
-  description: 'Represents a Category',
+  description: 'Category data',
   fields: () => ({
     id: globalIdField('Category'),
+    ...objectIdResolver,
     name: {
       type: GraphQLString,
       description: 'The category name. ex: Horror',
       resolve: (obj) => obj.name,
     },
-    ...mongooseIdResolver,
-    ...mongoDocumentStatusResolvers,
+    ...timestampResolver,
   }),
-  interfaces: () => [NodeInterface],
-};
+  interfaces: () => [nodeInterface],
+});
 
-const CategoryType = registerType(new GraphQLObjectType(CategoryTypeConfig));
+registerTypeLoader(CategoryType, load);
 
 export const CategoryConnection = connectionDefinitions({
   name: 'Category',
-  nodeType: GraphQLNonNull(CategoryType),
+  nodeType: CategoryType,
 });
 
 export default CategoryType;

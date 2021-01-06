@@ -1,18 +1,19 @@
-import { sanitizeTestObject, httpRequestGraphql } from '@booksapp/test-utils';
-
 import {
-  clearDbAndRestartCounters,
   connectMongoose,
-  createSessionToken,
-  createUser,
+  clearDbAndRestartCounters,
   disconnectMongoose,
+  httpRequestGraphql,
   gql,
-} from '../../../../test/helpers';
+} from '@workspace/test-utils';
 
-import app from '../../../graphql/app';
+import app from '../../../app';
+
+import { PLATFORM } from '../../../security';
+import TokenModel, { IToken, TOKEN_SCOPES } from '../../token/TokenModel';
+
+import { createUser, createToken } from '../../../test/utils';
+
 import { jwtSign } from '../generateToken';
-import { PLATFORM } from '../../../common/utils';
-import SessionTokenModel, { ISessionToken, SESSION_TOKEN_SCOPES } from '../../sessionToken/SessionTokenModel';
 
 beforeAll(connectMongoose);
 
@@ -21,58 +22,9 @@ beforeEach(clearDbAndRestartCounters);
 afterAll(disconnectMongoose);
 
 describe('authMiddleware', () => {
-  it('should not allow requests without appplatform', async () => {
+  it('should not allow requests with blocked token', async () => {
     const user = await createUser();
-    const sessionToken = await createSessionToken({ user });
-
-    const token = jwtSign(sessionToken);
-
-    const query = gql`
-      query Q {
-        me {
-          id
-          name
-        }
-      }
-    `;
-
-    const payload = { query, variables: {} };
-    const response = await httpRequestGraphql(payload, { authorization: `JWT ${token}` }, app);
-
-    expect(response.status).toBe(403);
-    expect(response.body).toMatchSnapshot();
-  });
-
-  it('should allow requests with known appplatform', async () => {
-    const user = await createUser();
-    const sessionToken = await createSessionToken({ user });
-
-    const token = jwtSign(sessionToken);
-
-    const query = gql`
-      query Q {
-        me {
-          id
-          name
-        }
-      }
-    `;
-
-    const payload = { query, variables: {} };
-
-    const response = await httpRequestGraphql(
-      payload,
-      { authorization: `JWT ${token}`, appplatform: PLATFORM.APP },
-      app,
-    );
-
-    expect(response.status).toBe(200);
-    expect(sanitizeTestObject(response.body)).toMatchSnapshot();
-  });
-
-  it('should not allow requests with blocked SessionToken', async () => {
-    const user = await createUser();
-    const sessionToken = await createSessionToken({ user, isBlocked: true });
+    const token = await createToken({ userId: user._id, isBlocked: true });
 
     const query = gql`
       query Q {
@@ -82,7 +34,7 @@ describe('authMiddleware', () => {
       }
     `;
 
-    const token = jwtSign(sessionToken);
+    const jwtToken = jwtSign(token);
 
     const variables = {};
     const payload = {
@@ -90,21 +42,21 @@ describe('authMiddleware', () => {
       variables,
     };
     const header = {
-      authorization: `JWT ${token}`,
+      authorization: `JWT ${jwtToken}`,
       appplatform: PLATFORM.APP,
     };
 
     const response = await httpRequestGraphql(payload, header, app);
 
-    const sessionTokens = await SessionTokenModel.find().lean<ISessionToken>();
-    expect(sessionTokens.length).toBe(1);
+    const tokens = await TokenModel.find().lean<IToken>();
+    expect(tokens.length).toBe(1);
     expect(response.status).toBe(401);
     expect(response.body).toMatchSnapshot();
   });
 
-  it('should not allow requests if sessionToken has different scope than SESSION_TOKEN_SCOPES.SESSION', async () => {
+  it('should not allow requests if token has different scope than SESSION', async () => {
     const user = await createUser();
-    const sessionToken = await createSessionToken({ user, scope: SESSION_TOKEN_SCOPES.RESET_PASSWORD });
+    const token = await createToken({ userId: user._id, scope: TOKEN_SCOPES.RESET_PASSWORD });
 
     const query = gql`
       query Q {
@@ -114,26 +66,26 @@ describe('authMiddleware', () => {
       }
     `;
 
-    const token = jwtSign(sessionToken);
+    const jwtToken = jwtSign(token);
 
     const variables = {};
     const payload = { query, variables };
     const header = {
-      authorization: `JWT ${token}`,
+      authorization: `JWT ${jwtToken}`,
       appplatform: PLATFORM.APP,
     };
 
     const response = await httpRequestGraphql(payload, header, app);
 
-    const sessionTokens = await SessionTokenModel.find().lean<ISessionToken>();
-    expect(sessionTokens.length).toBe(1);
+    const tokens = await TokenModel.find().lean<IToken>();
+    expect(tokens.length).toBe(1);
     expect(response.status).toBe(401);
     expect(response.body).toMatchSnapshot();
   });
 
-  it('should allow requests with sessionToken scope being SESSION_TOKEN_SCOPES.SESSION', async () => {
+  it('should allow requests with token scope being TOKEN_SCOPES.SESSION', async () => {
     const user = await createUser();
-    const sessionToken = await createSessionToken({ user });
+    const token = await createToken({ userId: user._id });
 
     const query = gql`
       query Q {
@@ -143,20 +95,21 @@ describe('authMiddleware', () => {
       }
     `;
 
-    const token = jwtSign(sessionToken);
+    const jwtToken = jwtSign(token);
 
     const variables = {};
     const payload = { query, variables };
     const header = {
-      authorization: `JWT ${token}`,
+      authorization: `JWT ${jwtToken}`,
       appplatform: PLATFORM.APP,
     };
 
     const response = await httpRequestGraphql(payload, header, app);
 
-    const sessionTokens = await SessionTokenModel.find().lean<ISessionToken>();
-    expect(sessionTokens.length).toBe(1);
+    const tokens = await TokenModel.find().lean<IToken>();
+    expect(tokens.length).toBe(1);
     expect(response.status).toBe(200);
+    expect(response.body.data.me.email).toBe(user.email.email);
     expect(response.body).toMatchSnapshot();
   });
 });

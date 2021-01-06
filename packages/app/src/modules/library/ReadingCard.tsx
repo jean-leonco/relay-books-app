@@ -4,7 +4,7 @@ import { graphql, useFragment } from 'react-relay/hooks';
 import styled, { css } from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
 
-import { Column, PercentageCompletedBar, Row, Space, Text } from '@booksapp/ui';
+import { Column, PercentageCompletedBar, Row, Space, Text } from '@workspace/ui';
 
 import { ReadingCard_reading$key } from './__generated__/ReadingCard_reading.graphql';
 

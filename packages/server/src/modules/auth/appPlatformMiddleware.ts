@@ -1,7 +1,7 @@
 import Application from 'koa';
 
+import { getPlatform, PLATFORM } from '../../security';
 import { GraphQLContext } from '../../types';
-import { getPlatform, PLATFORM } from '../../common/utils';
 
 const appPlatformMiddleware: Application.Middleware<any, GraphQLContext> = async (ctx, next) => {
   if (ctx.request.url === '/healthz') {

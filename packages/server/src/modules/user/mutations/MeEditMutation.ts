@@ -1,11 +1,12 @@
 import { GraphQLString } from 'graphql';
 import { mutationWithClientMutationId } from 'graphql-relay';
+import { errorField, successField } from '@entria/graphql-mongo-helpers';
 
-import * as UserLoader from '../UserLoader';
+import { LoggedGraphQLContext, MutationField } from '../../../types';
+
 import UserModel from '../UserModel';
+import * as UserLoader from '../UserLoader';
 import UserType from '../UserType';
-import { LoggedGraphQLContext } from '../../../types';
-import errorField from '../../../core/graphql/errorField';
 
 import UserRegistrationMutationSchema from './validationSchemas/UserRegistrationMutationSchema';
 
@@ -85,12 +86,17 @@ const mutation = mutationWithClientMutationId({
         return newUser;
       },
     },
+    ...successField,
     ...errorField,
   },
 });
 
-export default {
-  authenticatedOnly: true,
-  validationSchema: UserRegistrationMutationSchema,
+const mutationField: MutationField = {
+  extensions: {
+    authenticatedOnly: true,
+    validationSchema: UserRegistrationMutationSchema,
+  },
   ...mutation,
 };
+
+export default mutationField;

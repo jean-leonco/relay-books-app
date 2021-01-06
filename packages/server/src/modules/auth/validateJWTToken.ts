@@ -1,16 +1,16 @@
 import jwt, { TokenExpiredError } from 'jsonwebtoken';
 
+import { JWT_KEY } from '../../config';
 import { GraphQLContext } from '../../types';
 
-import { SessionToken, ISessionToken } from '../../models';
-
-import { JWT_KEY } from '../../common/config';
 import { t } from '../../locales/helpers';
+
+import TokenModel, { IToken, TOKEN_SCOPES } from '../token/TokenModel';
 
 export interface DecodedToken {
   id?: string;
-  scope?: string;
-  sessionToken?: string;
+  scope?: TOKEN_SCOPES;
+  token?: string;
   expired?: boolean;
   iat?: number;
 }
@@ -19,7 +19,6 @@ interface ValidateTokenResult {
   token: DecodedToken | null;
   expired?: boolean;
   error?: string;
-  detailedError?: string;
   abortRequest?: boolean;
   status?: number;
 }
@@ -32,7 +31,6 @@ const validateJWTToken = async (context: GraphQLContext, token: string): Promise
       return {
         token: null,
         error: t('auth', 'TokenInvalid'),
-        detailedError: t('auth', 'TokenInvalid'),
         status: 403,
         abortRequest: true,
       };
@@ -42,35 +40,32 @@ const validateJWTToken = async (context: GraphQLContext, token: string): Promise
       return {
         token: null,
         error: t('auth', 'TokenInvalid'),
-        detailedError: t('auth', 'TokenInvalid'),
         status: 403,
         abortRequest: true,
       };
     }
 
-    if (!decodedToken.id || !decodedToken.scope || !decodedToken.sessionToken) {
+    if (!decodedToken.id || !decodedToken.scope || !decodedToken.token) {
       return {
         token: null,
         error: t('auth', 'TokenInvalid'),
-        detailedError: t('auth', 'TokenInvalidSession'),
         status: 403,
         abortRequest: true,
       };
     }
 
-    const sessionToken = await SessionToken.findOne({
-      _id: decodedToken.sessionToken,
-      user: decodedToken.id,
+    const sessionToken = await TokenModel.findOne({
+      _id: decodedToken.token,
+      userId: decodedToken.id,
       scope: decodedToken.scope,
       isActive: true,
       isBlocked: false,
-    }).lean<ISessionToken>();
+    }).lean<IToken>();
 
     if (!sessionToken) {
       return {
         token: null,
         error: t('auth', 'InvalidSession'),
-        detailedError: t('auth', 'InvalidSessionDetailed'),
         status: 401,
         abortRequest: true,
       };
@@ -80,7 +75,6 @@ const validateJWTToken = async (context: GraphQLContext, token: string): Promise
       return {
         token: null,
         error: t('auth', 'TokenInvalid'),
-        detailedError: t('auth', 'InvalidSessionScope'),
         status: 403,
         abortRequest: true,
       };
@@ -93,7 +87,6 @@ const validateJWTToken = async (context: GraphQLContext, token: string): Promise
         token: null,
         expired: true,
         error: t('auth', 'TokenExpired'),
-        detailedError: t('auth', 'TokenExpiredDetailed', { expired: err.expiredAt }),
         status: 401,
         abortRequest: true,
       };
@@ -103,7 +96,6 @@ const validateJWTToken = async (context: GraphQLContext, token: string): Promise
       return {
         token: null,
         error: t('auth', 'TokenInvalid'),
-        detailedError: t('auth', 'TokenInvalidSignature'),
         status: 403,
         abortRequest: true,
       };
@@ -113,7 +105,6 @@ const validateJWTToken = async (context: GraphQLContext, token: string): Promise
       return {
         token: null,
         error: t('auth', 'TokenInvalid'),
-        detailedError: t('auth', 'TokenInvalidSignature'),
         status: 403,
         abortRequest: true,
       };
@@ -122,7 +113,6 @@ const validateJWTToken = async (context: GraphQLContext, token: string): Promise
     return {
       token: null,
       error: t('auth', 'TokenInvalid'),
-      detailedError: t('auth', 'TokenUnknownError'),
       status: 403,
       abortRequest: true,
     };

@@ -1,25 +1,20 @@
 import { graphql } from 'graphql';
 
-import { sanitizeTestObject } from '@booksapp/test-utils';
-
-import { schema } from '../../../graphql/schema';
-
 import {
-  clearDbAndRestartCounters,
+  sanitizeTestObject,
   connectMongoose,
-  createUser,
+  clearDbAndRestartCounters,
   disconnectMongoose,
-  getContext,
   gql,
-} from '../../../../test/helpers';
-import { User } from '../../../models';
+} from '@workspace/test-utils';
+
+import { createUser, getContext } from '../../../test/utils';
+
+import schema from '../../../schema/schema';
 
 beforeAll(connectMongoose);
 
-beforeEach(async () => {
-  await clearDbAndRestartCounters();
-  await User.createIndexes();
-});
+beforeEach(clearDbAndRestartCounters);
 
 afterAll(disconnectMongoose);
 

@@ -1,7 +1,9 @@
 import bcrypt from 'bcryptjs';
 import mongoose, { Document, Model, Query } from 'mongoose';
 
-import { isActiveMongooseField, removedAtMongooseField } from '../../core/mongoose/withMongooseFields';
+import { IStatusSchema } from '../../types';
+
+import isActiveMongooseField from '../../mongoose/isActiveMongooseField';
 
 const EmailSchema = new mongoose.Schema(
   {
@@ -46,14 +48,10 @@ const Schema = new mongoose.Schema(
       description: 'Language of the user',
     },
     ...isActiveMongooseField,
-    ...removedAtMongooseField,
   },
   {
     collection: 'User',
-    timestamps: {
-      createdAt: 'createdAt',
-      updatedAt: 'updatedAt',
-    },
+    timestamps: true,
   },
 );
 
@@ -113,16 +111,12 @@ export interface IEmailSchema {
   wasVerified: boolean;
 }
 
-export interface IUser extends Document {
+export interface IUser extends Document, IStatusSchema {
   name: string;
   surname: string;
   password?: string;
   email: IEmailSchema;
   lang?: string;
-  isActive: boolean;
-  removedAt: Date | null;
-  createdAt: Date;
-  updatedAt: Date;
   authenticate: (plainTextPassword: string) => boolean;
 }
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { graphql, useFragment } from 'react-relay/hooks';
 import { css } from 'styled-components';
 
-import { Column, Row, Space, Text } from '@booksapp/ui';
+import { Column, Row, Space, Text } from '@workspace/ui';
 
 import Rating from '../rating/Rating';
 

@@ -1,7 +1,7 @@
 import { graphql } from 'react-relay';
 import { RecordSourceSelectorProxy, ROOT_ID } from 'relay-runtime';
 
-import { connectionDeleteEdgeUpdater, connectionUpdater } from '@booksapp/relay';
+import { connectionDeleteEdgeUpdater, connectionUpdater } from '@workspace/relay';
 
 import { ReadingEditPageInput } from './__generated__/ReadingEditPageMutation.graphql';
 

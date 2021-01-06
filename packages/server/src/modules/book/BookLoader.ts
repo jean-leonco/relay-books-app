@@ -1,14 +1,14 @@
 import DataLoader from 'dataloader';
 import { connectionFromMongoAggregate, mongooseLoader } from '@entria/graphql-mongoose-loader';
 import { ConnectionArguments } from 'graphql-relay';
-import { Types } from 'mongoose';
 import { buildMongoConditionsFromFilters } from '@entria/graphql-mongo-helpers';
+import { NullConnection } from '@entria/graphql-mongo-helpers/lib/NullConnection';
 
-import { GraphQLContext, DataLoaderKey } from '../../types';
+import { GraphQLContext, DataLoaderKey, ObjectId } from '../../types';
+import { buildAggregatePipeline } from '../../graphql/filters/graphqlFilters';
+import { isLoggedViewerCanSee } from '../../security';
 
-import { NullConnection } from '../../graphql/connection/NullConnection';
-
-import { buildAggregatePipeline } from '../../core/graphql/graphqlFilters/graphqlFilters';
+import { registerLoader } from '../loader/loaderRegister';
 
 import BookModel, { IBook } from './BookModel';
 import { BooksArgFilters, bookFilterMapping } from './filters/BookFiltersInputType';
@@ -17,7 +17,7 @@ export default class Book {
   public registeredType = 'Book';
 
   id: string;
-  _id: Types.ObjectId;
+  _id: ObjectId;
   name: string;
   author: string;
   description: string;
@@ -26,9 +26,8 @@ export default class Book {
   bannerUrl: string;
   ISBN?: number;
   language?: string;
-  categoryId: Types.ObjectId;
+  categoryId: ObjectId;
   isActive: boolean;
-  removedAt: Date | null;
   createdAt: Date;
   updatedAt: Date;
 
@@ -45,25 +44,14 @@ export default class Book {
     this.language = data.language;
     this.categoryId = data.categoryId;
     this.isActive = data.isActive;
-    this.removedAt = data.removedAt;
     this.createdAt = data.createdAt;
     this.updatedAt = data.updatedAt;
   }
 }
 
-export const getLoader = () => new DataLoader((ids) => mongooseLoader(BookModel, ids));
+export const getLoader = () => new DataLoader<DataLoaderKey, IBook>((ids) => mongooseLoader(BookModel, ids));
 
-const viewerCanSee = (context: GraphQLContext, data: IBook) => {
-  if (!context.user) {
-    return false;
-  }
-
-  if (!data.isActive || data.removedAt) {
-    return false;
-  }
-
-  return true;
-};
+registerLoader('BookLoader', getLoader);
 
 export const load = async (context: GraphQLContext, id: DataLoaderKey) => {
   if (!id) return null;
@@ -73,7 +61,7 @@ export const load = async (context: GraphQLContext, id: DataLoaderKey) => {
 
     if (!data) return null;
 
-    return viewerCanSee(context, data) ? new Book(data) : null;
+    return isLoggedViewerCanSee(context, data) ? new Book(data) : null;
   } catch (err) {
     return null;
   }

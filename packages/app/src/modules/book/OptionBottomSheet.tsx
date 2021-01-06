@@ -2,10 +2,9 @@ import React, { useCallback, useMemo } from 'react';
 import { ToastAndroid } from 'react-native';
 import styled, { css } from 'styled-components/native';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { graphql, useLazyLoadQuery } from 'react-relay/hooks';
+import { graphql, useLazyLoadQuery, useMutation } from 'react-relay/hooks';
 
-import { BottomSheetProps, Column, Text } from '@booksapp/ui';
-import { useMutation } from '@booksapp/relay';
+import { BottomSheetProps, Column, Text } from '@workspace/ui';
 
 import { ReadingRemove, readingsRemoveMutationConnectionUpdater } from './mutations/ReadingRemoveMutation';
 import { ReadingRemoveMutation } from './mutations/__generated__/ReadingRemoveMutation.graphql';

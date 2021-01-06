@@ -1,17 +1,15 @@
 import { GraphQLNonNull, GraphQLID, GraphQLString } from 'graphql';
 import { fromGlobalId, mutationWithClientMutationId, toGlobalId } from 'graphql-relay';
+import { errorField, successField } from '@entria/graphql-mongo-helpers';
+
+import { LoggedGraphQLContext, MutationField } from '../../../types';
 
 import ReadingModel from '../ReadingModel';
-
 import * as ReadingLoader from '../ReadingLoader';
 
-import errorField from '../../../core/graphql/errorField';
-import successField from '../../../core/graphql/successField';
-import { LoggedGraphQLContext } from '../../../types';
-
-type ReadingRemoveArgs = {
+interface ReadingRemoveArgs {
   id: string;
-};
+}
 
 const mutation = mutationWithClientMutationId({
   name: 'ReadingRemove',
@@ -38,7 +36,7 @@ const mutation = mutationWithClientMutationId({
 
     return {
       id: reading._id,
-      success: t('book', 'BookRemovedWithSuccess'),
+      success: true,
       error: null,
     };
   },
@@ -52,7 +50,11 @@ const mutation = mutationWithClientMutationId({
   },
 });
 
-export default {
-  authenticatedOnly: true,
+const mutationField: MutationField = {
+  extensions: {
+    authenticatedOnly: true,
+  },
   ...mutation,
 };
+
+export default mutationField;

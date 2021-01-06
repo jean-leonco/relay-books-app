@@ -1,9 +1,7 @@
-import { DeepPartial } from '@booksapp/types';
+import CategoryModel, { ICategory } from '../../src/modules/category/CategoryModel';
 
-import { Category, ICategory } from '../../src/models';
-
-const createCategory = async (args: DeepPartial<ICategory>) => {
-  return new Category(args).save();
+const createCategory = async (args: Partial<ICategory>) => {
+  return new CategoryModel(args).save();
 };
 
 export default createCategory;

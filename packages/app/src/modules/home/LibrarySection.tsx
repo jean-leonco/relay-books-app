@@ -2,7 +2,7 @@ import React from 'react';
 import { FlatList } from 'react-native';
 import { graphql, useFragment } from 'react-relay/hooks';
 
-import { BookCard } from '@booksapp/ui';
+import { BookCard } from '@workspace/ui';
 
 import { LibrarySection_query$key } from './__generated__/LibrarySection_query.graphql';
 

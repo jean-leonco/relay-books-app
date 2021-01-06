@@ -1,29 +1,30 @@
-import { GraphQLNonNull, GraphQLObjectType, GraphQLObjectTypeConfig, GraphQLString } from 'graphql';
+import { GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
 import { globalIdField, toGlobalId } from 'graphql-relay';
+import {
+  connectionArgs,
+  connectionDefinitions,
+  objectIdResolver,
+  timestampResolver,
+} from '@entria/graphql-mongo-helpers';
 
-import { NodeInterface, registerType } from '../../interface/NodeInterface';
-import { connectionArgs } from '../../graphql/connection/CustomConnectionType';
 import { GraphQLContext } from '../../types';
 
-import { mongooseIdResolver } from '../../core/mongoose/mongooseIdResolver';
-import { mongoDocumentStatusResolvers } from '../../core/graphql/mongoDocumentStatusResolvers';
+import { nodeInterface, registerTypeLoader } from '../node/typeRegister';
 
-import { ReviewLoader } from '../../loader';
-
+import * as ReviewLoader from '../review/ReviewLoader';
 import { ReviewConnection } from '../review/ReviewType';
 import ReviewFiltersInputType from '../review/filters/ReviewFiltersInputType';
 
-import User from './UserLoader';
-
-type ConfigType = GraphQLObjectTypeConfig<User, GraphQLContext>;
+import { IUser } from './UserModel';
+import { load } from './UserLoader';
 
 // @TODO - add avatar
-const UserTypeConfig: ConfigType = {
+const UserType = new GraphQLObjectType<IUser, GraphQLContext>({
   name: 'User',
-  description: 'Represents an user',
+  description: 'User data',
   fields: () => ({
     id: globalIdField('User'),
-    ...mongooseIdResolver,
+    ...objectIdResolver,
     name: {
       type: GraphQLString,
       description: 'User name resolver',
@@ -58,20 +59,23 @@ const UserTypeConfig: ConfigType = {
       description: 'Connection to all me reviews',
       args: {
         ...connectionArgs,
-        filters: {
-          type: ReviewFiltersInputType,
-        },
+        filters: { type: ReviewFiltersInputType },
       },
       resolve: (obj, args, context) => {
         const filters = { ...args.filters, user: toGlobalId('User', obj._id) };
         return ReviewLoader.loadReviews(context, { ...args, filters });
       },
     },
-    ...mongoDocumentStatusResolvers,
+    ...timestampResolver,
   }),
-  interfaces: () => [NodeInterface],
-};
+  interfaces: () => [nodeInterface],
+});
 
-const UserType = registerType(new GraphQLObjectType(UserTypeConfig));
+registerTypeLoader(UserType, load);
+
+export const UserConnection = connectionDefinitions({
+  name: 'User',
+  nodeType: UserType,
+});
 
 export default UserType;

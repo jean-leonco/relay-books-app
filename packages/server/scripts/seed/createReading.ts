@@ -1,13 +1,12 @@
 import faker from 'faker';
 
-import { DeepPartial } from '@booksapp/types';
+import { IBook } from '../../src/modules/book/BookModel';
+import ReadingModel, { IReading } from '../../src/modules/reading/ReadingModel';
 
-import { Reading, IReading, IBook } from '../../src/models';
-
-const createReading = async (args: DeepPartial<IReading & { book: IBook }>) => {
+const createReading = async (args: Partial<IReading & { book: IBook }>) => {
   const readPages = args.readPages || faker.random.number(args.book?.pages);
 
-  return new Reading({ readPages, ...args }).save();
+  return new ReadingModel({ readPages, ...args }).save();
 };
 
 export default createReading;

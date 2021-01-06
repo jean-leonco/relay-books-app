@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
 
-import connectDatabase from '../../src/common/database';
+import { connectDatabase } from '../../src/database';
 
-import { IBook } from '../../src/models';
+import { IBook } from '../../src/modules/book/BookModel';
 
 import createUser from './createUser';
 import createCategory from './createCategory';

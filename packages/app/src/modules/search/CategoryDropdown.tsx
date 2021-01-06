@@ -4,7 +4,7 @@ import { graphql, useFragment } from 'react-relay/hooks';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import styled, { useTheme } from 'styled-components/native';
 
-import { Column, Text } from '@booksapp/ui';
+import { Column, Text } from '@workspace/ui';
 
 import { CategoryDropdown_query$key } from './__generated__/CategoryDropdown_query.graphql';
 

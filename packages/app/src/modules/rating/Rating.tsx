@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 
-import { Row } from '@booksapp/ui';
+import { Row } from '@workspace/ui';
 
 import Star from './Star';
 

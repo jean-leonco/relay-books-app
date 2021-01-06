@@ -1,5 +1,5 @@
 {
-  "name": "@booksapp/hooks",
+  "name": "@workspace/hooks",
   "version": "0.0.1",
   "private": true,
   "main": "src/index.ts",
@@ -8,6 +8,6 @@
     "react": "0.0.0-experimental-e5d06e34b"
   },
   "devDependencies": {
-    "@booksapp/babel": "^0.0.1"
+    "@workspace/babel": "^0.0.1"
   }
 }

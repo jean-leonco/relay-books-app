@@ -1,20 +1,19 @@
 import { GraphQLNonNull, GraphQLID, GraphQLInt } from 'graphql';
 import { fromGlobalId, mutationWithClientMutationId, toGlobalId } from 'graphql-relay';
+import { errorField, successField } from '@entria/graphql-mongo-helpers';
+
+import { LoggedGraphQLContext, MutationField } from '../../../types';
+
+import * as BookLoader from '../../book/BookLoader';
 
 import ReadingModel from '../ReadingModel';
-
 import * as ReadingLoader from '../ReadingLoader';
 import { ReadingConnection } from '../ReadingType';
 
-import errorField from '../../../core/graphql/errorField';
-import { LoggedGraphQLContext } from '../../../types';
-import { Reading } from '../../../models';
-import { BookLoader } from '../../../loader';
-
-type ReadingEditPageArgs = {
+interface ReadingEditPageArgs {
   id: string;
   currentPage: number;
-};
+}
 
 const mutation = mutationWithClientMutationId({
   name: 'ReadingEditPage',
@@ -32,7 +31,7 @@ const mutation = mutationWithClientMutationId({
     const { user, t } = context;
     const { id, currentPage } = args;
 
-    const reading = await Reading.findOne({ _id: fromGlobalId(id).id, userId: user._id });
+    const reading = await ReadingModel.findOne({ _id: fromGlobalId(id).id, userId: user._id });
 
     if (!reading) {
       return { error: t('book', 'BookNotFound') };
@@ -63,7 +62,7 @@ const mutation = mutationWithClientMutationId({
   outputFields: {
     readingEdge: {
       type: ReadingConnection.edgeType,
-      resolve: async ({ id }, args, context) => {
+      resolve: async ({ id }, _args, context) => {
         const reading = await ReadingLoader.load(context, id);
 
         if (!reading) {
@@ -76,11 +75,16 @@ const mutation = mutationWithClientMutationId({
         };
       },
     },
+    ...successField,
     ...errorField,
   },
 });
 
-export default {
-  authenticatedOnly: true,
+const mutationField: MutationField = {
+  extensions: {
+    authenticatedOnly: true,
+  },
   ...mutation,
 };
+
+export default mutationField;

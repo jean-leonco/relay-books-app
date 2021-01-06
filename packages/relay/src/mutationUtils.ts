@@ -1,46 +1,23 @@
 /* eslint-disable no-console */
-import { isArray, isObject } from 'lodash/fp';
 import { ConnectionHandler, RecordSourceSelectorProxy } from 'relay-runtime';
 
-import { JSObject } from '@booksapp/types';
-
-interface ConnectionDeleteEdgeUpdaterOptions {
-  parentId: string;
-  connectionName: string;
-  nodeId: string;
-  store: RecordSourceSelectorProxy;
-  filters?: JSObject;
-}
-
-interface ConnectionUpdaterParams {
+interface ConnectionUpdaterOptions {
   store: RecordSourceSelectorProxy;
   parentId: string;
   connectionName: string;
   edge: any;
   before?: boolean;
-  filters?: JSObject;
+  filters?: any;
   cursor?: string;
 }
 
-interface connectionTransferEdgeUpdaterParams {
-  store: RecordSourceSelectorProxy;
-  sourceParentId: string;
-  destinationParentId: string;
-  connectionName: string;
-  newEdge: any;
-  deletedId: string;
-  before?: boolean;
-  filters?: JSObject;
-  cursor?: string;
-}
-
-export function connectionUpdater(args: ConnectionUpdaterParams) {
-  const { store, parentId, connectionName, edge, before, filters, cursor } = args;
+export function connectionUpdater({ store, parentId, connectionName, edge, before }: ConnectionUpdaterOptions) {
   if (!edge) {
     // eslint-disable-next-line no-console
     console.log('[Connection Updater] Maybe you forgot to pass an edge:', edge);
     return;
   }
+
   if (!parentId) {
     // eslint-disable-next-line no-console
     console.log('[Connection Updater] Maybe you forgot to pass a parentId:', parentId);
@@ -72,6 +49,14 @@ export function connectionUpdater(args: ConnectionUpdaterParams) {
   } else {
     ConnectionHandler.insertEdgeAfter(connection, edge);
   }
+}
+
+interface ConnectionDeleteEdgeUpdaterOptions {
+  parentId: string;
+  connectionName: string;
+  nodeId: string;
+  store: RecordSourceSelectorProxy;
+  filters?: any;
 }
 
 export function connectionDeleteEdgeUpdater({

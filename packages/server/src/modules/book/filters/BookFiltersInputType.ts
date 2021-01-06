@@ -1,14 +1,11 @@
 import { GraphQLInputObjectType, GraphQLList, GraphQLString, GraphQLNonNull, GraphQLID, GraphQLBoolean } from 'graphql';
 import { startOfDay, subDays } from 'date-fns';
-import { buildSortFromArg, FILTER_CONDITION_TYPE } from '@entria/graphql-mongo-helpers';
-import { FilterMapping } from '@entria/graphql-mongo-helpers/dist/types';
+import { buildSortFromArg, FILTER_CONDITION_TYPE, getObjectId } from '@entria/graphql-mongo-helpers';
+import { FilterMapping } from '@entria/graphql-mongo-helpers/lib/types';
 
-import {
-  StatusDateOrdering,
-  StatusDateOrderingInputType,
-} from '../../../core/graphql/graphqlFilters/StatusDateOrderingInputType';
+import { StatusDateOrdering, StatusDateOrderingInputType } from '../../../graphql/filters/StatusDateOrderingInputType';
 
-import { escapeRegex, getObjectId } from '../../../common/utils';
+import { escapeRegex } from '../../../utils';
 import { GraphQLArgFilter, ObjectId } from '../../../types';
 
 export type BooksArgFilters = GraphQLArgFilter<{
@@ -44,7 +41,7 @@ export const bookFilterMapping: FilterMapping = {
   },
   orderBy: {
     type: FILTER_CONDITION_TYPE.AGGREGATE_PIPELINE,
-    pipeline: (value: CreatedAtOrdering[]) => [{ $sort: buildSortFromArg(value) }],
+    pipeline: (value: StatusDateOrdering[]) => [{ $sort: buildSortFromArg(value) }],
   },
   trending: {
     type: FILTER_CONDITION_TYPE.AGGREGATE_PIPELINE,

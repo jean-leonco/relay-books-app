@@ -1,11 +1,6 @@
-import {
-  clearDbAndRestartCounters,
-  connectMongoose,
-  disconnectMongoose,
-  getContext,
-  createBook,
-  createUser,
-} from '../../../../test/helpers';
+import { connectMongoose, clearDbAndRestartCounters, disconnectMongoose } from '@workspace/test-utils';
+
+import { createBook, createUser, getContext } from '../../../test/utils';
 
 import * as BookLoader from '../BookLoader';
 

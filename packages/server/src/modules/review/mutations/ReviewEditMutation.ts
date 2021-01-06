@@ -1,21 +1,20 @@
 import { GraphQLString, GraphQLNonNull, GraphQLFloat, GraphQLID } from 'graphql';
 import { fromGlobalId, mutationWithClientMutationId, toGlobalId } from 'graphql-relay';
+import { errorField, successField } from '@entria/graphql-mongo-helpers';
+
+import { LoggedGraphQLContext, MutationField } from '../../../types';
 
 import ReviewModel from '../ReviewModel';
-
 import * as ReviewLoader from '../ReviewLoader';
 import { ReviewConnection } from '../ReviewType';
 
-import errorField from '../../../core/graphql/errorField';
-import { LoggedGraphQLContext } from '../../../types';
-
 import ReviewAddMutationSchema from './validationSchemas/ReviewAddMutationSchema';
 
-type ReviewEditArgs = {
+interface ReviewEditArgs {
   id: string;
   rating?: number;
   description?: string;
-};
+}
 
 const mutation = mutationWithClientMutationId({
   name: 'ReviewEdit',
@@ -58,7 +57,7 @@ const mutation = mutationWithClientMutationId({
   outputFields: {
     reviewEdge: {
       type: ReviewConnection.edgeType,
-      resolve: async ({ id }, args, context) => {
+      resolve: async ({ id }, _args, context) => {
         const review = await ReviewLoader.load(context, id);
 
         if (!review) {
@@ -71,12 +70,17 @@ const mutation = mutationWithClientMutationId({
         };
       },
     },
+    ...successField,
     ...errorField,
   },
 });
 
-export default {
-  authenticatedOnly: true,
-  validationSchema: ReviewAddMutationSchema,
+const mutationField: MutationField = {
+  extensions: {
+    authenticatedOnly: true,
+    validationSchema: ReviewAddMutationSchema,
+  },
   ...mutation,
 };
+
+export default mutationField;

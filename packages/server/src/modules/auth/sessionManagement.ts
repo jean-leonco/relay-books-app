@@ -1,38 +1,36 @@
 import { ParameterizedContext } from 'koa';
 
-import { GraphQLContext } from '../../types';
-import { SESSION_TOKEN_SCOPES } from '../../models';
-import { User, UserLoader } from '../../loader';
-
 import { t } from '../../locales/helpers';
+
+import { GraphQLContext } from '../../types';
+import { TOKEN_SCOPES } from '../token/TokenModel';
+
+import User, * as UserLoader from '../user/UserLoader';
 
 import validateJWTToken from './validateJWTToken';
 
 interface AuthorizationHeader {
   token: null | string;
   error: string | null;
-  detailedError: string | null;
 }
 
 export interface ContextFromTokenResult {
   user: User | null;
   error?: string | null;
-  detailedError?: string | null;
   abortRequest: boolean;
   unauthorized: boolean;
   status?: number;
 }
 
-export function parseAuthorizationHeader(token: string | null): AuthorizationHeader {
+const parseAuthorizationHeader = (token: string | null): AuthorizationHeader => {
   if (!token || token === 'null' || token === 'undefined') {
-    return { token: null, error: null, detailedError: null };
+    return { token: null, error: null };
   }
 
   if (!token.match(/JWT /)) {
     return {
       token: null,
       error: t('auth', 'TokenInvalid'),
-      detailedError: t('auth', 'TokenAuthHeaderMissingJwt'),
     };
   }
 
@@ -42,12 +40,11 @@ export function parseAuthorizationHeader(token: string | null): AuthorizationHea
     return {
       token: null,
       error: t('auth', 'TokenInvalid'),
-      detailedError: t('auth', 'TokenAuthHeader'),
     };
   }
 
-  return { token: cleanToken, error: null, detailedError: null };
-}
+  return { token: cleanToken, error: null };
+};
 
 export const getUser = async (
   ctx: ParameterizedContext & GraphQLContext,
@@ -62,29 +59,22 @@ export const getUser = async (
   }
 
   const decodedToken = await validateJWTToken(ctx, authorization);
+
   if (!decodedToken.token || decodedToken.error) {
     return {
       ...defaultInvalidToken,
       error: decodedToken.error,
-      detailedError: decodedToken.detailedError,
       status: decodedToken.status,
     };
   }
 
   const { token } = decodedToken;
 
-  const validSessions = Object.values(SESSION_TOKEN_SCOPES);
-
   // do not try to create session if it isn't a session token
-  if (!token.scope || !validSessions.includes(token.scope)) {
-    return { ...defaultReturn, unauthorized: true };
-  }
-
-  if (token.scope !== SESSION_TOKEN_SCOPES.SESSION) {
+  if (!token.scope || token.scope !== TOKEN_SCOPES.SESSION) {
     return {
       ...defaultInvalidToken,
       error: t('auth', 'TokenInvalid'),
-      detailedError: t('auth', 'InvalidSessionScope'),
       status: 401,
     };
   }
@@ -96,16 +86,14 @@ export const getUser = async (
       return {
         ...defaultInvalidToken,
         error: t('auth', 'TokenInvalid'),
-        detailedError: t('auth', 'UserNotFound'),
         status: 403,
       };
     }
 
-    if (!user.isActive || user.removedAt) {
+    if (!user.isActive) {
       return {
         ...defaultInvalidToken,
         error: t('auth', 'TokenInvalid'),
-        detailedError: !user.isActive ? t('auth', 'UserDeactivated') : t('auth', 'UserNotFound'),
         status: 401,
       };
     }
@@ -116,7 +104,7 @@ export const getUser = async (
   }
 };
 
-export async function auth(ctx: ParameterizedContext & GraphQLContext): Promise<ContextFromTokenResult> {
+export const auth = async (ctx: ParameterizedContext & GraphQLContext): Promise<ContextFromTokenResult> => {
   const { authorization } = ctx.header;
 
   const authHeader = parseAuthorizationHeader(authorization);
@@ -125,11 +113,10 @@ export async function auth(ctx: ParameterizedContext & GraphQLContext): Promise<
     return {
       user: null,
       error: authHeader.error,
-      detailedError: authHeader.detailedError,
       abortRequest: true,
       unauthorized: true,
     };
   }
 
-  return await getUser(ctx, authHeader.token);
-}
+  return getUser(ctx, authHeader.token);
+};

@@ -1,3 +1,3 @@
-const config = require('@booksapp/babel');
+const { common } = require('@workspace/babel');
 
-module.exports = config;
+module.exports = common;

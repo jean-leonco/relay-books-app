@@ -1,18 +1,13 @@
 import { graphql } from 'graphql';
 import { toGlobalId } from 'graphql-relay';
 
-import { schema } from '../../../../graphql/schema';
+import { connectMongoose, clearDbAndRestartCounters, disconnectMongoose, gql } from '@workspace/test-utils';
 
-import {
-  clearDbAndRestartCounters,
-  connectMongoose,
-  createReading,
-  createUser,
-  disconnectMongoose,
-  getContext,
-  gql,
-} from '../../../../../test/helpers';
-import { PLATFORM } from '../../../../common/utils';
+import { createUser, createReading, getContext } from '../../../../test/utils';
+
+import { PLATFORM } from '../../../../security';
+
+import schema from '../../../../schema/schema';
 
 beforeAll(connectMongoose);
 
@@ -45,7 +40,7 @@ describe('ReadingRemoveMutation', () => {
 
     expect(result.errors).toBeUndefined();
     expect(result.data?.ReadingRemove.error).toBe(null);
-    expect(result.data?.ReadingRemove.success).toBe('Book removed with success.');
+    expect(result.data?.ReadingRemove.success).toBe(true);
   });
 
   it('should not remove a reading without user', async () => {
@@ -71,7 +66,7 @@ describe('ReadingRemoveMutation', () => {
 
     expect(result.errors).toBeUndefined();
     expect(result.data?.ReadingRemove.error).toBe('Unauthorized');
-    expect(result.data?.ReadingRemove.success).toBe(null);
+    expect(result.data?.ReadingRemove.success).toBe(false);
   });
 
   it('should not remove a reading with invalid reading id', async () => {
@@ -97,7 +92,7 @@ describe('ReadingRemoveMutation', () => {
 
     expect(result.errors).toBeUndefined();
     expect(result.data?.ReadingRemove.error).toBe('Book not found.');
-    expect(result.data?.ReadingRemove.success).toBe(null);
+    expect(result.data?.ReadingRemove.success).toBe(false);
   });
 
   it('should not remove a reading that belongs to other user', async () => {
@@ -124,7 +119,7 @@ describe('ReadingRemoveMutation', () => {
 
     expect(result.errors).toBeUndefined();
     expect(result.data?.ReadingRemove.error).toBe('Book not found.');
-    expect(result.data?.ReadingRemove.success).toBe(null);
+    expect(result.data?.ReadingRemove.success).toBe(false);
   });
 
   it('should not remove a reading that is not active', async () => {
@@ -151,6 +146,6 @@ describe('ReadingRemoveMutation', () => {
 
     expect(result.errors).toBeUndefined();
     expect(result.data?.ReadingRemove.error).toBe('Book not found.');
-    expect(result.data?.ReadingRemove.success).toBe(null);
+    expect(result.data?.ReadingRemove.success).toBe(false);
   });
 });

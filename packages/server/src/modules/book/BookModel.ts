@@ -1,8 +1,8 @@
-import mongoose, { Document, Model, Types } from 'mongoose';
+import mongoose, { Document, Model } from 'mongoose';
 
-import { isActiveMongooseField, removedAtMongooseField } from '../../core/mongoose/withMongooseFields';
+import { IStatusSchema, ObjectId } from '../../types';
 
-const { ObjectId } = mongoose.Schema.Types;
+import isActiveMongooseField from '../../mongoose/isActiveMongooseField';
 
 const Schema = new mongoose.Schema(
   {
@@ -49,25 +49,21 @@ const Schema = new mongoose.Schema(
       description: 'The book language. ex: Portuguese',
     },
     categoryId: {
-      type: ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'Category',
       description: 'The book category _id.',
       //required: true,
       index: true,
     },
     ...isActiveMongooseField,
-    ...removedAtMongooseField,
   },
   {
     collection: 'Book',
-    timestamps: {
-      createdAt: 'createdAt',
-      updatedAt: 'updatedAt',
-    },
+    timestamps: true,
   },
 );
 
-export interface IBook extends Document {
+export interface IBook extends Document, IStatusSchema {
   name: string;
   author: string;
   description: string;
@@ -76,11 +72,7 @@ export interface IBook extends Document {
   bannerUrl: string;
   ISBN?: number;
   language?: string;
-  categoryId: Types.ObjectId;
-  isActive: boolean;
-  removedAt: Date | null;
-  createdAt: Date;
-  updatedAt: Date;
+  categoryId: ObjectId;
 }
 
 const BookModel: Model<IBook> = mongoose.model('Book', Schema);

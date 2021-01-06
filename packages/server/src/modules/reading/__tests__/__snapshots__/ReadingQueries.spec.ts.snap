@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Reading queries should get reading from node interface 1`] = `
+exports[`ReadingQueries should get reading from node interface 1`] = `
 Object {
   "reading": Object {
     "book": Object {
-      "name": "name 1",
+      "name": "name 0",
     },
     "id": "FROZEN-ID",
     "readPages": 1,
@@ -12,7 +12,7 @@ Object {
 }
 `;
 
-exports[`Reading queries should query a connection of finished readings 1`] = `
+exports[`ReadingQueries should query a connection of finished readings 1`] = `
 Object {
   "readings": Object {
     "edges": Array [
@@ -111,7 +111,7 @@ Object {
 }
 `;
 
-exports[`Reading queries should query a connection of readings 1`] = `
+exports[`ReadingQueries should query a connection of readings 1`] = `
 Object {
   "readings": Object {
     "edges": Array [
@@ -165,7 +165,7 @@ Object {
 }
 `;
 
-exports[`Reading queries should query a connection of readings with orderBy filter 1`] = `
+exports[`ReadingQueries should query a connection of readings with orderBy filter 1`] = `
 Object {
   "readings": Object {
     "edges": Array [
@@ -201,7 +201,7 @@ Object {
 }
 `;
 
-exports[`Reading queries should query a connection of unfinished readings 1`] = `
+exports[`ReadingQueries should query a connection of unfinished readings 1`] = `
 Object {
   "readings": Object {
     "edges": Array [

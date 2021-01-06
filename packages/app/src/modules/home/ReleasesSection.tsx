@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { FlatList } from 'react-native';
 import { graphql, usePaginationFragment } from 'react-relay/hooks';
 
-import { BookCard, FlatListLoader } from '@booksapp/ui';
+import { BookCard, FlatListLoader } from '@workspace/ui';
 
 import { ReleasesSectionPaginationQuery } from './__generated__/ReleasesSectionPaginationQuery.graphql';
 import { ReleasesSection_query$key } from './__generated__/ReleasesSection_query.graphql';

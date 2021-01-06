@@ -2,12 +2,11 @@ import React, { useCallback, useState } from 'react';
 import { Dimensions, ActivityIndicator, TouchableOpacity, ToastAndroid } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { css, useTheme } from 'styled-components/native';
-import { graphql, useLazyLoadQuery } from 'react-relay/hooks';
+import { graphql, useLazyLoadQuery, useMutation } from 'react-relay/hooks';
 import Pdf from 'react-native-pdf';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
-import { Column, Row, Space, Text } from '@booksapp/ui';
-import { useMutation } from '@booksapp/relay';
+import { Column, Row, Space, Text } from '@workspace/ui';
 
 import {
   ReadingEditPage,

@@ -1,35 +1,25 @@
-import MockDate from 'mockdate';
 import { graphql } from 'graphql';
 import { toGlobalId } from 'graphql-relay';
 
-import { sanitizeTestObject } from '@booksapp/test-utils';
-
-import { schema } from '../../../graphql/schema';
-
 import {
-  getContext,
-  clearDbAndRestartCounters,
+  sanitizeTestObject,
   connectMongoose,
+  clearDbAndRestartCounters,
   disconnectMongoose,
-  createUser,
-  createReading,
-  resetRunningDate,
-  createBook,
   gql,
-} from '../../../../test/helpers';
+} from '@workspace/test-utils';
+
+import { createBook, createReading, createUser, getContext } from '../../../test/utils';
+
+import schema from '../../../schema/schema';
 
 beforeAll(connectMongoose);
 
-beforeEach(async () => {
-  await clearDbAndRestartCounters();
-  MockDate.reset();
-  resetRunningDate();
-  jest.clearAllMocks();
-});
+beforeEach(clearDbAndRestartCounters);
 
 afterAll(disconnectMongoose);
 
-describe('Reading queries', () => {
+describe('ReadingQueries', () => {
   it('should get reading from node interface', async () => {
     const user = await createUser();
     const reading = await createReading();
@@ -114,34 +104,6 @@ describe('Reading queries', () => {
 
     const result = await graphql(schema, query, rootValue, context, variables);
 
-    expect(result.errors).toBeUndefined();
-    expect(result.data?.reading).toBe(null);
-  });
-
-  it('should get null reading if removedAt exists', async () => {
-    const user = await createUser();
-    const event = await createReading({ removedAt: new Date() });
-
-    const query = gql`
-      query Q($id: ID!) {
-        reading: node(id: $id) {
-          ... on Reading {
-            readPages
-            book {
-              name
-            }
-          }
-        }
-      }
-    `;
-
-    const rootValue = {};
-    const context = await getContext({ user });
-    const variables = {
-      id: toGlobalId('Reading', event._id),
-    };
-
-    const result = await graphql(schema, query, rootValue, context, variables);
     expect(result.errors).toBeUndefined();
     expect(result.data?.reading).toBe(null);
   });
@@ -352,12 +314,8 @@ describe('Reading queries', () => {
       await createReading();
     }
 
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 10; i++) {
       await createReading({ isActive: false });
-    }
-
-    for (let i = 0; i < 5; i++) {
-      await createReading({ removedAt: new Date() });
     }
 
     const query = gql`

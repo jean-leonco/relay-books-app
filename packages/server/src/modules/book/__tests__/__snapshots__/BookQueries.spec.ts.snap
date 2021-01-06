@@ -1,17 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Book queries should get book from node interface 1`] = `
+exports[`BookQueries should get book from node interface 1`] = `
 Object {
   "book": Object {
-    "author": "author 1",
-    "description": "description 1",
+    "author": "author 0",
+    "description": "description 0",
     "id": "FROZEN-ID",
-    "name": "name 1",
+    "name": "name 0",
   },
 }
 `;
 
-exports[`Book queries should query a connection of books 1`] = `
+exports[`BookQueries should query a connection of books 1`] = `
 Object {
   "books": Object {
     "count": 6,
@@ -61,7 +61,7 @@ Object {
 }
 `;
 
-exports[`Book queries should query a connection of books with category filter 1`] = `
+exports[`BookQueries should query a connection of books with category filter 1`] = `
 Object {
   "books": Object {
     "count": 5,
@@ -111,7 +111,7 @@ Object {
 }
 `;
 
-exports[`Book queries should query a connection of books with orderBy filter 1`] = `
+exports[`BookQueries should query a connection of books with orderBy filter 1`] = `
 Object {
   "books": Object {
     "count": 3,
@@ -145,7 +145,7 @@ Object {
 }
 `;
 
-exports[`Book queries should query a connection of books with search filter 1`] = `
+exports[`BookQueries should query a connection of books with search filter 1`] = `
 Object {
   "books": Object {
     "count": 3,

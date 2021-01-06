@@ -8,7 +8,6 @@ Object {
   "createdAt": "FROZEN-CREATEDAT",
   "isActive": true,
   "readPages": 5,
-  "removedAt": "EMPTY",
   "updatedAt": "FROZEN-UPDATEDAT",
   "userId": "ObjectId",
 }

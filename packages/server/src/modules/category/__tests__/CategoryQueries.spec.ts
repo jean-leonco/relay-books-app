@@ -1,34 +1,25 @@
-import MockDate from 'mockdate';
 import { graphql } from 'graphql';
 import { toGlobalId } from 'graphql-relay';
 
-import { sanitizeTestObject } from '@booksapp/test-utils';
-
-import { schema } from '../../../graphql/schema';
-
 import {
-  getContext,
-  clearDbAndRestartCounters,
+  sanitizeTestObject,
   connectMongoose,
+  clearDbAndRestartCounters,
   disconnectMongoose,
-  createUser,
-  createCategory,
-  resetRunningDate,
   gql,
-} from '../../../../test/helpers';
+} from '@workspace/test-utils';
+
+import { createCategory, createUser, getContext } from '../../../test/utils';
+
+import schema from '../../../schema/schema';
 
 beforeAll(connectMongoose);
 
-beforeEach(async () => {
-  await clearDbAndRestartCounters();
-  MockDate.reset();
-  resetRunningDate();
-  jest.clearAllMocks();
-});
+beforeEach(clearDbAndRestartCounters);
 
 afterAll(disconnectMongoose);
 
-describe('Category queries', () => {
+describe('CategoryQueries', () => {
   it('should get category from node interface', async () => {
     const user = await createUser();
     const category = await createCategory();
@@ -106,32 +97,6 @@ describe('Category queries', () => {
 
     const result = await graphql(schema, query, rootValue, context, variables);
 
-    expect(result.errors).toBeUndefined();
-    expect(result.data?.category).toBe(null);
-  });
-
-  it('should get null Category if removedAt exists', async () => {
-    const user = await createUser();
-    const event = await createCategory({ removedAt: new Date() });
-
-    const query = gql`
-      query Q($id: ID!) {
-        category: node(id: $id) {
-          ... on Category {
-            id
-            name
-          }
-        }
-      }
-    `;
-
-    const rootValue = {};
-    const context = await getContext({ user });
-    const variables = {
-      id: toGlobalId('Category', event._id),
-    };
-
-    const result = await graphql(schema, query, rootValue, context, variables);
     expect(result.errors).toBeUndefined();
     expect(result.data?.category).toBe(null);
   });
@@ -215,12 +180,8 @@ describe('Category queries', () => {
       await createCategory();
     }
 
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 10; i++) {
       await createCategory({ isActive: false });
-    }
-
-    for (let i = 0; i < 5; i++) {
-      await createCategory({ removedAt: new Date() });
     }
 
     const query = gql`

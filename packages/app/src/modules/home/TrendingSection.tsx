@@ -3,7 +3,7 @@ import { FlatList } from 'react-native';
 import { graphql, useFragment } from 'react-relay/hooks';
 import { css, useTheme } from 'styled-components/native';
 
-import { BookCard, Column, Text } from '@booksapp/ui';
+import { BookCard, Column, Text } from '@workspace/ui';
 
 import { TrendingSection_query$key } from './__generated__/TrendingSection_query.graphql';
 

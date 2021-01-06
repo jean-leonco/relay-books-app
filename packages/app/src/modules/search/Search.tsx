@@ -4,7 +4,7 @@ import { graphql, useLazyLoadQuery } from 'react-relay/hooks';
 import { css, useTheme } from 'styled-components/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { Column, Space, Text, TextInput } from '@booksapp/ui';
+import { Column, Space, Text, TextInput } from '@workspace/ui';
 
 import { SearchQuery } from './__generated__/SearchQuery.graphql';
 

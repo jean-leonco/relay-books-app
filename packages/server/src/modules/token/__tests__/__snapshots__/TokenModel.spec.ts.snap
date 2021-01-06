@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TokenModel should be able to create a new token using TokenModel 1`] = `
+Object {
+  "__v": 0,
+  "_id": "ObjectId",
+  "createdAt": "FROZEN-CREATEDAT",
+  "expiresIn": 2020-11-23T00:00:00.000Z,
+  "ip": "::ffff:127.0.0.1",
+  "isActive": true,
+  "isBlocked": false,
+  "platform": "APP",
+  "scope": "BOOKSAPP:SESSION",
+  "updatedAt": "FROZEN-UPDATEDAT",
+  "userId": "ObjectId",
+}
+`;

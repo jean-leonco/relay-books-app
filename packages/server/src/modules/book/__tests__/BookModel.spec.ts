@@ -1,4 +1,6 @@
-import { clearDbAndRestartCounters, connectMongoose, disconnectMongoose, createBook } from '../../../../test/helpers';
+import { connectMongoose, clearDbAndRestartCounters, disconnectMongoose } from '@workspace/test-utils';
+
+import { createBook } from '../../../test/utils';
 
 import BookModel, { IBook } from '../BookModel';
 
@@ -39,11 +41,11 @@ describe('BookModel', () => {
 
     const bookObj = await BookModel.findOne({ _id: book._id }).lean<IBook>();
 
-    expect(bookObj?.name).toBe('name 1');
-    expect(bookObj?.author).toBe('author 1');
-    expect(bookObj?.description).toBe('description 1');
+    expect(bookObj?.name).toBe('name 0');
+    expect(bookObj?.author).toBe('author 0');
+    expect(bookObj?.description).toBe('description 0');
     expect(bookObj?.pages).toBe(10);
-    expect(bookObj?.bannerUrl).toBe('bannerUrl 1');
+    expect(bookObj?.bannerUrl).toBe('bannerUrl 0');
   });
 
   it('should create new book with custom properties', async () => {

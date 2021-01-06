@@ -1,17 +1,15 @@
 import { GraphQLNonNull, GraphQLID } from 'graphql';
 import { fromGlobalId, mutationWithClientMutationId } from 'graphql-relay';
+import { errorField, successField } from '@entria/graphql-mongo-helpers';
+
+import { LoggedGraphQLContext, MutationField } from '../../../types';
 
 import ReviewModel from '../ReviewModel';
-
 import * as ReviewLoader from '../ReviewLoader';
 
-import errorField from '../../../core/graphql/errorField';
-import successField from '../../../core/graphql/successField';
-import { LoggedGraphQLContext } from '../../../types';
-
-type ReviewRemoveArgs = {
+interface ReviewRemoveArgs {
   id: string;
-};
+}
 
 const mutation = mutationWithClientMutationId({
   name: 'ReviewRemove',
@@ -37,7 +35,7 @@ const mutation = mutationWithClientMutationId({
     ReviewLoader.clearAndPrimeCache(context, review._id, review);
 
     return {
-      success: t('review', 'ReviewRemovedWithSuccess'),
+      success: true,
       error: null,
     };
   },
@@ -47,7 +45,11 @@ const mutation = mutationWithClientMutationId({
   },
 });
 
-export default {
-  authenticatedOnly: true,
+const mutationField: MutationField = {
+  extensions: {
+    authenticatedOnly: true,
+  },
   ...mutation,
 };
+
+export default mutationField;

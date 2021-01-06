@@ -1,46 +1,43 @@
 const path = require('path');
 
-const webpack = require('webpack');
-const TerserPlugin = require('terser-webpack-plugin');
+const WebpackNodeExternals = require('webpack-node-externals');
+
+const cwd = process.cwd();
 
 module.exports = {
   target: 'node',
-  devtool: 'cheap-eval-source-map',
-  optimization: {
-    minimizer: [new TerserPlugin()],
-  },
-  externals: [{ 'aws-sdk': 'aws-sdk' }],
-  resolve: {
-    extensions: ['.ts', '.tsx', '.js', 'jsx', '.json', '.mjs'],
+  stats: 'errors-only',
+  node: {
+    __dirname: true,
   },
   output: {
-    path: path.resolve(__dirname, 'build'),
-    filename: '[name].js',
-    library: 'index',
-    libraryTarget: 'commonjs2',
-    pathinfo: false,
-    futureEmitAssets: true,
+    path: path.resolve('build'),
+    filename: 'server.js',
   },
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env.BROWSER': false,
-      __DEV__: process.env.NODE_ENV !== 'production',
+  externals: [
+    WebpackNodeExternals({
+      modulesDir: path.resolve(__dirname, '../../node_modules'),
+      allowlist: [/@workspace/],
     }),
   ],
+  resolve: {
+    extensions: ['.ts', '.tsx', '.js', '.json', '.mjs'],
+  },
   module: {
     rules: [
+      // Js modules: use javascript since we don't need to transpile it
       {
         test: /\.mjs$/,
         include: /node_modules/,
         type: 'javascript/auto',
       },
+
+      // Typescript and Javascript: Transpile and load using babel-loader
       {
-        test: /\.([jt]sx?)$/,
-        loader: 'babel-loader',
-        options: {
-          configFile: './babel.config.js',
-        },
-        exclude: /node_modules/,
+        test: /\.(js|jsx|ts|tsx)?$/,
+        use: { loader: 'babel-loader' },
+        exclude: [/node_modules/],
+        include: [path.join(cwd, 'src'), path.join(cwd, '../')],
       },
     ],
   },

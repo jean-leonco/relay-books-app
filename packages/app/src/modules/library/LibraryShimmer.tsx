@@ -4,7 +4,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder';
 import { css } from 'styled-components/native';
 
-import { Column, Row, Space } from '@booksapp/ui';
+import { Column, Row, Space } from '@workspace/ui';
 
 const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient);
 

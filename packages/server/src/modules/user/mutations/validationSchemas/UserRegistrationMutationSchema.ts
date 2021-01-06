@@ -2,7 +2,7 @@ import * as yup from 'yup';
 
 import { GraphQLContext } from '../../../../types';
 
-const UserRegistrationMutationSchema = (context: GraphQLContext): yup.ObjectSchema<yup.Shape<any, any>> => {
+const UserRegistrationMutationSchema = (context: GraphQLContext) => {
   const { t } = context;
 
   const schema = yup.object().shape({

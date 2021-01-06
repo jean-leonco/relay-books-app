@@ -4,7 +4,7 @@ import { graphql, useLazyLoadQuery, usePaginationFragment } from 'react-relay/ho
 import { useRoute } from '@react-navigation/native';
 import { css } from 'styled-components/native';
 
-import { BottomSheet, Column, FlatListLoader, Space } from '@booksapp/ui';
+import { BottomSheet, Column, FlatListLoader, Space } from '@workspace/ui';
 
 import { BookDetailsQuery } from './__generated__/BookDetailsQuery.graphql';
 import { BookDetailsPaginationQuery } from './__generated__/BookDetailsPaginationQuery.graphql';

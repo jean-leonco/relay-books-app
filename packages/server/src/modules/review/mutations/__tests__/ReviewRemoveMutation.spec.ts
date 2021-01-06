@@ -1,18 +1,13 @@
 import { graphql } from 'graphql';
 import { toGlobalId } from 'graphql-relay';
 
-import { schema } from '../../../../graphql/schema';
+import { connectMongoose, clearDbAndRestartCounters, disconnectMongoose, gql } from '@workspace/test-utils';
 
-import {
-  clearDbAndRestartCounters,
-  connectMongoose,
-  createReview,
-  createUser,
-  disconnectMongoose,
-  getContext,
-  gql,
-} from '../../../../../test/helpers';
-import { PLATFORM } from '../../../../common/utils';
+import { PLATFORM } from '../../../../security';
+
+import { createReview, createUser, getContext } from '../../../../test/utils';
+
+import schema from '../../../../schema/schema';
 
 beforeAll(connectMongoose);
 
@@ -45,7 +40,7 @@ describe('ReviewRemoveMutation', () => {
 
     expect(result.errors).toBeUndefined();
     expect(result.data?.ReviewRemove.error).toBe(null);
-    expect(result.data?.ReviewRemove.success).toBe('Review removed with success.');
+    expect(result.data?.ReviewRemove.success).toBe(true);
   });
 
   it('should not remove a review without user', async () => {
@@ -71,7 +66,7 @@ describe('ReviewRemoveMutation', () => {
 
     expect(result.errors).toBeUndefined();
     expect(result.data?.ReviewRemove.error).toBe('Unauthorized');
-    expect(result.data?.ReviewRemove.success).toBe(null);
+    expect(result.data?.ReviewRemove.success).toBe(false);
   });
 
   it('should not remove a review with invalid review id', async () => {
@@ -97,7 +92,7 @@ describe('ReviewRemoveMutation', () => {
 
     expect(result.errors).toBeUndefined();
     expect(result.data?.ReviewRemove.error).toBe('Review not found.');
-    expect(result.data?.ReviewRemove.success).toBe(null);
+    expect(result.data?.ReviewRemove.success).toBe(false);
   });
 
   it('should not remove a review that belongs to other user', async () => {
@@ -124,7 +119,7 @@ describe('ReviewRemoveMutation', () => {
 
     expect(result.errors).toBeUndefined();
     expect(result.data?.ReviewRemove.error).toBe('Review not found.');
-    expect(result.data?.ReviewRemove.success).toBe(null);
+    expect(result.data?.ReviewRemove.success).toBe(false);
   });
 
   it('should not remove a review that is not active', async () => {
@@ -151,6 +146,6 @@ describe('ReviewRemoveMutation', () => {
 
     expect(result.errors).toBeUndefined();
     expect(result.data?.ReviewRemove.error).toBe('Review not found.');
-    expect(result.data?.ReviewRemove.success).toBe(null);
+    expect(result.data?.ReviewRemove.success).toBe(false);
   });
 });

@@ -1,7 +1,7 @@
 import { DirectionEnumType } from '@entria/graphql-mongo-helpers';
 import { GraphQLInputObjectType, GraphQLNonNull, GraphQLEnumType } from 'graphql';
 
-import { dateFields, StatusDateSort } from '../../../core/graphql/graphqlFilters/StatusDateOrderingInputType';
+import { dateFields, StatusDateSort } from '../../../graphql/filters/StatusDateOrderingInputType';
 
 import { GraphqlSortArg } from '../../../types';
 
