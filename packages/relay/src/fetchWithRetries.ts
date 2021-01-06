@@ -38,7 +38,7 @@ function fetchWithRetries(uri: string, initWithRetries?: InitWithRetries | null)
       const requestTimeout = setTimeout(() => {
         isRequestAlive = false;
         if (shouldRetry(requestsAttempted)) {
-          // eslint-disable-next-line
+          // eslint-disable-next-line no-console
           console.log(false, 'fetchWithRetries: HTTP timeout, retrying.');
           retryRequest();
         } else {
@@ -56,12 +56,12 @@ function fetchWithRetries(uri: string, initWithRetries?: InitWithRetries | null)
             if (response.status >= 200 && response.status < 300) {
               // Got a response code that indicates success, resolve the promise.
               resolve(response);
-            } else if (response.status === 401) {
+            } else if (response.status >= 400 && response.status <= 404) {
               resolve(response);
             } else if (shouldRetry(requestsAttempted)) {
               // Fetch was not successful, retrying.
               // TODO(#7595849): Only retry on transient HTTP errors.
-              // eslint-disable-next-line
+              // eslint-disable-next-line no-console
               console.log(false, 'fetchWithRetries: HTTP error, retrying.'), retryRequest();
             } else {
               // Request was not successful, giving up.

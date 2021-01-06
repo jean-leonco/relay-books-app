@@ -34,7 +34,7 @@ const runScript = async () => {
     name: 'Jean',
     surname: 'Leonco',
     password: '123456',
-    email: { email: 'jean@workspace.com', wasVerified: true },
+    email: { email: 'jean@booksapp.com', wasVerified: true },
   });
   console.log('👤 Jean user created\n');
 
