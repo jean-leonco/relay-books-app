@@ -1,12 +1,12 @@
 import React from 'react';
 import { ToastAndroid, TouchableOpacity } from 'react-native';
+import { useMutation } from 'react-relay/hooks';
 import { FormikProvider, useFormik } from 'formik';
 import * as yup from 'yup';
 import { css } from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
 
-import { Column, FormikButton, FormikInput, Space, Text } from '@booksapp/ui';
-import { useMutation } from '@booksapp/relay';
+import { Column, FormikButton, FormikInput, Space, Text } from '@workspace/ui';
 
 import useRouterAuth from '../../router/useRouterAuth';
 

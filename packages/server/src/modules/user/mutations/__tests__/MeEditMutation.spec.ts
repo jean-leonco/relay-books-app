@@ -1,18 +1,18 @@
 import { graphql } from 'graphql';
 
-import { sanitizeTestObject } from '@booksapp/test-utils';
-
-import { schema } from '../../../../graphql/schema';
-
 import {
-  clearDbAndRestartCounters,
   connectMongoose,
-  createUser,
+  clearDbAndRestartCounters,
   disconnectMongoose,
-  getContext,
   gql,
-} from '../../../../../test/helpers';
-import { PLATFORM } from '../../../../common/utils';
+  sanitizeTestObject,
+} from '@workspace/test-utils';
+
+import { PLATFORM } from '../../../../security';
+
+import { createUser, getContext } from '../../../../test/utils';
+
+import schema from '../../../../schema/schema';
 
 beforeAll(connectMongoose);
 

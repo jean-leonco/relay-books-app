@@ -1,20 +1,20 @@
-import mongoose, { Document, Model, Types } from 'mongoose';
+import mongoose, { Document, Model } from 'mongoose';
 
-import { isActiveMongooseField, removedAtMongooseField } from '../../core/mongoose/withMongooseFields';
+import { IStatusSchema, ObjectId } from '../../types';
 
-const { ObjectId } = mongoose.Schema.Types;
+import isActiveMongooseField from '../../mongoose/isActiveMongooseField';
 
 const Schema = new mongoose.Schema(
   {
     userId: {
-      type: ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       description: 'The user that is reading.',
       required: true,
       index: true,
     },
     bookId: {
-      type: ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'Book',
       description: 'The book being read.',
       required: true,
@@ -26,25 +26,17 @@ const Schema = new mongoose.Schema(
       required: true,
     },
     ...isActiveMongooseField,
-    ...removedAtMongooseField,
   },
   {
     collection: 'Reading',
-    timestamps: {
-      createdAt: 'createdAt',
-      updatedAt: 'updatedAt',
-    },
+    timestamps: true,
   },
 );
 
-export interface IReading extends Document {
-  userId: Types.ObjectId;
-  bookId: Types.ObjectId;
+export interface IReading extends Document, IStatusSchema {
+  userId: ObjectId;
+  bookId: ObjectId;
   readPages: number;
-  isActive: boolean;
-  removedAt: Date | null;
-  createdAt: Date;
-  updatedAt: Date;
 }
 
 const ReadingModel: Model<IReading> = mongoose.model('Reading', Schema);

@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { css, useTheme } from 'styled-components/native';
 import { useFragment, graphql } from 'react-relay/hooks';
 
-import { Row } from '@booksapp/ui';
+import { Row } from '@workspace/ui';
 
 import { BookHeader_book$key } from './__generated__/BookHeader_book.graphql';
 

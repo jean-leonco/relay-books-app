@@ -1,94 +1,95 @@
 import jwt from 'jsonwebtoken';
 import { addMinutes, addSeconds } from 'date-fns';
 
-import { SESSION_TOKEN_SCOPES, IUser, SessionToken, ISessionToken } from '../../models';
+import { JWT_KEY } from '../../config';
 import { GraphQLContext } from '../../types';
+import { PLATFORM } from '../../security';
 
-import { JWT_KEY } from '../../common/config';
+import { IUser } from '../user/UserModel';
+import TokenModel, { IToken, TOKEN_SCOPES } from '../token/TokenModel';
 
-const twelveHoursInMinutes = 60 * 12;
-
-export const getExpirationTimeByScope = (scope: string): number | null => {
-  if (Object.values(SESSION_TOKEN_SCOPES).indexOf(scope) === -1) {
+export const getExpirationTimeByScope = (scope: TOKEN_SCOPES): number | null => {
+  if (Object.values(TOKEN_SCOPES).indexOf(scope) === -1) {
     return null;
   }
 
   switch (scope) {
-    case SESSION_TOKEN_SCOPES.SESSION:
+    case TOKEN_SCOPES.SESSION:
       return null;
-    case SESSION_TOKEN_SCOPES.RESET_PASSWORD:
-      return twelveHoursInMinutes;
     default:
       return null;
   }
 };
 
-export const jwtSign = (sessionToken: ISessionToken, secondsToExpire?: number): string => {
-  const expiresIn = secondsToExpire || getExpirationTimeByScope(sessionToken.scope);
+export const jwtSign = (token: IToken, secondsToExpire?: number): string => {
+  const expiresIn = secondsToExpire || getExpirationTimeByScope(token.scope);
 
   return jwt.sign(
     {
-      id: sessionToken.user ? sessionToken.user : sessionToken.ip,
-      scope: sessionToken.scope,
-      sessionToken: sessionToken._id,
+      id: token.userId ? token.userId : token.ip,
+      scope: token.scope,
+      token: token._id,
     },
     JWT_KEY,
     expiresIn ? { expiresIn: expiresIn * 60 } : {},
   );
 };
 
-export const generateToken = async (
-  ctx: GraphQLContext,
-  user: IUser | null,
-  channel: string,
-  scope: string,
-  expiresIn?: number, // in seconds
-): Promise<string | null> => {
-  const { koaContext } = ctx;
+interface GenerateTokenProps {
+  ctx: GraphQLContext;
+  user: IUser | null;
+  scope: TOKEN_SCOPES;
+  platform: PLATFORM;
+  expiresIn?: number; // in seconds
+}
 
+export const generateToken = async ({
+  ctx,
+  user,
+  scope,
+  platform,
+  expiresIn,
+}: GenerateTokenProps): Promise<string | null> => {
+  const { koaContext } = ctx;
   const { ip } = koaContext.request;
+
   const scopeExpirationTime = getExpirationTimeByScope(scope); // in minutes
   const scopeExpiresIn = scopeExpirationTime ? addMinutes(new Date(), scopeExpirationTime) : null;
 
-  let sessionToken;
+  let token: IToken | null = null;
 
   // only reuse tokens that has user and the scope is SESSION
-  if (user && scope === SESSION_TOKEN_SCOPES.SESSION) {
-    sessionToken = await SessionToken.findOne({
-      user: user._id,
+  if (user && scope === TOKEN_SCOPES.SESSION) {
+    token = await TokenModel.findOne({
+      userId: user._id,
       ip,
-      channel,
+      platform,
       scope,
       isActive: true,
       isBlocked: false,
-    }).lean<ISessionToken>();
+    }).lean<IToken>();
   }
 
-  if (sessionToken) {
-    sessionToken = await SessionToken.findOneAndUpdate(
-      { _id: sessionToken._id },
-      { expiresIn: expiresIn ? addSeconds(new Date(), expiresIn) : scopeExpiresIn },
-    ).lean<ISessionToken>();
-  } else {
-    sessionToken = await new SessionToken({
-      ...(user ? { user: user._id } : {}),
+  if (!token) {
+    token = await new TokenModel({
+      ...(user ? { userId: user._id } : {}),
       ip,
-      channel,
+      platform,
       scope,
       expiresIn: expiresIn ? addSeconds(new Date(), expiresIn) : scopeExpiresIn,
     }).save();
   }
 
-  return jwtSign(sessionToken!, expiresIn);
+  return jwtSign(token, expiresIn);
 };
 
-export const hasReachedMaximumNumberOfSessions = async (user: IUser, scope: string, numberOfSessions: number) => {
-  const sessions = await SessionToken.find({
-    user: user._id,
+export const hasReachedMaximumNumberOfSessions = async (user: IUser, scope: TOKEN_SCOPES, numberOfSessions: number) => {
+  const sessionCount = await TokenModel.countDocuments({
+    userId: user._id,
     scope,
     isActive: true,
     expiresIn: { $gte: new Date() },
-  }).lean();
+  });
 
-  return sessions.length >= numberOfSessions;
+  return sessionCount >= numberOfSessions;
 };

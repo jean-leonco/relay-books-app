@@ -1,20 +1,21 @@
 import { graphql } from 'graphql';
 
-import { sanitizeTestObject } from '@booksapp/test-utils';
-
-import { schema } from '../../../../graphql/schema';
-
 import {
-  clearDbAndRestartCounters,
   connectMongoose,
-  createUser,
+  clearDbAndRestartCounters,
   disconnectMongoose,
-  getContext,
   gql,
-} from '../../../../../test/helpers';
-import { getPlatform, PLATFORM } from '../../../../common/utils';
-import { SESSION_TOKEN_SCOPES } from '../../../sessionToken/SessionTokenModel';
+  sanitizeTestObject,
+} from '@workspace/test-utils';
+
+import { getPlatform, PLATFORM } from '../../../../security';
+
+import { createUser, getContext } from '../../../../test/utils';
+
+import { TOKEN_SCOPES } from '../../../token/TokenModel';
 import { generateToken } from '../../../auth/generateToken';
+
+import schema from '../../../../schema/schema';
 
 beforeAll(connectMongoose);
 
@@ -46,7 +47,12 @@ describe('UserLoginMutation', () => {
     const context = await getContext({ appplatform: PLATFORM.APP });
     const result = await graphql(schema, mutation, rootValue, context, variables);
 
-    const token = await generateToken(context, user, getPlatform(context.appplatform), SESSION_TOKEN_SCOPES.SESSION);
+    const token = await generateToken({
+      ctx: context,
+      user,
+      platform: getPlatform(context.appplatform),
+      scope: TOKEN_SCOPES.SESSION,
+    });
 
     expect(result.errors).toBeUndefined();
     expect(result.data?.UserLogin.error).toBe(null);

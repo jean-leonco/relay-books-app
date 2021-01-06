@@ -1,11 +1,8 @@
 import { GraphQLInputObjectType, GraphQLList, GraphQLNonNull } from 'graphql';
 import { buildSortFromArg, FILTER_CONDITION_TYPE } from '@entria/graphql-mongo-helpers';
-import { FilterMapping } from '@entria/graphql-mongo-helpers/dist/types';
+import { FilterMapping } from '@entria/graphql-mongo-helpers/lib/types';
 
-import {
-  StatusDateOrdering,
-  StatusDateOrderingInputType,
-} from '../../../core/graphql/graphqlFilters/StatusDateOrderingInputType';
+import { StatusDateOrdering, StatusDateOrderingInputType } from '../../../graphql/filters/StatusDateOrderingInputType';
 
 import { GraphQLArgFilter } from '../../../types';
 

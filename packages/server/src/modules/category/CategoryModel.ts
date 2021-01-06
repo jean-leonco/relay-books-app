@@ -1,6 +1,8 @@
 import mongoose, { Document, Model } from 'mongoose';
 
-import { isActiveMongooseField, removedAtMongooseField } from '../../core/mongoose/withMongooseFields';
+import { IStatusSchema } from '../../types';
+
+import isActiveMongooseField from '../../mongoose/isActiveMongooseField';
 
 const Schema = new mongoose.Schema(
   {
@@ -12,23 +14,15 @@ const Schema = new mongoose.Schema(
       index: true,
     },
     ...isActiveMongooseField,
-    ...removedAtMongooseField,
   },
   {
     collection: 'Category',
-    timestamps: {
-      createdAt: 'createdAt',
-      updatedAt: 'updatedAt',
-    },
+    timestamps: true,
   },
 );
 
-export interface ICategory extends Document {
+export interface ICategory extends Document, IStatusSchema {
   name: string;
-  isActive: boolean;
-  removedAt: Date | null;
-  createdAt: Date;
-  updatedAt: Date;
 }
 
 const CategoryModel: Model<ICategory> = mongoose.model('Category', Schema);

@@ -1,13 +1,12 @@
 import React from 'react';
 import { ScrollView, ToastAndroid } from 'react-native';
-import { graphql, useLazyLoadQuery } from 'react-relay/hooks';
+import { graphql, useLazyLoadQuery, useMutation } from 'react-relay/hooks';
 import styled, { css } from 'styled-components/native';
 import { FormikProvider, useFormik } from 'formik';
 import * as yup from 'yup';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
-import { Column, FormikButton, FormikInput, Space, Text } from '@booksapp/ui';
-import { useMutation } from '@booksapp/relay';
+import { Column, FormikButton, FormikInput, Space, Text } from '@workspace/ui';
 
 import FormikRating from '../rating/FormikRating';
 

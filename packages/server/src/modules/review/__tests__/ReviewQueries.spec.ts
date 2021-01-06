@@ -1,35 +1,25 @@
-import MockDate from 'mockdate';
 import { graphql } from 'graphql';
 import { toGlobalId } from 'graphql-relay';
 
-import { sanitizeTestObject } from '@booksapp/test-utils';
-
-import { schema } from '../../../graphql/schema';
-
 import {
-  getContext,
-  clearDbAndRestartCounters,
+  sanitizeTestObject,
   connectMongoose,
+  clearDbAndRestartCounters,
   disconnectMongoose,
-  createUser,
-  createReview,
-  resetRunningDate,
-  createBook,
   gql,
-} from '../../../../test/helpers';
+} from '@workspace/test-utils';
+
+import { createBook, createReview, createUser, getContext } from '../../../test/utils';
+
+import schema from '../../../schema/schema';
 
 beforeAll(connectMongoose);
 
-beforeEach(async () => {
-  await clearDbAndRestartCounters();
-  MockDate.reset();
-  resetRunningDate();
-  jest.clearAllMocks();
-});
+beforeEach(clearDbAndRestartCounters);
 
 afterAll(disconnectMongoose);
 
-describe('Review queries', () => {
+describe('ReviewQueries', () => {
   it('should get review from node interface', async () => {
     const user = await createUser();
     const review = await createReview();
@@ -127,38 +117,7 @@ describe('Review queries', () => {
     expect(result.data?.review).toBe(null);
   });
 
-  it('should get null review if removedAt exists', async () => {
-    const user = await createUser();
-    const event = await createReview({ removedAt: new Date() });
-
-    const query = gql`
-      query Q($id: ID!) {
-        review: node(id: $id) {
-          ... on Review {
-            rating
-            user {
-              name
-            }
-            book {
-              name
-            }
-          }
-        }
-      }
-    `;
-
-    const rootValue = {};
-    const context = await getContext({ user });
-    const variables = {
-      id: toGlobalId('Review', event._id),
-    };
-
-    const result = await graphql(schema, query, rootValue, context, variables);
-    expect(result.errors).toBeUndefined();
-    expect(result.data?.review).toBe(null);
-  });
-
-  it.only('should query a connection of reviews', async () => {
+  it('should query a connection of reviews', async () => {
     const user = await createUser();
 
     for (let i = 0; i < 6; i++) {
@@ -261,7 +220,7 @@ describe('Review queries', () => {
     const context = await getContext({ user });
     const variables = {
       filters: {
-        orderBy: { field: 'CREATED_AT', direction: 'ASC' },
+        orderBy: { sort: 'CREATED_AT', direction: 'ASC' },
       },
     };
 
@@ -372,12 +331,8 @@ describe('Review queries', () => {
       await createReview();
     }
 
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 10; i++) {
       await createReview({ isActive: false });
-    }
-
-    for (let i = 0; i < 5; i++) {
-      await createReview({ removedAt: new Date() });
     }
 
     const query = gql`

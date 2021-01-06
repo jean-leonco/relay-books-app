@@ -1,47 +1,43 @@
-import { GraphQLObjectType, GraphQLObjectTypeConfig, GraphQLNonNull, GraphQLInt } from 'graphql';
+import { GraphQLObjectType, GraphQLInt } from 'graphql';
 import { globalIdField } from 'graphql-relay';
+import { connectionDefinitions, objectIdResolver, timestampResolver } from '@entria/graphql-mongo-helpers';
 
 import { GraphQLContext } from '../../types';
 
-import { registerType, NodeInterface } from '../../interface/NodeInterface';
-
-import { connectionDefinitions } from '../../graphql/connection/CustomConnectionType';
-import { mongooseIdResolver } from '../../core/mongoose/mongooseIdResolver';
-import { mongoDocumentStatusResolvers } from '../../core/graphql/mongoDocumentStatusResolvers';
+import { nodeInterface, registerTypeLoader } from '../node/typeRegister';
 
 import BookType from '../book/BookType';
-import { BookLoader } from '../../loader';
+import * as BookLoader from '../book/BookLoader';
 
-import Reading from './ReadingLoader';
+import { IReading } from './ReadingModel';
+import { load } from './ReadingLoader';
 
-type ConfigType = GraphQLObjectTypeConfig<Reading, GraphQLContext>;
-
-const ReadingTypeConfig: ConfigType = {
+const ReadingType = new GraphQLObjectType<IReading, GraphQLContext>({
   name: 'Reading',
-  description: 'Represents a Reading',
+  description: 'Reading data',
   fields: () => ({
     id: globalIdField('Reading'),
-    ...mongooseIdResolver,
+    ...objectIdResolver,
     book: {
       type: BookType,
       description: 'The book being read.',
-      resolve: async (obj, args, context) => BookLoader.load(context, obj.bookId),
+      resolve: async (obj, _args, context) => BookLoader.load(context, obj.bookId),
     },
     readPages: {
       type: GraphQLInt,
       description: 'The total read pages. ex: 50',
       resolve: (obj) => obj.readPages,
     },
-    ...mongoDocumentStatusResolvers,
+    ...timestampResolver,
   }),
-  interfaces: () => [NodeInterface],
-};
+  interfaces: () => [nodeInterface],
+});
 
-const ReadingType = registerType(new GraphQLObjectType(ReadingTypeConfig));
+registerTypeLoader(ReadingType, load);
 
 export const ReadingConnection = connectionDefinitions({
   name: 'Reading',
-  nodeType: GraphQLNonNull(ReadingType),
+  nodeType: ReadingType,
 });
 
 export default ReadingType;

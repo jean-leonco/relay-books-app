@@ -1,7 +1,7 @@
 import { graphql } from 'react-relay';
 import { RecordSourceSelectorProxy, SelectorStoreUpdater } from 'relay-runtime';
 
-import { connectionUpdater } from '@booksapp/relay';
+import { connectionUpdater } from '@workspace/relay';
 
 export const ReviewAdd = graphql`
   mutation ReviewAddMutation($input: ReviewAddInput!) {

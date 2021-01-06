@@ -1,16 +1,15 @@
-const pkg = require('./package');
+const pack = require('./package');
 
 module.exports = {
-  rootDir: './',
-  name: pkg.name,
-  displayName: pkg.name.toUpperCase(),
-  testPathIgnorePatterns: ['/node_modules/', './build'],
+  displayName: pack.name,
+  name: pack.name,
+  testPathIgnorePatterns: ['/node_modules/', './dist'],
   coverageReporters: ['lcov', 'html'],
-  setupFilesAfterEnv: ['<rootDir>/test/setupTestFramework.js'],
-  globalSetup: '<rootDir>/test/setup.js',
-  globalTeardown: '<rootDir>/test/teardown.js',
+  resetModules: false,
+  reporters: ['default'],
   transform: {
-    // '^.+\\.(js|jsx|ts|tsx)?$': require.resolve('babel-jest'),
-    '^.+\\.(js|jsx|ts|tsx)?$': '<rootDir>/test/babel-transformer',
+    '^.+\\.(js|ts|tsx)?$': '<rootDir>/src/babel-transformer',
   },
+  testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(js|ts|tsx)?$',
+  moduleFileExtensions: ['ts', 'js', 'tsx', 'json'],
 };

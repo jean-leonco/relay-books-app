@@ -4,8 +4,8 @@ import { StatusBar } from 'react-native';
 import { RelayEnvironmentProvider } from 'react-relay/hooks';
 import { ThemeProvider } from 'styled-components';
 
-import { ErrorBoundary, theme } from '@booksapp/ui';
-import { Environment } from '@booksapp/relay';
+import { ErrorBoundary, theme } from '@workspace/ui';
+import { Environment } from '@workspace/relay';
 
 import Router from './router/Router';
 import SuspenseFallback from './modules/common/SuspenseFallback';

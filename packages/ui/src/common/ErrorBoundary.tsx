@@ -1,7 +1,7 @@
 import React from 'react';
 import { css } from 'styled-components/native';
 
-import { InvalidSessionError, UnavailableServiceError } from '@booksapp/relay';
+import { InvalidSessionError, UnavailableServiceError } from '@workspace/relay';
 
 import Text from './Text';
 import Space from './Space';

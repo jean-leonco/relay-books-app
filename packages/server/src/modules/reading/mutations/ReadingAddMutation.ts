@@ -1,19 +1,18 @@
 import { GraphQLNonNull, GraphQLID } from 'graphql';
 import { fromGlobalId, mutationWithClientMutationId, toGlobalId } from 'graphql-relay';
+import { errorField, successField } from '@entria/graphql-mongo-helpers';
+
+import { LoggedGraphQLContext, MutationField } from '../../../types';
+
+import * as BookLoader from '../../book/BookLoader';
 
 import ReadingModel from '../ReadingModel';
-
 import * as ReadingLoader from '../ReadingLoader';
 import { ReadingConnection } from '../ReadingType';
 
-import errorField from '../../../core/graphql/errorField';
-import { LoggedGraphQLContext } from '../../../types';
-
-import { BookLoader } from '../../../loader';
-
-type ReadingAddArgs = {
+interface ReadingAddArgs {
   bookId: string;
-};
+}
 
 const mutation = mutationWithClientMutationId({
   name: 'ReadingAdd',
@@ -47,7 +46,7 @@ const mutation = mutationWithClientMutationId({
   outputFields: {
     readingEdge: {
       type: ReadingConnection.edgeType,
-      resolve: async ({ id }, args, context) => {
+      resolve: async ({ id }, _args, context) => {
         const reading = await ReadingLoader.load(context, id);
 
         if (!reading) {
@@ -60,11 +59,16 @@ const mutation = mutationWithClientMutationId({
         };
       },
     },
+    ...successField,
     ...errorField,
   },
 });
 
-export default {
-  authenticatedOnly: true,
+const mutationField: MutationField = {
+  extensions: {
+    authenticatedOnly: true,
+  },
   ...mutation,
 };
+
+export default mutationField;

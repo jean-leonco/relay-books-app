@@ -1,15 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Category queries should get category from node interface 1`] = `
+exports[`CategoryQueries should get category from node interface 1`] = `
 Object {
   "category": Object {
     "id": "FROZEN-ID",
-    "name": "category 1",
+    "name": "category 0",
   },
 }
 `;
 
-exports[`Category queries should query a connection of categories 1`] = `
+exports[`CategoryQueries should query a connection of categories 1`] = `
 Object {
   "categories": Object {
     "count": 6,
@@ -49,7 +49,7 @@ Object {
 }
 `;
 
-exports[`Category queries should query a connection of categories with orderBy filter 1`] = `
+exports[`CategoryQueries should query a connection of categories with orderBy filter 1`] = `
 Object {
   "categories": Object {
     "count": 3,

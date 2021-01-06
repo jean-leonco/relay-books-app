@@ -23,6 +23,7 @@ module.exports = {
     'react/no-unescaped-entities': 'off',
     '@typescript-eslint/indent': 'off', // conflicts with prettier
     '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-use-before-define': 'off',
     '@typescript-eslint/no-var-requires': 'off',
@@ -42,7 +43,7 @@ module.exports = {
       'error',
       {
         'newlines-between': 'always-and-inside-groups',
-        pathGroups: [{ pattern: '@booksapp/**', group: 'external', position: 'after' }],
+        pathGroups: [{ pattern: '@workspace/**', group: 'external', position: 'after' }],
         pathGroupsExcludedImportTypes: ['builtin'],
       },
     ],
@@ -61,6 +62,9 @@ module.exports = {
     'react/display-name': ['off', { ignoreTranspilerName: false }],
   },
   settings: {
+    react: {
+      version: 'detect', // Tells eslint-plugin-react to automatically detect the version of React to use
+    },
     'import/ignore': ['node_modules/react-native/index\\.js$'],
     'import/resolver': {
       node: {

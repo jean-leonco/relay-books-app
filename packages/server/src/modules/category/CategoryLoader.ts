@@ -1,13 +1,14 @@
 import DataLoader from 'dataloader';
 import { connectionFromMongoAggregate, mongooseLoader } from '@entria/graphql-mongoose-loader';
 import { ConnectionArguments } from 'graphql-relay';
-import { Types } from 'mongoose';
 import { buildMongoConditionsFromFilters } from '@entria/graphql-mongo-helpers';
+import { NullConnection } from '@entria/graphql-mongo-helpers/lib/NullConnection';
 
-import { GraphQLContext, DataLoaderKey } from '../../types';
-import { NullConnection } from '../../graphql/connection/NullConnection';
+import { GraphQLContext, DataLoaderKey, ObjectId } from '../../types';
+import { buildAggregatePipeline } from '../../graphql/filters/graphqlFilters';
+import { isLoggedViewerCanSee } from '../../security';
 
-import { buildAggregatePipeline } from '../../core/graphql/graphqlFilters/graphqlFilters';
+import { registerLoader } from '../loader/loaderRegister';
 
 import CategoryModel, { ICategory } from './CategoryModel';
 import { CategoriesArgFilters, categoryFilterMapping } from './filters/CategoryFiltersInputType';
@@ -16,10 +17,9 @@ export default class Category {
   public registeredType = 'Category';
 
   id: string;
-  _id: Types.ObjectId;
+  _id: ObjectId;
   name: string;
   isActive: boolean;
-  removedAt: Date | null;
   createdAt: Date;
   updatedAt: Date;
 
@@ -28,25 +28,14 @@ export default class Category {
     this._id = data._id;
     this.name = data.name;
     this.isActive = data.isActive;
-    this.removedAt = data.removedAt;
     this.createdAt = data.createdAt;
     this.updatedAt = data.updatedAt;
   }
 }
 
-export const getLoader = () => new DataLoader((ids) => mongooseLoader(CategoryModel, ids));
+export const getLoader = () => new DataLoader<DataLoaderKey, ICategory>((ids) => mongooseLoader(CategoryModel, ids));
 
-const viewerCanSee = (context: GraphQLContext, data: ICategory) => {
-  if (!context.user) {
-    return false;
-  }
-
-  if (!data.isActive || data.removedAt) {
-    return false;
-  }
-
-  return true;
-};
+registerLoader('CategoryLoader', getLoader);
 
 export const load = async (context: GraphQLContext, id: DataLoaderKey) => {
   if (!id) return null;
@@ -56,7 +45,7 @@ export const load = async (context: GraphQLContext, id: DataLoaderKey) => {
 
     if (!data) return null;
 
-    return viewerCanSee(context, data) ? new Category(data) : null;
+    return isLoggedViewerCanSee(context, data) ? new Category(data) : null;
   } catch (err) {
     return null;
   }

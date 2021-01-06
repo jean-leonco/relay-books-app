@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, { css } from 'styled-components/native';
 
-import { Column } from '@booksapp/ui';
+import { Column } from '@workspace/ui';
 
 import book from '../../assets/book.png';
 

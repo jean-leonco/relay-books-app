@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { useField, useFormikContext } from 'formik';
 import styled from 'styled-components/native';
 
-import { Column, Space, Text } from '@booksapp/ui';
+import { Column, Space, Text } from '@workspace/ui';
 
 import Rating, { RatingProps } from './Rating';
 

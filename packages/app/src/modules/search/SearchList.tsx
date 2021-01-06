@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useTransition } from 'react';
 import { FlatList } from 'react-native';
 import { graphql, usePaginationFragment } from 'react-relay/hooks';
 
-import { FlatListLoader } from '@booksapp/ui';
+import { FlatListLoader } from '@workspace/ui';
 
 import SearchBook from './SearchBook';
 

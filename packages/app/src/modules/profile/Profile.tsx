@@ -3,7 +3,7 @@ import { useLazyLoadQuery, graphql } from 'react-relay/hooks';
 import styled, { css } from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
 
-import { Button, Column, Row, Space, Text } from '@booksapp/ui';
+import { Button, Column, Row, Space, Text } from '@workspace/ui';
 
 import useRouterAuth from '../../router/useRouterAuth';
 

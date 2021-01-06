@@ -1,13 +1,11 @@
-import { sanitizeTestObject } from '@booksapp/test-utils';
-
 import {
-  clearDbAndRestartCounters,
   connectMongoose,
+  clearDbAndRestartCounters,
   disconnectMongoose,
-  createUser,
-  createReading,
-  createBook,
-} from '../../../../test/helpers';
+  sanitizeTestObject,
+} from '@workspace/test-utils';
+
+import { createReading, createUser, createBook } from '../../../test/utils';
 
 import ReadingModel, { IReading } from '../ReadingModel';
 

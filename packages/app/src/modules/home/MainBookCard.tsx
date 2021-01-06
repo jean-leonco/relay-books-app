@@ -3,7 +3,7 @@ import { GestureResponderEvent } from 'react-native';
 import { useFragment, graphql } from 'react-relay/hooks';
 import styled from 'styled-components/native';
 
-import { Column, PercentageCompletedBar, Row, Space, Text } from '@booksapp/ui';
+import { Column, PercentageCompletedBar, Row, Space, Text } from '@workspace/ui';
 
 import { MainBookCard_book$key } from './__generated__/MainBookCard_book.graphql';
 

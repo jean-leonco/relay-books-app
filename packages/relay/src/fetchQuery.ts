@@ -1,18 +1,15 @@
 import { RequestParameters, UploadableMap, Variables } from 'relay-runtime';
 
-import { version } from '../package.json';
-
 import fetchWithRetries from './fetchWithRetries';
-
-import { getHeaders, getRequestBody, handleData, isMutation } from './helpers';
-import { GRAPHQL_URL } from './config';
+import { getRequestBody, handleData, isMutation } from './helpers';
+import { GRAPHQL_URL, clientErrorStatus } from './config';
 import { clearToken, getToken } from './security';
 import UnavailableServiceError from './UnavailableServiceError';
 import InvalidSessionError from './InvalidSessionError';
 
-export const PLATFORM = {
-  APP: 'APP',
-};
+enum PLATFORM {
+  APP = 'APP',
+}
 
 // Define a function that fetches the results of a request (query/mutation/etc)
 // and returns its results as a Promise:
@@ -21,10 +18,10 @@ const fetchQuery = async (request: RequestParameters, variables: Variables, uplo
   const token = await getToken();
 
   const headers = {
-    appversion: version,
+    Accept: 'application/json',
+    'Content-type': 'application/json',
     appplatform: PLATFORM.APP,
     authorization: token ? `JWT ${token}` : null,
-    ...getHeaders(uploadables),
   };
 
   try {
@@ -42,7 +39,6 @@ const fetchQuery = async (request: RequestParameters, variables: Variables, uplo
 
     const data = await handleData(response);
 
-    const clientErrorStatus = [401, 403];
     if (clientErrorStatus.includes(response.status)) {
       await clearToken();
       //@TODO - refecth me query using ErrorBoundary or dispatch action

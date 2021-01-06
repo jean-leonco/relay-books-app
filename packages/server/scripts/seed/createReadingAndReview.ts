@@ -1,6 +1,7 @@
 import faker from 'faker';
 
-import { IUser, IBook } from '../../src/models';
+import { IBook } from '../../src/modules/book/BookModel';
+import { IUser } from '../../src/modules/user/UserModel';
 
 import createReading from './createReading';
 import createReview from './createReview';

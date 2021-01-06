@@ -1,16 +1,17 @@
-import { httpRequestGraphql } from '@booksapp/test-utils';
-
 import {
-  clearDbAndRestartCounters,
   connectMongoose,
-  createUser,
+  clearDbAndRestartCounters,
   disconnectMongoose,
+  httpRequestGraphql,
   gql,
-} from '../../../../test/helpers';
+} from '@workspace/test-utils';
 
-import app from '../../../graphql/app';
-import { PLATFORM } from '../../../common/utils';
-import SessionTokenModel, { ISessionToken, SESSION_TOKEN_SCOPES } from '../../sessionToken/SessionTokenModel';
+import app from '../../../app';
+
+import { PLATFORM } from '../../../security';
+import TokenModel, { IToken, TOKEN_SCOPES } from '../../token/TokenModel';
+
+import { createUser } from '../../../test/utils';
 
 beforeAll(connectMongoose);
 
@@ -18,11 +19,12 @@ beforeEach(clearDbAndRestartCounters);
 
 afterAll(disconnectMongoose);
 
-describe('generateToken and SessionTokenModel', () => {
-  it('should check if generateToken produces SESSION token with expected scope', async () => {
-    const user = await createUser({ password: '123456' });
+describe('generateToken', () => {
+  it('should produces SESSION token with expected scope', async () => {
+    const password = '123456';
+    const user = await createUser({ password });
 
-    const loginQuery = gql`
+    const query = gql`
       mutation M($input: UserLoginInput!) {
         UserLogin(input: $input) {
           error
@@ -30,23 +32,23 @@ describe('generateToken and SessionTokenModel', () => {
       }
     `;
 
-    const loginVariables = {
+    const variables = {
       input: {
         email: user.email.email,
-        password: '123456',
+        password,
       },
     };
-    const loginPayload = {
-      query: loginQuery,
-      variables: loginVariables,
+    const payload = {
+      query,
+      variables,
     };
-    const loginHeader = {
+    const header = {
       appplatform: PLATFORM.APP,
     };
+    const response = await httpRequestGraphql(payload, header, app);
 
-    const loginResponse = await httpRequestGraphql(loginPayload, loginHeader, app);
-    expect(loginResponse.status).toEqual(200);
-    expect(loginResponse.body).toEqual({
+    expect(response.status).toEqual(200);
+    expect(response.body).toEqual({
       data: {
         UserLogin: {
           error: null,
@@ -54,21 +56,18 @@ describe('generateToken and SessionTokenModel', () => {
       },
     });
 
-    const sessionTokens = await SessionTokenModel.find().lean<ISessionToken>();
-    expect(sessionTokens.length).toBe(1);
-    expect(sessionTokens[0].user).toEqual(user._id);
-    expect(sessionTokens[0].scope).toEqual(SESSION_TOKEN_SCOPES.SESSION);
-    expect(sessionTokens[0].channel).toEqual(PLATFORM.APP);
+    const tokens = await TokenModel.find().lean<IToken>();
+
+    expect(tokens.length).toBe(1);
+    expect(tokens[0].userId).toEqual(user._id);
+    expect(tokens[0].scope).toEqual(TOKEN_SCOPES.SESSION);
   });
 
   it('should reuse SESSION token', async () => {
-    const user = await createUser({ password: '123456' });
+    const password = '123456';
+    const user = await createUser({ password });
 
-    const header = {
-      appplatform: PLATFORM.APP,
-    };
-
-    const loginQuery = gql`
+    const query = gql`
       mutation M($input: UserLoginInput!) {
         UserLogin(input: $input) {
           error
@@ -76,21 +75,25 @@ describe('generateToken and SessionTokenModel', () => {
       }
     `;
 
-    const loginVariables = {
+    const variables = {
       input: {
         email: user.email.email,
-        password: '123456',
+        password,
       },
     };
-    const loginPayload = {
-      query: loginQuery,
-      variables: loginVariables,
+    const payload = {
+      query,
+      variables,
+    };
+    const header = {
+      appplatform: PLATFORM.APP,
     };
 
     for (let i = 0; i < 3; i++) {
-      const loginResponse = await httpRequestGraphql(loginPayload, header, app);
-      expect(loginResponse.status).toEqual(200);
-      expect(loginResponse.body).toEqual({
+      const response = await httpRequestGraphql(payload, header, app);
+
+      expect(response.status).toEqual(200);
+      expect(response.body).toEqual({
         data: {
           UserLogin: {
             error: null,
@@ -99,9 +102,9 @@ describe('generateToken and SessionTokenModel', () => {
       });
     }
 
-    const sessionTokens = await SessionTokenModel.find().lean<ISessionToken>();
+    const tokens = await TokenModel.find().lean<IToken>();
 
-    expect(sessionTokens.length).toBe(1);
-    expect(sessionTokens[0].scope).toEqual(SESSION_TOKEN_SCOPES.SESSION);
+    expect(tokens.length).toBe(1);
+    expect(tokens[0].scope).toEqual(TOKEN_SCOPES.SESSION);
   });
 });

@@ -2,24 +2,20 @@ import MockDate from 'mockdate';
 import { graphql } from 'graphql';
 import { toGlobalId } from 'graphql-relay';
 
-import { sanitizeTestObject } from '@booksapp/test-utils';
-
-import { schema } from '../../../graphql/schema';
-
 import {
-  getContext,
-  clearDbAndRestartCounters,
+  sanitizeTestObject,
   connectMongoose,
+  clearDbAndRestartCounters,
   disconnectMongoose,
-  createUser,
-  createBook,
-  resetRunningDate,
   gql,
-  createCategory,
-  createReading,
+  resetRunningDate,
   bumpDate,
   N_DAYS_IN_MILLISECONDS,
-} from '../../../../test/helpers';
+} from '@workspace/test-utils';
+
+import { createBook, createCategory, createReading, createUser, getContext } from '../../../test/utils';
+
+import schema from '../../../schema/schema';
 
 beforeAll(connectMongoose);
 
@@ -32,7 +28,7 @@ beforeEach(async () => {
 
 afterAll(disconnectMongoose);
 
-describe('Book queries', () => {
+describe('BookQueries', () => {
   it('should get book from node interface', async () => {
     const user = await createUser();
     const book = await createBook();
@@ -116,34 +112,6 @@ describe('Book queries', () => {
 
     const result = await graphql(schema, query, rootValue, context, variables);
 
-    expect(result.errors).toBeUndefined();
-    expect(result.data?.book).toBe(null);
-  });
-
-  it('should get null book if removedAt exists', async () => {
-    const user = await createUser();
-    const event = await createBook({ removedAt: new Date() });
-
-    const query = gql`
-      query Q($id: ID!) {
-        book: node(id: $id) {
-          ... on Book {
-            id
-            name
-            author
-            description
-          }
-        }
-      }
-    `;
-
-    const rootValue = {};
-    const context = await getContext({ user });
-    const variables = {
-      id: toGlobalId('Book', event._id),
-    };
-
-    const result = await graphql(schema, query, rootValue, context, variables);
     expect(result.errors).toBeUndefined();
     expect(result.data?.book).toBe(null);
   });
@@ -488,12 +456,8 @@ describe('Book queries', () => {
       await createBook();
     }
 
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 10; i++) {
       await createBook({ isActive: false });
-    }
-
-    for (let i = 0; i < 5; i++) {
-      await createBook({ removedAt: new Date() });
     }
 
     const query = gql`

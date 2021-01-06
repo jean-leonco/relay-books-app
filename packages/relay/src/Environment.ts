@@ -1,12 +1,10 @@
 import { Environment, Network, RecordSource, Store } from 'relay-runtime';
 
 import cacheHandler from './cacheHandler';
-import { RelayNetworkLoggerTransaction } from './RelayNetworkLoggerTransaction';
-import { setupSubscription } from './setupSubscription';
 
 const __DEV__ = process.env.NODE_ENV === 'development';
 
-const network = Network.create(cacheHandler, setupSubscription);
+const network = Network.create(cacheHandler);
 
 const relayEnvironment = new Environment({
   network,
@@ -18,8 +16,8 @@ const relayEnvironment = new Environment({
 });
 
 if (__DEV__) {
-  //window.relayEnvironment = relayEnvironment;
-  //window.debugRelayStore = () => relayEnvironment.getStore().getSource().toJSON();
+  global.relayEnvironment = relayEnvironment;
+  global.debugRelayStore = () => relayEnvironment.getStore().getSource().toJSON();
 }
 
 export default relayEnvironment;

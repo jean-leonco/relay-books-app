@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
 
-import connectDatabase from '../../src/common/database';
+import { connectDatabase } from '../../src/database';
 
-import { IBook } from '../../src/models';
+import { IBook } from '../../src/modules/book/BookModel';
 
 import createUser from './createUser';
 import createCategory from './createCategory';
@@ -34,7 +34,7 @@ const runScript = async () => {
     name: 'Jean',
     surname: 'Leonco',
     password: '123456',
-    email: { email: 'jean@booksapp.com', wasVerified: true },
+    email: { email: 'jean@workspace.com', wasVerified: true },
   });
   console.log('👤 Jean user created\n');
 

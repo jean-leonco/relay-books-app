@@ -1,25 +1,24 @@
 import { GraphQLString, GraphQLNonNull, GraphQLFloat, GraphQLID } from 'graphql';
 import { fromGlobalId, mutationWithClientMutationId, toGlobalId } from 'graphql-relay';
+import { errorField, successField } from '@entria/graphql-mongo-helpers';
 
-import ReviewModel from '../ReviewModel';
-
-import * as ReviewLoader from '../ReviewLoader';
-import { ReviewConnection } from '../ReviewType';
-
-import errorField from '../../../core/graphql/errorField';
-import { LoggedGraphQLContext } from '../../../types';
-
-import { BookLoader } from '../../../loader';
+import { LoggedGraphQLContext, MutationField } from '../../../types';
 
 import ReadingModel from '../../reading/ReadingModel';
 
+import * as BookLoader from '../../book/BookLoader';
+
+import ReviewModel from '../ReviewModel';
+import * as ReviewLoader from '../ReviewLoader';
+import { ReviewConnection } from '../ReviewType';
+
 import ReviewAddMutationSchema from './validationSchemas/ReviewAddMutationSchema';
 
-type ReviewAddArgs = {
+interface ReviewAddArgs {
   bookId: string;
   rating: number;
   description?: string;
-};
+}
 
 const mutation = mutationWithClientMutationId({
   name: 'ReviewAdd',
@@ -74,7 +73,7 @@ const mutation = mutationWithClientMutationId({
   outputFields: {
     reviewEdge: {
       type: ReviewConnection.edgeType,
-      resolve: async ({ id }, args, context) => {
+      resolve: async ({ id }, _args, context) => {
         const review = await ReviewLoader.load(context, id);
 
         if (!review) {
@@ -87,13 +86,17 @@ const mutation = mutationWithClientMutationId({
         };
       },
     },
+    ...successField,
     ...errorField,
   },
 });
 
-// @TODO - add type with possible options to the mutation
-export default {
-  authenticatedOnly: true,
-  validationSchema: ReviewAddMutationSchema,
+const mutationField: MutationField = {
+  extensions: {
+    authenticatedOnly: true,
+    validationSchema: ReviewAddMutationSchema,
+  },
   ...mutation,
 };
+
+export default mutationField;

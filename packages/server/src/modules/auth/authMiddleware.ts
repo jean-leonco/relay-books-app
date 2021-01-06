@@ -1,13 +1,11 @@
 import Application from 'koa';
-import i18next from 'i18next';
 
 import { GraphQLContext } from '../../types';
+import { t } from '../../locales/helpers';
 
 import { auth } from './sessionManagement';
 
 const authMiddleware: Application.Middleware<any, GraphQLContext> = async (context, next) => {
-  const { t } = context;
-
   const { abortRequest, unauthorized, user, error, status: resultStatus } = await auth(context);
   const status = resultStatus ? resultStatus : error ? 401 : 200;
 
@@ -23,9 +21,7 @@ const authMiddleware: Application.Middleware<any, GraphQLContext> = async (conte
 
   context.user = user;
 
-  if (user?.lang && i18next.isInitialized) await i18next.changeLanguage(user?.lang);
-
-  return await next();
+  return next();
 };
 
 export default authMiddleware;

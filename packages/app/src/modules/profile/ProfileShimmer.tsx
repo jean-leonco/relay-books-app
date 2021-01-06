@@ -5,7 +5,7 @@ import { css } from 'styled-components/native';
 
 import { Dimensions } from 'react-native';
 
-import { Column, Space } from '@booksapp/ui';
+import { Column, Space } from '@workspace/ui';
 
 const containerCss = css`
   padding: 24px 16px;

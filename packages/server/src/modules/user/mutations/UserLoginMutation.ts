@@ -1,14 +1,15 @@
 import { GraphQLString, GraphQLNonNull } from 'graphql';
 import { mutationWithClientMutationId } from 'graphql-relay';
+import { errorField, successField } from '@entria/graphql-mongo-helpers';
 
-import { GraphQLContext } from '../../../types';
+import { GraphQLContext, MutationField } from '../../../types';
+
+import { TOKEN_SCOPES } from '../../token/TokenModel';
+import * as TokenLoader from '../../token/TokenLoader';
+import { generateToken, jwtSign } from '../../auth/generateToken';
+import { getPlatform } from '../../../security';
+
 import * as UserLoader from '../UserLoader';
-import { getPlatform } from '../../../common/utils';
-import { SESSION_TOKEN_SCOPES } from '../../sessionToken/SessionTokenModel';
-import * as SessionTokenLoader from '../../sessionToken/SessionTokenLoader';
-import errorField from '../../../core/graphql/errorField';
-
-import { jwtSign, generateToken } from '../../auth/generateToken';
 
 import UserLoginMutationSchema from './validationSchemas/UserLoginMutationSchema';
 
@@ -49,16 +50,21 @@ const mutation = mutationWithClientMutationId({
       };
     }
 
-    const validSessionToken = await SessionTokenLoader.loadValidSessionToken(
-      context,
+    const validToken = await TokenLoader.loadValidToken({
+      ctx: context,
       user,
-      getPlatform(context.appplatform),
-      SESSION_TOKEN_SCOPES.SESSION,
-    );
+      platform: getPlatform(context.appplatform),
+      scope: TOKEN_SCOPES.SESSION,
+    });
 
-    const token = validSessionToken
-      ? jwtSign(validSessionToken)
-      : await generateToken(context, user, getPlatform(context.appplatform), SESSION_TOKEN_SCOPES.SESSION);
+    const token = validToken
+      ? jwtSign(validToken)
+      : await generateToken({
+          ctx: context,
+          user,
+          scope: TOKEN_SCOPES.SESSION,
+          platform: getPlatform(context.appplatform),
+        });
 
     return {
       token,
@@ -70,11 +76,16 @@ const mutation = mutationWithClientMutationId({
       type: GraphQLString,
       resolve: ({ token }) => token,
     },
+    ...successField,
     ...errorField,
   },
 });
 
-export default {
-  validationSchema: UserLoginMutationSchema,
+const mutationField: MutationField = {
+  extensions: {
+    validationSchema: UserLoginMutationSchema,
+  },
   ...mutation,
 };
+
+export default mutationField;

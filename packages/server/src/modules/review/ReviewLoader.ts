@@ -1,13 +1,14 @@
 import DataLoader from 'dataloader';
 import { connectionFromMongoAggregate, mongooseLoader } from '@entria/graphql-mongoose-loader';
 import { ConnectionArguments } from 'graphql-relay';
-import { Types } from 'mongoose';
 import { buildMongoConditionsFromFilters } from '@entria/graphql-mongo-helpers';
+import { NullConnection } from '@entria/graphql-mongo-helpers/lib/NullConnection';
 
-import { GraphQLContext, DataLoaderKey } from '../../types';
+import { GraphQLContext, DataLoaderKey, ObjectId } from '../../types';
+import { buildAggregatePipeline } from '../../graphql/filters/graphqlFilters';
+import { isLoggedViewerCanSee } from '../../security';
 
-import { NullConnection } from '../../graphql/connection/NullConnection';
-import { buildAggregatePipeline } from '../../core/graphql/graphqlFilters/graphqlFilters';
+import { registerLoader } from '../loader/loaderRegister';
 
 import ReviewModel, { IReview } from './ReviewModel';
 import { reviewFilterMapping, ReviewsArgFilters } from './filters/ReviewFiltersInputType';
@@ -16,13 +17,12 @@ export default class Review {
   public registeredType = 'Review';
 
   id: string;
-  _id: Types.ObjectId;
-  bookId: Types.ObjectId;
-  userId: Types.ObjectId;
+  _id: ObjectId;
+  bookId: ObjectId;
+  userId: ObjectId;
   rating: number;
   description?: string;
   isActive: boolean;
-  removedAt: Date | null;
   createdAt: Date;
   updatedAt: Date;
 
@@ -34,25 +34,14 @@ export default class Review {
     this.rating = data.rating;
     this.description = data.description;
     this.isActive = data.isActive;
-    this.removedAt = data.removedAt;
     this.createdAt = data.createdAt;
     this.updatedAt = data.updatedAt;
   }
 }
 
-export const getLoader = () => new DataLoader((ids) => mongooseLoader(ReviewModel, ids));
+export const getLoader = () => new DataLoader<DataLoaderKey, IReview>((ids) => mongooseLoader(ReviewModel, ids));
 
-const viewerCanSee = (context: GraphQLContext, data: IReview) => {
-  if (!context.user) {
-    return false;
-  }
-
-  if (!data.isActive || data.removedAt) {
-    return false;
-  }
-
-  return true;
-};
+registerLoader('ReviewLoader', getLoader);
 
 export const load = async (context: GraphQLContext, id: DataLoaderKey) => {
   if (!id) return null;
@@ -62,7 +51,7 @@ export const load = async (context: GraphQLContext, id: DataLoaderKey) => {
 
     if (!data) return null;
 
-    return viewerCanSee(context, data) ? new Review(data) : null;
+    return isLoggedViewerCanSee(context, data) ? new Review(data) : null;
   } catch (err) {
     return null;
   }
@@ -110,7 +99,7 @@ export const loadReviews = async (context: GraphQLContext, args: LoadReviewsArgs
   });
 };
 
-export const loadBookAverageRating = async (context: GraphQLContext, bookId: Types.ObjectId) => {
+export const loadBookAverageRating = async (context: GraphQLContext, bookId: ObjectId) => {
   const { user } = context;
 
   if (!user) {

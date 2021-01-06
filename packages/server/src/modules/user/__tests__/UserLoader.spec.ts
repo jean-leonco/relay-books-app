@@ -1,12 +1,11 @@
-import { sanitizeTestObject } from '@booksapp/test-utils';
-
 import {
   clearDbAndRestartCounters,
   connectMongoose,
-  createUser,
   disconnectMongoose,
-  getContext,
-} from '../../../../test/helpers';
+  sanitizeTestObject,
+} from '@workspace/test-utils';
+
+import { getContext, createUser } from '../../../test/utils';
 
 import * as UserLoader from '../UserLoader';
 
@@ -16,7 +15,7 @@ beforeEach(clearDbAndRestartCounters);
 
 afterAll(disconnectMongoose);
 
-describe('UserLoader functions', () => {
+describe('UserLoader', () => {
   it('should verify that e-mail already exists', async () => {
     const email = 'jean@gmail.io';
     const user = await createUser({ email: { email, wasVerified: true } });

@@ -1,5 +1,5 @@
-import { CacheConfig, UploadableMap, Variables } from 'react-relay';
-import { RequestParameters, QueryResponseCache } from 'relay-runtime';
+import { Variables } from 'react-relay';
+import { RequestParameters, QueryResponseCache, CacheConfig } from 'relay-runtime';
 
 import fetchQuery from './fetchQuery';
 import { forceFetch, isMutation, isQuery } from './helpers';
@@ -7,17 +7,12 @@ import { forceFetch, isMutation, isQuery } from './helpers';
 const oneMinute = 60 * 1000;
 export const relayResponseCache = new QueryResponseCache({ size: 250, ttl: oneMinute });
 
-const cacheHandler = async (
-  request: RequestParameters,
-  variables: Variables,
-  cacheConfig: CacheConfig,
-  uploadables: UploadableMap,
-) => {
+const cacheHandler = async (request: RequestParameters, variables: Variables, cacheConfig: CacheConfig) => {
   const queryID = request.text;
 
   if (isMutation(request)) {
     relayResponseCache.clear();
-    return fetchQuery(request, variables, uploadables);
+    return fetchQuery(request, variables);
   }
 
   const fromCache = relayResponseCache.get(queryID, variables);
@@ -25,7 +20,7 @@ const cacheHandler = async (
     return fromCache;
   }
 
-  const fromServer = await fetchQuery(request, variables, uploadables);
+  const fromServer = await fetchQuery(request, variables);
   if (fromServer) {
     relayResponseCache.set(queryID, variables, fromServer);
   }

@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { FlatList } from 'react-native';
 import { graphql, usePaginationFragment } from 'react-relay/hooks';
 
-import { FlatListLoader } from '@booksapp/ui';
+import { FlatListLoader } from '@workspace/ui';
 
 import ReadingCard from './ReadingCard';
 import { ContinueReading_query$key } from './__generated__/ContinueReading_query.graphql';

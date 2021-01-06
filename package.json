@@ -10,10 +10,11 @@
     ]
   },
   "scripts": {
-    "android": "yarn workspace @booksapp/app android",
-    "app": "yarn workspace @booksapp/app start",
-    "app:pod": "yarn workspace @booksapp/app pod:install",
-    "database:seed": "yarn workspace @booksapp/server database:seed",
+    "android": "yarn workspace @workspace/app android",
+    "app": "yarn workspace @workspace/app start",
+    "app:pod": "yarn workspace @workspace/app pod:install",
+    "build-graphql-mongo-helpers": "cd node_modules/@entria/graphql-mongo-helpers && yarn build",
+    "database:seed": "yarn workspace @workspace/server seed",
     "delete:all": "yarn delete:build && yarn delete:dist && yarn delete:generated && yarn delete:metro-cache && yarn delete:node_modules && yarn delete:yarn-offline-cache",
     "delete:build": "find . -name \"build\" -exec rm -rf '{}' +",
     "delete:dist": "find . -name \"dist\" -exec rm -rf '{}' +",
@@ -23,52 +24,34 @@
     "delete:snapshot": "find . -name \"__snapshots__\" -exec rm -rf '{}' +",
     "delete:yarn-offline-cache": "find . -name \"yarn-offline-cache\" -exec rm -rf '{}' +",
     "delete:yarn.lock": "find . -name \"yarn.lock\" -exec rm -rf '{}' +",
-    "graphql": "yarn workspace @booksapp/server graphql",
-    "ios": "yarn workspace @booksapp/app ios",
+    "graphql": "yarn workspace @workspace/server graphql",
+    "ios": "yarn workspace @workspace/app ios",
     "lint": "eslint --fix --ext .js,.ts,.tsx",
     "lint:fix": "eslint --fix --ext .js,.ts,.tsx .",
     "prettier": "prettier",
-    "relay": "yarn workspace @booksapp/app relay",
-    "server:build": "yarn workspace @booksapp/server build",
-    "server:test": "yarn workspace @booksapp/server test",
+    "relay": "yarn workspace @workspace/app relay",
+    "server:build": "yarn workspace @workspace/server build",
+    "server:test": "yarn workspace @workspace/server test",
     "startup": "./scripts/startup.sh",
     "test": "jest --maxWorkers=4",
     "update": "yarn update-schema && yarn relay",
-    "update-schema": "yarn workspace @booksapp/server update-schema"
+    "update-schema": "yarn workspace @workspace/server update-schema"
   },
-  "lint-staged": {
-    "*.yml": [
-      "yarn prettier --write"
-    ],
-    "*.{ts,tsx,js}": [
-      "yarn prettier --write",
-      "yarn lint"
-    ],
-    "package.json": [
-      "yarn prettier --write",
-      "yarn sort-package-json"
-    ]
+  "resolutions": {
+    "graphql": "15.4.0",
+    "webpack": "5.6.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^11.0.0",
     "@commitlint/config-conventional": "^11.0.0",
-    "@types/jest": "^26.0.4",
-    "@types/lodash": "^4.14.157",
-    "@types/supertest": "^2.0.10",
-    "concurrently": "^5.2.0",
-    "husky": "^4.2.5",
-    "hygen": "^6.0.4",
-    "jest": "^26.1.0",
-    "jest-cli": "^26.1.0",
-    "jest-junit": "^11.0.1",
-    "lint-staged": "^10.2.11",
-    "moment": "^2.29.0",
+    "@types/jest": "^26.0.15",
+    "babel-jest": "^26.6.3",
+    "husky": "^4.3.0",
+    "jest": "^26.6.3",
+    "lint-staged": "^10.5.2",
     "patch-package": "^6.2.2",
-    "prettier": "^2.1.2",
-    "sort-package-json": "^1.44.0",
-    "typescript": "^4.0.3"
-  },
-  "peerDependencies": {
-    "lodash": "4.x"
+    "prettier": "^2.2.0",
+    "sort-package-json": "^1.48.0",
+    "typescript": "^4.1.2"
   }
 }

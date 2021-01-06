@@ -1,8 +1,6 @@
-import { buildSortFromArg, FILTER_CONDITION_TYPE } from '@entria/graphql-mongo-helpers';
-import { FilterMapping } from '@entria/graphql-mongo-helpers/dist/types';
 import { GraphQLInputObjectType, GraphQLList, GraphQLID, GraphQLNonNull } from 'graphql';
-
-import { getObjectId } from '../../../common/utils';
+import { buildSortFromArg, FILTER_CONDITION_TYPE, getObjectId } from '@entria/graphql-mongo-helpers';
+import { FilterMapping } from '@entria/graphql-mongo-helpers/lib/types';
 
 import { GraphQLArgFilter, ObjectId } from '../../../types';
 

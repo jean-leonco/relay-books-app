@@ -1,11 +1,6 @@
-import {
-  clearDbAndRestartCounters,
-  connectMongoose,
-  disconnectMongoose,
-  getContext,
-  createCategory,
-  createUser,
-} from '../../../../test/helpers';
+import { connectMongoose, clearDbAndRestartCounters, disconnectMongoose } from '@workspace/test-utils';
+
+import { createCategory, createUser, getContext } from '../../../test/utils';
 
 import * as CategoryLoader from '../CategoryLoader';
 

@@ -1,16 +1,15 @@
 import { GraphQLString, GraphQLNonNull } from 'graphql';
 import { mutationWithClientMutationId } from 'graphql-relay';
+import { errorField, successField } from '@entria/graphql-mongo-helpers';
+
+import { GraphQLContext, MutationField } from '../../../types';
+
+import { TOKEN_SCOPES } from '../../token/TokenModel';
+import { generateToken } from '../../auth/generateToken';
+import { getPlatform } from '../../../security';
 
 import UserModel from '../UserModel';
-
-import errorField from '../../../core/graphql/errorField';
-
-import { LoggedGraphQLContext } from '../../../types';
-import { UserLoader } from '../../../loader';
-import { getPlatform } from '../../../common/utils';
-import { SESSION_TOKEN_SCOPES } from '../../../models';
-
-import { generateToken } from '../../auth/generateToken';
+import * as UserLoader from '../UserLoader';
 
 import UserRegistrationMutationSchema from './validationSchemas/UserRegistrationMutationSchema';
 
@@ -36,7 +35,7 @@ const mutation = mutationWithClientMutationId({
       description: 'User password.',
     },
   },
-  mutateAndGetPayload: async (args: UserRegistrationAddArgs, context: LoggedGraphQLContext) => {
+  mutateAndGetPayload: async (args: UserRegistrationAddArgs, context: GraphQLContext) => {
     const { t } = context;
 
     const { email, password } = args;
@@ -60,7 +59,12 @@ const mutation = mutationWithClientMutationId({
       password,
     }).save();
 
-    const token = await generateToken(context, user, getPlatform(context.appplatform), SESSION_TOKEN_SCOPES.SESSION);
+    const token = await generateToken({
+      ctx: context,
+      user,
+      scope: TOKEN_SCOPES.SESSION,
+      platform: getPlatform(context.appplatform),
+    });
 
     return {
       token,
@@ -72,11 +76,16 @@ const mutation = mutationWithClientMutationId({
       type: GraphQLString,
       resolve: ({ token }) => token,
     },
+    ...successField,
     ...errorField,
   },
 });
 
-export default {
-  validationSchema: UserRegistrationMutationSchema,
+const mutationField: MutationField = {
+  extensions: {
+    validationSchema: UserRegistrationMutationSchema,
+  },
   ...mutation,
 };
+
+export default mutationField;

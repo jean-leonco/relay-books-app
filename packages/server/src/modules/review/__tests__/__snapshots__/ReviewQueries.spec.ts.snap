@@ -1,21 +1,21 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Review queries should get review from node interface 1`] = `
+exports[`ReviewQueries should get review from node interface 1`] = `
 Object {
   "review": Object {
     "book": Object {
-      "name": "name 1",
+      "name": "name 0",
     },
     "id": "FROZEN-ID",
     "rating": 1,
     "user": Object {
-      "name": "User #1",
+      "name": "User #0",
     },
   },
 }
 `;
 
-exports[`Review queries should query a connection of reviews 1`] = `
+exports[`ReviewQueries should query a connection of reviews 1`] = `
 Object {
   "reviews": Object {
     "edges": Array [
@@ -84,7 +84,7 @@ Object {
 }
 `;
 
-exports[`Review queries should query a connection of reviews with orderBy filter 1`] = `
+exports[`ReviewQueries should query a connection of reviews with orderBy filter 1`] = `
 Object {
   "reviews": Object {
     "edges": Array [

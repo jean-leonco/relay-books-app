@@ -4,7 +4,7 @@ import { graphql, useLazyLoadQuery } from 'react-relay/hooks';
 import { css } from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
 
-import { Column, Space, Text } from '@booksapp/ui';
+import { Column, Space, Text } from '@workspace/ui';
 
 import { LibraryQuery } from './__generated__/LibraryQuery.graphql';
 import ReadItAgain from './ReadItAgain';

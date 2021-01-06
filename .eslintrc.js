@@ -1,3 +1,3 @@
-const config = require('@booksapp/eslint-config');
+const config = require('@workspace/eslint-config');
 
 module.exports = config;

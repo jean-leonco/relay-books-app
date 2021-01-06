@@ -1,16 +1,15 @@
 import DataLoader from 'dataloader';
 import { connectionFromMongoAggregate, mongooseLoader } from '@entria/graphql-mongoose-loader';
 import { ConnectionArguments } from 'graphql-relay';
-import { Types } from 'mongoose';
 import { buildMongoConditionsFromFilters } from '@entria/graphql-mongo-helpers';
+import { NullConnection } from '@entria/graphql-mongo-helpers/lib/NullConnection';
 
-import { GraphQLContext, DataLoaderKey } from '../../types';
+import { GraphQLContext, DataLoaderKey, ObjectId } from '../../types';
+import { buildAggregatePipeline } from '../../graphql/filters/graphqlFilters';
 
-import { NullConnection } from '../../graphql/connection/NullConnection';
-import { buildAggregatePipeline } from '../../core/graphql/graphqlFilters/graphqlFilters';
+import { registerLoader } from '../loader/loaderRegister';
 
-import { Book } from '../../loader';
-
+import { IBook } from '../book/BookModel';
 import ReviewModel from '../review/ReviewModel';
 
 import ReadingModel, { IReading } from './ReadingModel';
@@ -20,12 +19,11 @@ export default class Reading {
   public registeredType = 'Reading';
 
   id: string;
-  _id: Types.ObjectId;
-  userId: Types.ObjectId;
-  bookId: Types.ObjectId;
+  _id: ObjectId;
+  userId: ObjectId;
+  bookId: ObjectId;
   readPages: number;
   isActive: boolean;
-  removedAt: Date | null;
   createdAt: Date;
   updatedAt: Date;
 
@@ -36,20 +34,21 @@ export default class Reading {
     this.bookId = data.bookId;
     this.readPages = data.readPages;
     this.isActive = data.isActive;
-    this.removedAt = data.removedAt;
     this.createdAt = data.createdAt;
     this.updatedAt = data.updatedAt;
   }
 }
 
-export const getLoader = () => new DataLoader((ids) => mongooseLoader(ReadingModel, ids));
+export const getLoader = () => new DataLoader<DataLoaderKey, IReading>((ids) => mongooseLoader(ReadingModel, ids));
+
+registerLoader('ReadingLoader', getLoader);
 
 const viewerCanSee = (context: GraphQLContext, data: IReading) => {
   if (!context.user || !context.user._id.equals(data.userId)) {
     return false;
   }
 
-  if (!data.isActive || data.removedAt) {
+  if (!data.isActive) {
     return false;
   }
 
@@ -111,7 +110,7 @@ export const loadReadings = async (context: GraphQLContext, args: LoadReadingsAr
   });
 };
 
-export const loadMeCanReview = async (context: GraphQLContext, book: Book) => {
+export const loadMeCanReview = async (context: GraphQLContext, book: IBook) => {
   const { user } = context;
 
   if (!user) {
