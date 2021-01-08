@@ -48,7 +48,7 @@ const QueryType = new GraphQLObjectType({
           type: BookFiltersInputType,
         },
       },
-      resolve: (_obj, args, context) => BookLoader.loadBooks(context, args),
+      resolve: (_obj, args, context) => BookLoader.loadAll(context, args),
     },
 
     reviews: {
@@ -60,7 +60,7 @@ const QueryType = new GraphQLObjectType({
           type: ReviewFiltersInputType,
         },
       },
-      resolve: (_obj, args, context) => ReviewLoader.loadReviews(context, args),
+      resolve: (_obj, args, context) => ReviewLoader.loadAll(context, args),
     },
 
     categories: {
@@ -72,7 +72,7 @@ const QueryType = new GraphQLObjectType({
           type: CategoryFiltersInputType,
         },
       },
-      resolve: (_obj, args, context) => CategoryLoader.loadCategories(context, args),
+      resolve: (_obj, args, context) => CategoryLoader.loadAll(context, args),
     },
 
     readings: {
@@ -84,7 +84,7 @@ const QueryType = new GraphQLObjectType({
           type: ReadingFiltersInputType,
         },
       },
-      resolve: (_obj, args, context) => ReadingLoader.loadReadings(context, args),
+      resolve: (_obj, args, context) => ReadingLoader.loadAll(context, args),
     },
   }),
 });

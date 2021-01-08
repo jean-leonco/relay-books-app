@@ -2,6 +2,7 @@
 
 exports[`TokenLoader should only load me valid token 1`] = `
 Object {
+  "__v": 0,
   "_id": "ObjectId",
   "createdAt": "FROZEN-CREATEDAT",
   "expiresIn": "EMPTY",
@@ -9,7 +10,7 @@ Object {
   "ip": "::ffff:127.0.0.1",
   "isActive": true,
   "isBlocked": false,
-  "registeredType": "Token",
+  "platform": "APP",
   "scope": "BOOKSAPP:SESSION",
   "updatedAt": "FROZEN-UPDATEDAT",
   "userId": "ObjectId",

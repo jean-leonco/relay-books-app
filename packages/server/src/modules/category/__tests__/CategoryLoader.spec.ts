@@ -39,7 +39,7 @@ describe('CategoryLoader', () => {
     }
 
     const context = await getContext({ user });
-    const categoryObj = await CategoryLoader.loadCategories(context, {});
+    const categoryObj = await CategoryLoader.loadAll(context, {});
 
     expect(categoryObj).not.toBe(null);
     expect(categoryObj.count).toBe(11);
@@ -51,7 +51,7 @@ describe('CategoryLoader', () => {
     }
 
     const context = await getContext();
-    const categoryObj = await CategoryLoader.loadCategories(context, {});
+    const categoryObj = await CategoryLoader.loadAll(context, {});
 
     expect(categoryObj).not.toBe(null);
     expect(categoryObj.count).toBe(0);

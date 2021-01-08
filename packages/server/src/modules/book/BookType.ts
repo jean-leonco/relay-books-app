@@ -80,7 +80,7 @@ const BookType = new GraphQLObjectType<IBook, GraphQLContext>({
       },
       resolve: (obj, args, context) => {
         const filters = { ...args.filters, book: toGlobalId('Book', obj._id) };
-        return ReviewLoader.loadReviews(context, { ...args, filters });
+        return ReviewLoader.loadAll(context, { ...args, filters });
       },
     },
     meCanReview: {

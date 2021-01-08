@@ -32,7 +32,7 @@
     "server:build": "yarn workspace @workspace/server build",
     "server:test": "yarn workspace @workspace/server test",
     "startup": "./scripts/startup.sh",
-    "test": "jest --maxWorkers=4",
+    "test": "jest",
     "update": "yarn update-schema && yarn relay",
     "update-schema": "yarn workspace @workspace/server update-schema"
   },

@@ -46,7 +46,7 @@ describe('ReviewLoader', () => {
     }
 
     const context = await getContext({ user });
-    const reviewObj = await ReviewLoader.loadReviews(context, {});
+    const reviewObj = await ReviewLoader.loadAll(context, {});
 
     expect(reviewObj).not.toBe(null);
     expect(reviewObj.count).toBe(11);
@@ -59,7 +59,7 @@ describe('ReviewLoader', () => {
     }
 
     const context = await getContext();
-    const reviewObj = await ReviewLoader.loadReviews(context, {});
+    const reviewObj = await ReviewLoader.loadAll(context, {});
 
     expect(reviewObj).not.toBe(null);
     expect(reviewObj.count).toBe(0);

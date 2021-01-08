@@ -5,8 +5,6 @@ import { Context } from 'koa';
 import { SortDirection } from '@entria/graphql-mongo-helpers';
 import { ObjectSchema, Shape } from 'yup';
 
-import User from './modules/user/UserLoader';
-
 import { IUser } from './modules/user/UserModel';
 import { IToken } from './modules/token/TokenModel';
 import { IBook } from './modules/book/BookModel';
@@ -31,19 +29,19 @@ export interface GraphQLDataloaders {
 
 export interface GraphQLContext {
   dataloaders: GraphQLDataloaders;
-  user?: User;
+  user?: IUser;
   appplatform: string;
   koaContext: Context;
   t: typeof t;
 }
 
 export interface LoggedGraphQLContext extends GraphQLContext {
-  user: User;
+  user: IUser;
 }
 
 export interface KoaContext {
   dataloaders: GraphQLDataloaders;
-  user: User | null;
+  user: IUser | null;
 }
 
 export type GraphQLArgFilter<T> = {

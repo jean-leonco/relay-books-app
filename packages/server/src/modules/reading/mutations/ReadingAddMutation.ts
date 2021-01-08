@@ -33,8 +33,8 @@ const mutation = mutationWithClientMutationId({
     }
 
     const reading = await new ReadingModel({
-      userId: user._id,
-      bookId: book?._id,
+      userId: user.id,
+      bookId: book.id,
       readPages: 1,
     }).save();
 
@@ -54,7 +54,7 @@ const mutation = mutationWithClientMutationId({
         }
 
         return {
-          cursor: toGlobalId('Reading', reading._id),
+          cursor: toGlobalId('Reading', reading.id),
           node: reading,
         };
       },

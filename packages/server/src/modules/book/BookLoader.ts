@@ -1,108 +1,25 @@
-import DataLoader from 'dataloader';
-import { connectionFromMongoAggregate, mongooseLoader } from '@entria/graphql-mongoose-loader';
-import { ConnectionArguments } from 'graphql-relay';
-import { buildMongoConditionsFromFilters } from '@entria/graphql-mongo-helpers';
-import { NullConnection } from '@entria/graphql-mongo-helpers/lib/NullConnection';
+import { createLoader } from '@entria/graphql-mongo-helpers';
 
-import { GraphQLContext, DataLoaderKey, ObjectId } from '../../types';
-import { buildAggregatePipeline } from '../../graphql/filters/graphqlFilters';
-import { isLoggedViewerCanSee } from '../../security';
+import { isLoggedAndDataIsActiveViewerCanSee } from '../../security';
 
 import { registerLoader } from '../loader/loaderRegister';
 
-import BookModel, { IBook } from './BookModel';
-import { BooksArgFilters, bookFilterMapping } from './filters/BookFiltersInputType';
+import BookModel from './BookModel';
+import { bookFilterMapping } from './filters/BookFiltersInputType';
 
-export default class Book {
-  public registeredType = 'Book';
-
-  id: string;
-  _id: ObjectId;
-  name: string;
-  author: string;
-  description: string;
-  releaseYear: number;
-  pages: number;
-  bannerUrl: string;
-  ISBN?: number;
-  language?: string;
-  categoryId: ObjectId;
-  isActive: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-
-  constructor(data: IBook) {
-    this.id = data.id || data._id;
-    this._id = data._id;
-    this.name = data.name;
-    this.author = data.author;
-    this.description = data.description;
-    this.releaseYear = data.releaseYear;
-    this.pages = data.pages;
-    this.bannerUrl = data.bannerUrl;
-    this.ISBN = data.ISBN;
-    this.language = data.language;
-    this.categoryId = data.categoryId;
-    this.isActive = data.isActive;
-    this.createdAt = data.createdAt;
-    this.updatedAt = data.updatedAt;
-  }
-}
-
-export const getLoader = () => new DataLoader<DataLoaderKey, IBook>((ids) => mongooseLoader(BookModel, ids));
+const { Wrapper: Book, getLoader, clearCache, load, loadAll } = createLoader({
+  model: BookModel,
+  loaderName: 'BookLoader',
+  isAggregate: true,
+  filterMapping: bookFilterMapping,
+  viewerCanSee: isLoggedAndDataIsActiveViewerCanSee as any,
+  shouldValidateContextUser: true,
+  defaultConditions: { isActive: true },
+  defaultFilters: (_ctx, args) => (args.filters?.trending ? {} : { orderBy: [{ field: 'createdAt', direction: -1 }] }),
+});
 
 registerLoader('BookLoader', getLoader);
 
-export const load = async (context: GraphQLContext, id: DataLoaderKey) => {
-  if (!id) return null;
+export { getLoader, clearCache, load, loadAll };
 
-  try {
-    const data = await context.dataloaders.BookLoader.load(id);
-
-    if (!data) return null;
-
-    return isLoggedViewerCanSee(context, data) ? new Book(data) : null;
-  } catch (err) {
-    return null;
-  }
-};
-
-export const clearCache = ({ dataloaders }: GraphQLContext, id: string) => dataloaders.BookLoader.clear(id.toString());
-
-export const primeCache = ({ dataloaders }: GraphQLContext, id: string, data: IBook) =>
-  dataloaders.BookLoader?.prime(id.toString(), data);
-
-export const clearAndPrimeCache = (context: GraphQLContext, id: string, data: IBook) =>
-  clearCache(context, id) && primeCache(context, id, data);
-
-interface IloadBooksArgs extends ConnectionArguments {
-  filters?: BooksArgFilters;
-}
-export const loadBooks = async (context: GraphQLContext, args: IloadBooksArgs) => {
-  const { user } = context;
-  const { filters = {} } = args;
-
-  if (!user) {
-    return NullConnection;
-  }
-
-  const defaultFilters = filters.trending ? {} : { orderBy: [{ field: 'createdAt', direction: -1 }] };
-  const defaultConditions = { isActive: true, removedAt: null };
-
-  const builtMongoConditions = buildMongoConditionsFromFilters(
-    context,
-    { ...defaultFilters, ...filters },
-    bookFilterMapping,
-  );
-
-  const aggregatePipeline = buildAggregatePipeline({ defaultConditions, builtMongoConditions });
-
-  const aggregate = BookModel.aggregate(aggregatePipeline);
-
-  return connectionFromMongoAggregate({
-    aggregate,
-    context,
-    args,
-    loader: load,
-  });
-};
+export default Book;

@@ -48,7 +48,7 @@ const OptionBottomSheet = ({ handleClose }: BottomSheetProps) => {
   );
 
   const reading = useMemo(() => {
-    if (!data.readings) {
+    if (!data.readings || !data.readings.edges[0]) {
       return null;
     }
 
@@ -57,7 +57,7 @@ const OptionBottomSheet = ({ handleClose }: BottomSheetProps) => {
 
   const handleRemoveFromLibrary = useCallback(async () => {
     readingRemove({
-      variables: { input: { id: reading.id } },
+      variables: { input: { id: reading!.id } },
       onCompleted: ({ ReadingRemove }) => {
         if (!ReadingRemove || ReadingRemove.error) {
           ToastAndroid.show(ReadingRemove?.error || 'Unable to remove book', ToastAndroid.SHORT);
@@ -75,7 +75,7 @@ const OptionBottomSheet = ({ handleClose }: BottomSheetProps) => {
         navigation.goBack();
         handleClose();
       },
-      updater: readingsRemoveMutationConnectionUpdater(reading.readPages === reading.book.pages),
+      updater: readingsRemoveMutationConnectionUpdater(reading!.readPages === reading!.book!.pages),
     });
   }, [handleClose, navigation, reading, readingRemove]);
 
@@ -86,7 +86,7 @@ const OptionBottomSheet = ({ handleClose }: BottomSheetProps) => {
 
   const photoOptions = useMemo(
     () => [
-      ...(reading.book.meCanReview ? [{ label: 'Review', onPress: handleReview }] : []),
+      ...(reading?.book?.meCanReview ? [{ label: 'Review', onPress: handleReview }] : []),
       ...(reading ? [{ label: 'Remove From Library', onPress: handleRemoveFromLibrary }] : []),
       { label: 'Close', onPress: handleClose },
     ],
