@@ -62,8 +62,8 @@ const UserType = new GraphQLObjectType<IUser, GraphQLContext>({
         filters: { type: ReviewFiltersInputType },
       },
       resolve: (obj, args, context) => {
-        const filters = { ...args.filters, user: toGlobalId('User', obj._id) };
-        return ReviewLoader.loadReviews(context, { ...args, filters });
+        const filters = { ...args.filters, user: toGlobalId('User', obj.id) };
+        return ReviewLoader.loadAll(context, { ...args, filters });
       },
     },
     ...timestampResolver,

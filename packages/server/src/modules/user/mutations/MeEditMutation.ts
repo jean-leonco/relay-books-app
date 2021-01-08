@@ -57,7 +57,7 @@ const mutation = mutationWithClientMutationId({
       ...(password ? { password } : {}),
     };
 
-    const updatedUser = await UserModel.findOneAndUpdate({ _id: user._id }, userNewInfo);
+    const updatedUser = await UserModel.findOneAndUpdate({ _id: user.id }, userNewInfo);
 
     if (!updatedUser) {
       return {
@@ -66,7 +66,7 @@ const mutation = mutationWithClientMutationId({
       };
     }
 
-    UserLoader.clearAndPrimeCache(context, updatedUser._id, updatedUser);
+    UserLoader.clearCache(context, updatedUser._id);
 
     return {
       id: updatedUser._id,

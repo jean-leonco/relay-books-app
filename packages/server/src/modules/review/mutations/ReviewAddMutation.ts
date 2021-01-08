@@ -46,21 +46,21 @@ const mutation = mutationWithClientMutationId({
       return { error: t('book', 'TheBookIdIsInvalid') };
     }
 
-    const prevReview = await ReviewModel.findOne({ userId: user._id, bookId: book._id });
+    const prevReview = await ReviewModel.findOne({ userId: user.id, bookId: book.id });
 
     if (prevReview) {
       return { error: t('review', 'AReviewForThisBookWasAlreadyCreated') };
     }
 
-    const reading = await ReadingModel.findOne({ userId: user._id, bookId: book._id });
+    const reading = await ReadingModel.findOne({ userId: user.id, bookId: book.id });
 
     if (!reading || reading.readPages < book.pages) {
       return { error: t('review', 'UnableToReviewBookWithoutFinishingIt') };
     }
 
     const review = await new ReviewModel({
-      userId: user._id,
-      bookId: book?._id,
+      userId: user.id,
+      bookId: book.id,
       rating,
       description,
     }).save();
@@ -81,7 +81,7 @@ const mutation = mutationWithClientMutationId({
         }
 
         return {
-          cursor: toGlobalId('Review', review._id),
+          cursor: toGlobalId('Review', review.id),
           node: review,
         };
       },

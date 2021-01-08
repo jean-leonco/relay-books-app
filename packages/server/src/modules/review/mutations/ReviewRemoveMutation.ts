@@ -24,7 +24,7 @@ const mutation = mutationWithClientMutationId({
     const { id } = args;
 
     const review = await ReviewModel.findOneAndUpdate(
-      { _id: fromGlobalId(id).id, userId: user._id, isActive: true },
+      { _id: fromGlobalId(id).id, userId: user.id, isActive: true },
       { isActive: false },
     );
 
@@ -32,7 +32,7 @@ const mutation = mutationWithClientMutationId({
       return { error: t('review', 'ReviewNotFound') };
     }
 
-    ReviewLoader.clearAndPrimeCache(context, review._id, review);
+    ReviewLoader.clearCache(context, review._id);
 
     return {
       success: true,

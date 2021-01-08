@@ -41,7 +41,7 @@ describe('BookLoader', () => {
     }
 
     const context = await getContext({ user });
-    const bookObj = await BookLoader.loadBooks(context, {});
+    const bookObj = await BookLoader.loadAll(context, {});
 
     expect(bookObj).not.toBe(null);
     expect(bookObj.count).toBe(11);
@@ -53,7 +53,7 @@ describe('BookLoader', () => {
     }
 
     const context = await getContext();
-    const bookObj = await BookLoader.loadBooks(context, {});
+    const bookObj = await BookLoader.loadAll(context, {});
 
     expect(bookObj).not.toBe(null);
     expect(bookObj.count).toBe(0);

@@ -12,12 +12,15 @@ export const isLoggedIn = (context: GraphQLContext) => {
   return false;
 };
 
-export const isLoggedViewerCanSee = (context: GraphQLContext, data: IStatusSchema) => {
+export const isLoggedAndDataIsActiveViewerCanSee = <Value extends IStatusSchema>(
+  context: GraphQLContext,
+  data: Value,
+) => {
   if (!context.user || !data.isActive) {
-    return false;
+    return null;
   }
 
-  return true;
+  return data;
 };
 
 export enum PLATFORM {

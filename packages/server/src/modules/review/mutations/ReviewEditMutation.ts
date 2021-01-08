@@ -41,13 +41,13 @@ const mutation = mutationWithClientMutationId({
       ...(description ? { description } : {}),
     };
 
-    const review = await ReviewModel.findOneAndUpdate({ _id: fromGlobalId(id).id, userId: user._id }, newData);
+    const review = await ReviewModel.findOneAndUpdate({ _id: fromGlobalId(id).id, userId: user.id }, newData);
 
     if (!review) {
       return { error: t('review', 'ReviewNotFound') };
     }
 
-    ReviewLoader.clearAndPrimeCache(context, review._id, review);
+    ReviewLoader.clearCache(context, review._id);
 
     return {
       id: review._id,
@@ -65,7 +65,7 @@ const mutation = mutationWithClientMutationId({
         }
 
         return {
-          cursor: toGlobalId('Review', review._id),
+          cursor: toGlobalId('Review', review.id),
           node: review,
         };
       },

@@ -52,7 +52,7 @@ describe('ReadingLoader', () => {
     }
 
     const context = await getContext({ user });
-    const reviewObj = await ReadingLoader.loadReadings(context, {});
+    const reviewObj = await ReadingLoader.loadAll(context, {});
 
     expect(reviewObj).not.toBe(null);
     expect(reviewObj.count).toBe(11);
@@ -71,7 +71,7 @@ describe('ReadingLoader', () => {
     }
 
     const context = await getContext({ user });
-    const reviewObj = await ReadingLoader.loadReadings(context, {});
+    const reviewObj = await ReadingLoader.loadAll(context, {});
 
     expect(reviewObj).not.toBe(null);
     expect(reviewObj.count).toBe(6);
@@ -83,7 +83,7 @@ describe('ReadingLoader', () => {
     }
 
     const context = await getContext();
-    const readingObj = await ReadingLoader.loadReadings(context, {});
+    const readingObj = await ReadingLoader.loadAll(context, {});
 
     expect(readingObj).not.toBe(null);
     expect(readingObj.count).toBe(0);

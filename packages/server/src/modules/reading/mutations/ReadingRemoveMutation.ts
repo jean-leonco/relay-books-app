@@ -24,7 +24,7 @@ const mutation = mutationWithClientMutationId({
     const { id } = args;
 
     const reading = await ReadingModel.findOneAndUpdate(
-      { _id: fromGlobalId(id).id, userId: user._id, isActive: true },
+      { _id: fromGlobalId(id).id, userId: user.id, isActive: true },
       { isActive: false },
     );
 
@@ -32,7 +32,7 @@ const mutation = mutationWithClientMutationId({
       return { error: t('book', 'BookNotFound') };
     }
 
-    ReadingLoader.clearAndPrimeCache(context, reading._id, reading);
+    ReadingLoader.clearCache(context, reading._id);
 
     return {
       id: reading._id,

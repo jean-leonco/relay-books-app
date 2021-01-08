@@ -12,12 +12,12 @@
     "graphql": "webpack --progress --config webpack.config.js",
     "seed": "yarn b ./scripts/seed/seedDatabase",
     "serve:graphql": "node build/graphql/index.js",
-    "test": "jest --maxWorkers=4",
+    "test": "jest",
     "test:watch": "jest --watch",
     "update-schema": "yarn b ./scripts/updateSchema.ts"
   },
   "dependencies": {
-    "@entria/graphql-mongo-helpers": "^1.0.0",
+    "@entria/graphql-mongo-helpers": "^1.0.1",
     "@entria/graphql-mongoose-loader": "4.3.2",
     "@koa/cors": "^3.1.0",
     "@koa/router": "^10.0.0",
