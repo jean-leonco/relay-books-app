@@ -20,7 +20,7 @@ const routerQuery = graphql`
   }
 `;
 
-const Router = () => {
+const Router = ({ resetRelayEnvironment }) => {
   const environment = useRelayEnvironment();
 
   const data = useLazyLoadQuery<RouterQuery>(routerQuery, {});
@@ -33,14 +33,16 @@ const Router = () => {
     () => ({
       signIn: async (token: string) => {
         await AsyncStorage.setItem(AUTH_KEY, token);
+        resetRelayEnvironment();
         refresh();
       },
       signOut: async () => {
         await AsyncStorage.removeItem(AUTH_KEY);
+        resetRelayEnvironment();
         refresh();
       },
     }),
-    [refresh],
+    [refresh, resetRelayEnvironment],
   );
 
   //useEffect(() => {
