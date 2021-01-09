@@ -46,7 +46,7 @@ const FormikRating = ({ name, label, ...props }: FormikRatingProps) => {
           <Space height={14} />
         </>
       )}
-      <Rating onFinishRating={handleChange} {...props} />
+      <Rating onFinishRating={handleChange} initialRating={field.value} {...props} />
       <>
         <Space height={4} />
         <Error>{error}</Error>

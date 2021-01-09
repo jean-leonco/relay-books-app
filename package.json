@@ -38,6 +38,7 @@
   },
   "resolutions": {
     "graphql": "15.4.0",
+    "react": "0.0.0-experimental-4ead6b530",
     "webpack": "5.6.0"
   },
   "devDependencies": {

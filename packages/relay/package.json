@@ -5,11 +5,11 @@
   "module": "src/index.ts",
   "dependencies": {
     "@react-native-community/async-storage": "^1.12.1",
-    "react-relay": "^0.0.0-experimental-183bdd28"
+    "react-relay": "0.0.0-experimental-0b967d2e"
   },
   "devDependencies": {
     "@types/react-relay": "^7.0.12",
     "@types/relay-runtime": "^10.0.4",
-    "relay-runtime": "^10.0.1"
+    "relay-runtime": "10.1.0"
   }
 }

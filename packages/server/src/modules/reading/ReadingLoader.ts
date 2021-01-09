@@ -44,10 +44,13 @@ export const loadMeCanReview = async (context: GraphQLContext, book: IBook) => {
     return false;
   }
 
-  const reading = await ReadingModel.findOne({ userId: user._id, bookId: book._id });
-  const review = await ReviewModel.findOne({ userId: user._id, bookId: book._id });
+  const reading = await ReadingModel.findOne({ userId: user.id, bookId: book._id });
+  const review = await ReviewModel.findOne({ userId: user.id, bookId: book._id });
 
-  return !review && reading && reading.readPages === book.pages;
+  const hasReadingAndDoesntHaveReview = reading && !review;
+  const hasReadAllBook = reading?.readPages === book.pages;
+
+  return hasReadingAndDoesntHaveReview && hasReadAllBook;
 };
 
 export { getLoader, clearCache, load, loadAll };

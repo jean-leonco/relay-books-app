@@ -37,4 +37,12 @@ export const reviewAddMutationConnectionUpdater = (bookId: string, meId: string)
     edge: newEdge,
     before: true,
   });
+
+  connectionUpdater({
+    store,
+    parentId: meId,
+    connectionName: 'ReviewList_reviews',
+    edge: newEdge,
+    before: true,
+  });
 };

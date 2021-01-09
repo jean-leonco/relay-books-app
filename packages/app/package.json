@@ -16,12 +16,11 @@
     "@react-navigation/bottom-tabs": "^5.11.2",
     "@react-navigation/native": "^5.8.10",
     "@react-navigation/stack": "^5.12.8",
-    "@workspace/hooks": "^0.0.1",
     "@workspace/relay": "^0.0.1",
     "@workspace/ui": "^0.0.1",
     "babel-plugin-optional-require": "^0.3.1",
     "formik": "^2.2.6",
-    "react": "0.0.0-experimental-e5d06e34b",
+    "react": "0.0.0-experimental-4ead6b530",
     "react-native": "0.63.2",
     "react-native-gesture-handler": "^1.8.0",
     "react-native-linear-gradient": "^2.5.6",
@@ -32,7 +31,7 @@
     "react-native-screens": "^2.11.0",
     "react-native-shimmer-placeholder": "^2.0.6",
     "react-native-vector-icons": "^7.1.0",
-    "react-relay": "^0.0.0-experimental-183bdd28",
+    "react-relay": "0.0.0-experimental-0b967d2e",
     "rn-fetch-blob": "^0.12.0",
     "styled-components": "^5.2.0",
     "yup": "^0.31.0"
@@ -43,12 +42,13 @@
     "@types/react-relay": "^7.0.12",
     "@types/relay-runtime": "^10.0.4",
     "@types/styled-components": "^5.1.7",
+    "@types/styled-components-react-native": "^5.1.0",
     "@types/yup": "^0.29.9",
     "@workspace/babel": "^0.0.1",
     "graphql": "15.4.0",
-    "relay-compiler": "^10.0.1",
-    "relay-compiler-language-typescript": "^13.0.1",
-    "relay-config": "^10.0.1",
-    "relay-runtime": "^10.0.1"
+    "relay-compiler": "10.1.0",
+    "relay-compiler-language-typescript": "13.0.2",
+    "relay-config": "10.1.0",
+    "relay-runtime": "10.1.0"
   }
 }
