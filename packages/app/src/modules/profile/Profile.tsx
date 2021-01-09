@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useLazyLoadQuery, graphql } from 'react-relay/hooks';
 import styled, { css } from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useTheme } from 'styled-components';
 
-import { Button, Column, Row, Space, Text } from '@workspace/ui';
+import { Column, Row, Space, Text } from '@workspace/ui';
 
 import useRouterAuth from '../../router/useRouterAuth';
 
@@ -22,6 +24,18 @@ const Separator = styled.View`
   margin: 0 20px;
 `;
 
+const maxWidthCss = css`
+  width: 100%;
+`;
+
+const optionCss = css`
+  padding: 6px 8px;
+  margin: 6px 0;
+  border-radius: 6px;
+  border: ${(p) => `1px solid ${p.theme.colors.c2}`};
+  ${maxWidthCss}
+`;
+
 const Profile = () => {
   const { signOut } = useRouterAuth();
 
@@ -32,14 +46,14 @@ const Profile = () => {
       query ProfileQuery {
         me {
           fullName
-          reviews(first: 1) @connection(key: "Profile_reviews", filters: []) {
+          reviews(first: 1) @connection(key: "Profile_reviews") {
             count
             edges {
               cursor
             }
           }
         }
-        readings(first: 1, filters: { finished: true }) @connection(key: "Profile_readings", filters: []) {
+        readings(first: 1, filters: { finished: true }) @connection(key: "Profile_readings") {
           count
           edges {
             cursor
@@ -49,6 +63,29 @@ const Profile = () => {
     `,
     {},
   );
+
+  const menuOptions = useMemo(
+    () => [
+      {
+        icon: 'file-tray',
+        label: 'My Reviews',
+        onPress: () => navigation.navigate('ReviewList'),
+      },
+      {
+        icon: 'person-outline',
+        label: 'Edit Profile',
+        onPress: () => navigation.navigate('EditProfile'),
+      },
+      {
+        icon: 'exit-outline',
+        label: 'Log out',
+        onPress: signOut,
+      },
+    ],
+    [navigation, signOut],
+  );
+
+  const theme = useTheme();
 
   return (
     <Column align="center" justify="center" flex={1} css={containerCss}>
@@ -76,12 +113,24 @@ const Profile = () => {
         </Column>
       </Row>
       <Space height={60} />
-      <Column align="flex-start" style={{ width: '100%' }}>
-        <Button onPress={() => navigation.navigate('EditProfile')}>Edit Profile</Button>
-        <Space height={20} />
-        <Button type="bordered" onPress={signOut}>
-          Log out
-        </Button>
+      <Column align="flex-start" css={maxWidthCss}>
+        {menuOptions.map((option) => (
+          <Row
+            key={option.label}
+            touchable
+            align="center"
+            justify="space-between"
+            onPress={option.onPress}
+            css={optionCss}
+          >
+            <Row align="center">
+              <Ionicons name={option.icon} size={20} color={theme.colors.c4} />
+              <Space width={6} />
+              <Text size="button">{option.label}</Text>
+            </Row>
+            <Ionicons name="ios-chevron-forward-outline" size={20} color={theme.colors.c4} />
+          </Row>
+        ))}
       </Column>
     </Column>
   );

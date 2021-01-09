@@ -6,11 +6,12 @@ import { css } from 'styled-components/native';
 
 import { BottomSheet, Column, FlatListLoader, Space } from '@workspace/ui';
 
+import ReviewCard from '../review/ReviewCard';
+
 import { BookDetailsQuery } from './__generated__/BookDetailsQuery.graphql';
 import { BookDetailsPaginationQuery } from './__generated__/BookDetailsPaginationQuery.graphql';
 import { BookDetails_book$key } from './__generated__/BookDetails_book.graphql';
 
-import ReviewCard from './ReviewCard';
 import BookInfo from './BookInfo';
 import OptionBottomSheet from './OptionBottomSheet';
 import BookHeader from './BookHeader';

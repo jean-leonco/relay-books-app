@@ -1,8 +1,9 @@
-import React, { useCallback, useEffect, useTransition } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { FlatList } from 'react-native';
 import { graphql, usePaginationFragment } from 'react-relay/hooks';
 
 import { FlatListLoader } from '@workspace/ui';
+import { useTransition } from '@workspace/relay';
 
 import SearchBook from './SearchBook';
 
@@ -19,7 +20,7 @@ interface SearchListProps {
 }
 
 const SearchList = ({ category, search, ...props }: SearchListProps) => {
-  const [startTransition, isPending] = useTransition();
+  const [startTransition] = useTransition();
 
   const { data, hasNext, loadNext, isLoadingNext, refetch } = usePaginationFragment<
     SearchListRefetchQuery,

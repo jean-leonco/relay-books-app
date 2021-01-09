@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { graphql, useFragment } from 'react-relay/hooks';
-import { css } from 'styled-components';
+import { css, DefaultTheme, FlattenInterpolation, FlattenSimpleInterpolation, ThemeProps } from 'styled-components';
 
 import { Column, Row, Space, Text } from '@workspace/ui';
 
@@ -14,29 +14,38 @@ const containerCss = css`
 
 interface ReviewCardProps {
   query: ReviewCard_review$key;
+  cardCss?: FlattenSimpleInterpolation | FlattenInterpolation<ThemeProps<DefaultTheme>>;
+  onPress?(): void;
 }
 
-const ReviewCard = (props: ReviewCardProps) => {
+const ReviewCard = ({ query, cardCss, onPress, ...props }: ReviewCardProps) => {
   const data = useFragment<ReviewCard_review$key>(
     graphql`
       fragment ReviewCard_review on Review {
-        id
         rating
         description
         user {
-          id
           fullName
         }
       }
     `,
-    props.query,
+    query,
+  );
+
+  const columnCss = useMemo(
+    () =>
+      css`
+        ${containerCss};
+        ${cardCss}
+      `,
+    [cardCss],
   );
 
   return (
-    <Column css={containerCss}>
+    <Column css={columnCss} touchable={!!onPress} onPress={onPress} {...props}>
       <Row align="center">
         <Text size="label" color="c5">
-          {data.user.fullName}
+          {data.user?.fullName}
         </Text>
         <Space width={20} />
         <Rating initialRating={data.rating} size={14} disabled />

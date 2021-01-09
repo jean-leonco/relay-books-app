@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components/native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { graphql, useLazyLoadQuery, useMutation } from 'react-relay/hooks';
 
-import { BottomSheetProps, Column, Text } from '@workspace/ui';
+import { Column, Text } from '@workspace/ui';
 
 import { ReadingRemove, readingsRemoveMutationConnectionUpdater } from './mutations/ReadingRemoveMutation';
 import { ReadingRemoveMutation } from './mutations/__generated__/ReadingRemoveMutation.graphql';
@@ -19,7 +19,7 @@ const Button = styled.TouchableOpacity`
   padding: 15px 5px;
 `;
 
-const OptionBottomSheet = ({ handleClose }: BottomSheetProps) => {
+const OptionBottomSheet = ({ handleClose }) => {
   const [readingRemove] = useMutation<ReadingRemoveMutation>(ReadingRemove);
 
   const navigation = useNavigation();
@@ -80,13 +80,13 @@ const OptionBottomSheet = ({ handleClose }: BottomSheetProps) => {
   }, [handleClose, navigation, reading, readingRemove]);
 
   const handleReview = useCallback(() => {
-    navigation.navigate('Review', { bookId: route.params.id });
+    navigation.navigate('ReviewAdd', { bookId: route.params.id });
     handleClose();
   }, [handleClose, navigation, route.params.id]);
 
   const photoOptions = useMemo(
     () => [
-      ...(reading?.book?.meCanReview ? [{ label: 'Review', onPress: handleReview }] : []),
+      ...(reading?.book?.meCanReview ? [{ label: 'ReviewAdd', onPress: handleReview }] : []),
       ...(reading ? [{ label: 'Remove From Library', onPress: handleRemoveFromLibrary }] : []),
       { label: 'Close', onPress: handleClose },
     ],

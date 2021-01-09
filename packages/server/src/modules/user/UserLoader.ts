@@ -50,7 +50,7 @@ export const userEmailExists = async (_context: GraphQLContext, email: string): 
 
 export const meEmailExists = async (context: LoggedGraphQLContext, email: string): Promise<number | null> => {
   const { user } = context;
-  return await UserModel.countDocuments({ 'email.email': email, _id: { $ne: user._id } });
+  return await UserModel.countDocuments({ 'email.email': email, _id: { $ne: user.id } });
 };
 
 export { getLoader, clearCache, load };

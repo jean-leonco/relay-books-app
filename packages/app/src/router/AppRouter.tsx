@@ -15,7 +15,9 @@ import Profile from '../modules/profile/Profile';
 import ProfileShimmer from '../modules/profile/ProfileShimmer';
 import BookDetails from '../modules/book/BookDetails';
 import Reading from '../modules/reading/Reading';
-import Review from '../modules/review/Review';
+import ReviewAdd from '../modules/review/ReviewAdd';
+import ReviewEdit from '../modules/review/ReviewEdit';
+import ReviewList from '../modules/review/ReviewList';
 import EditProfile from '../modules/profile/EditProfile';
 
 const Tab = createBottomTabNavigator();
@@ -97,7 +99,9 @@ const App = () => {
       <Stack.Screen name="App" component={AppTabs} />
       <Stack.Screen name="Book" component={BookDetails} />
       <Stack.Screen name="Reading" component={Reading} />
-      <Stack.Screen name="Review" component={Review} />
+      <Stack.Screen name="ReviewAdd" component={ReviewAdd} />
+      <Stack.Screen name="ReviewEdit" component={ReviewEdit} />
+      <Stack.Screen name="ReviewList" component={ReviewList} />
       <Stack.Screen name="EditProfile" component={EditProfile} />
     </Stack.Navigator>
   );

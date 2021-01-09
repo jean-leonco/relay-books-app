@@ -6,6 +6,7 @@ import fetchWithRetries from './fetchWithRetries';
 import { connectionDeleteEdgeUpdater, connectionUpdater } from './mutationUtils';
 import UnavailableServiceError from './UnavailableServiceError';
 import InvalidSessionError from './InvalidSessionError';
+import useTransition from './useTransition';
 
 export {
   cacheHandler,
@@ -17,4 +18,5 @@ export {
   connectionDeleteEdgeUpdater,
   UnavailableServiceError,
   InvalidSessionError,
+  useTransition,
 };
