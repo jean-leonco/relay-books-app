@@ -1,5 +1,5 @@
 import cacheHandler from './cacheHandler';
-import Environment from './Environment';
+import createRelayEnvironment from './createRelayEnvironment';
 import ExecuteEnvironment from './ExecuteEnvironment';
 import fetchQuery from './fetchQuery';
 import fetchWithRetries from './fetchWithRetries';
@@ -10,7 +10,7 @@ import useTransition from './useTransition';
 
 export {
   cacheHandler,
-  Environment,
+  createRelayEnvironment,
   ExecuteEnvironment,
   fetchQuery,
   fetchWithRetries,
