@@ -48,7 +48,8 @@ const QueryType = new GraphQLObjectType({
           type: BookFiltersInputType,
         },
       },
-      resolve: (_obj, args, context) => BookLoader.loadAll(context, args),
+      resolve: (_obj, args, context) =>
+        args.filters?.trending ? BookLoader.loadTrendingBooks(context) : BookLoader.loadAll(context, args),
     },
 
     reviews: {

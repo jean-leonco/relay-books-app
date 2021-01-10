@@ -32,8 +32,6 @@ const maxWidthCss = css`
 const optionCss = css`
   padding: 6px 8px;
   margin: 6px 0;
-  border-radius: 6px;
-  border: ${(p) => `1px solid ${p.theme.colors.c2}`};
   ${maxWidthCss}
 `;
 
@@ -48,18 +46,12 @@ const Profile = () => {
       query ProfileQuery {
         me {
           fullName
-          reviews(first: 1) @connection(key: "Profile_reviews") {
+          reviews(first: 1) {
             count
-            edges {
-              cursor
-            }
           }
         }
-        readings(first: 1, filters: { finished: true }) @connection(key: "Profile_readings") {
+        readings(first: 1, filters: { finished: true }) {
           count
-          edges {
-            cursor
-          }
         }
       }
     `,
@@ -69,22 +61,18 @@ const Profile = () => {
   const menuOptions = useMemo(
     () => [
       {
-        icon: 'file-tray',
         label: t('my_reviews'),
         onPress: () => navigation.navigate('ReviewList'),
       },
       {
-        icon: 'person-outline',
         label: t('edit_profile'),
         onPress: () => navigation.navigate('EditProfile'),
       },
       {
-        icon: 'earth-outline',
         label: t('language'),
         onPress: () => navigation.navigate('Language'),
       },
       {
-        icon: 'exit-outline',
         label: t('log_out'),
         onPress: signOut,
       },
@@ -131,8 +119,6 @@ const Profile = () => {
             css={optionCss}
           >
             <Row align="center">
-              <Ionicons name={option.icon} size={20} color={theme.colors.c4} />
-              <Space width={6} />
               <Text size="button">{option.label}</Text>
             </Row>
             <Ionicons name="ios-chevron-forward-outline" size={20} color={theme.colors.c4} />

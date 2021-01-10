@@ -1,5 +1,4 @@
 import { GraphQLInputObjectType, GraphQLList, GraphQLString, GraphQLNonNull, GraphQLID, GraphQLBoolean } from 'graphql';
-import { startOfDay, subDays } from 'date-fns';
 import { buildSortFromArg, FILTER_CONDITION_TYPE, getObjectId } from '@entria/graphql-mongo-helpers';
 import { FilterMapping } from '@entria/graphql-mongo-helpers/lib/types';
 
@@ -12,7 +11,6 @@ export type BooksArgFilters = GraphQLArgFilter<{
   orderBy?: StatusDateOrdering[];
   search?: string;
   category?: ObjectId;
-  trending?: boolean;
 }>;
 
 export const bookFilterMapping: FilterMapping = {
@@ -42,42 +40,6 @@ export const bookFilterMapping: FilterMapping = {
   orderBy: {
     type: FILTER_CONDITION_TYPE.AGGREGATE_PIPELINE,
     pipeline: (value: StatusDateOrdering[]) => [{ $sort: buildSortFromArg(value) }],
-  },
-  trending: {
-    type: FILTER_CONDITION_TYPE.AGGREGATE_PIPELINE,
-    pipeline: (trending: boolean) => {
-      if (!trending) {
-        return [];
-      }
-
-      const today = startOfDay(new Date());
-      const start = subDays(today, 7);
-
-      return [
-        {
-          $lookup: {
-            from: 'Reading',
-            let: { bookId: '$_id' },
-            pipeline: [
-              {
-                $match: {
-                  $expr: { $eq: ['$bookId', '$$bookId'] },
-                  createdAt: { $gte: start },
-                },
-              },
-            ],
-            as: 'readings',
-          },
-        },
-        {
-          $project: {
-            readingsCount: { $size: '$readings' },
-            createdAt: 1,
-          },
-        },
-        { $sort: { readingsCount: -1, createdAt: -1 } },
-      ];
-    },
   },
 };
 
