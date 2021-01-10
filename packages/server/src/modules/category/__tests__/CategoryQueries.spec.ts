@@ -147,7 +147,7 @@ describe('CategoryQueries', () => {
           edges {
             node {
               id
-              name
+              key
             }
           }
         }
@@ -167,9 +167,9 @@ describe('CategoryQueries', () => {
     expect(result.errors).toBeUndefined();
     expect(result.data?.categories).not.toBe(null);
     expect(result.data?.categories.edges.length).toBe(3);
-    expect(result.data?.categories.edges[0].node.name).toBe(category1.name);
-    expect(result.data?.categories.edges[1].node.name).toBe(category2.name);
-    expect(result.data?.categories.edges[2].node.name).toBe(category3.name);
+    expect(result.data?.categories.edges[0].node.key).toBe(category1.key);
+    expect(result.data?.categories.edges[1].node.key).toBe(category2.key);
+    expect(result.data?.categories.edges[2].node.key).toBe(category3.key);
     expect(sanitizeTestObject(result.data)).toMatchSnapshot();
   });
 

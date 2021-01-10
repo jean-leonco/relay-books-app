@@ -6,6 +6,8 @@ import { GraphQLContext } from '../../types';
 
 import { nodeInterface, registerTypeLoader } from '../node/typeRegister';
 
+import i18n from '../../i18n';
+
 import { load } from './CategoryLoader';
 import { ICategory } from './CategoryModel';
 
@@ -18,7 +20,12 @@ const CategoryType = new GraphQLObjectType<ICategory, GraphQLContext>({
     name: {
       type: GraphQLString,
       description: 'The category name. ex: Horror',
-      resolve: (obj) => obj.name,
+      resolve: (obj) => obj.translation[i18n.language] || obj.translation['en'],
+    },
+    key: {
+      type: GraphQLString,
+      description: 'The category key. ex: horror',
+      resolve: (obj) => obj.key,
     },
     ...timestampResolver,
   }),

@@ -72,12 +72,13 @@ export const createReview = async (args: Partial<IReview> = {}) => {
 };
 
 export const createCategory = async (args: Partial<ICategory> = {}) => {
-  const { name, ...rest } = args;
+  const { key, translation, ...rest } = args;
 
   const i = getCounter('category');
 
   return new CategoryModel({
-    name: name || `category ${i}`,
+    key: key || `category_${i}`,
+    translation: translation || { en: `category ${i}` },
     ...rest,
   }).save();
 };

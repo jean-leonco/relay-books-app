@@ -10,23 +10,85 @@ import createBook from './createBook';
 import createReadingAndReview from './createReadingAndReview';
 
 const categories = [
-  'Science and Nature',
-  'Comedy',
-  'Drama',
-  'Sports',
-  'Science fiction and fantasy',
-  'History',
-  'Mystery',
-  'For kids',
-  'Romance',
-  'Horror',
+  {
+    key: 'science_and_nature',
+    translation: {
+      en: 'Science and Nature',
+      pt: 'Ciência e Natureza',
+    },
+  },
+  {
+    key: 'comedy',
+    translation: {
+      en: 'Comedy',
+      pt: 'Comédia',
+    },
+  },
+  {
+    key: 'drama',
+    translation: {
+      en: 'Drama',
+      pt: 'Drama',
+    },
+  },
+  {
+    key: 'sports',
+    translation: {
+      en: 'Sports',
+      pt: 'Esportes',
+    },
+  },
+  {
+    key: 'science_fiction_and_fantasy',
+    translation: {
+      en: 'Science fiction and fantasy',
+      pt: 'Ficção científica e fantasia',
+    },
+  },
+  {
+    key: 'history',
+    translation: {
+      en: 'History',
+      pt: 'História',
+    },
+  },
+  {
+    key: 'mystery',
+    translation: {
+      en: 'Mystery',
+      pt: 'Mistério',
+    },
+  },
+  {
+    key: 'for_kids',
+    translation: {
+      en: 'For kids',
+      pt: 'Para crianças',
+    },
+  },
+  {
+    key: 'romance',
+    translation: {
+      en: 'Romance',
+      pt: 'Romance',
+    },
+  },
+  {
+    key: 'horror',
+    translation: {
+      en: 'Horror',
+      pt: 'Terror',
+    },
+  },
 ];
 
 const runScript = async () => {
   console.log(`⏳ Seeding...\n`);
 
+  // @TODO - add dynamic way to choose this values
   const books = 10; // 100 books
   const users = 500; // 5000 users
+
   let unfinishedReadings = 0;
   let finishedReadings = 0;
 
@@ -39,8 +101,7 @@ const runScript = async () => {
   console.log('👤 Jean user created\n');
 
   for (let i = 0; i < categories.length; i++) {
-    const name = categories[i];
-    const category = await createCategory({ name });
+    const category = await createCategory({ ...categories[i] });
 
     const bookArr: IBook[] = [];
 

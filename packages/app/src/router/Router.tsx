@@ -15,7 +15,7 @@ import { RouterQuery } from './__generated__/RouterQuery.graphql';
 const routerQuery = graphql`
   query RouterQuery {
     me {
-      id
+      __typename
     }
   }
 `;
@@ -51,7 +51,7 @@ const Router = ({ resetRelayEnvironment }) => {
 
   return (
     <AuthContext.Provider value={authContext}>
-      <NavigationContainer>{data?.me?.id ? <App /> : <Auth />}</NavigationContainer>
+      <NavigationContainer>{data?.me ? <App /> : <Auth />}</NavigationContainer>
     </AuthContext.Provider>
   );
 };

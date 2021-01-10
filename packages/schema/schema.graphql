@@ -387,6 +387,9 @@ type Category implements Node {
 
   """The category name. ex: Horror"""
   name: String
+
+  """The category key. ex: horror"""
+  key: String
   createdAt: String
   updatedAt: String
 }

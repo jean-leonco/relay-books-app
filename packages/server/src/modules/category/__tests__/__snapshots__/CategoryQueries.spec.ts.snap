@@ -57,19 +57,19 @@ Object {
       Object {
         "node": Object {
           "id": "FROZEN-ID",
-          "name": "category 1",
+          "key": "category_1",
         },
       },
       Object {
         "node": Object {
           "id": "FROZEN-ID",
-          "name": "category 2",
+          "key": "category_2",
         },
       },
       Object {
         "node": Object {
           "id": "FROZEN-ID",
-          "name": "category 3",
+          "key": "category_3",
         },
       },
     ],
