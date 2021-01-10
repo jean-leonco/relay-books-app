@@ -15,6 +15,7 @@ Object {
   "data": null,
   "errors": Array [
     Object {
+      "key": "invalid_session",
       "message": "Invalid token.",
       "severity": "WARNING",
     },
@@ -27,6 +28,7 @@ Object {
   "data": null,
   "errors": Array [
     Object {
+      "key": "invalid_session",
       "message": "Invalid session.",
       "severity": "WARNING",
     },

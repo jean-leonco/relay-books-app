@@ -71,7 +71,7 @@ const SearchList = ({ category, search, ...props }: SearchListProps) => {
       showsVerticalScrollIndicator={false}
       data={data.books.edges}
       style={{ paddingVertical: 4 }}
-      keyExtractor={(item) => item.node.id}
+      keyExtractor={(item) => item.node?.id}
       renderItem={({ item }) => <SearchBook book={item?.node} />}
       onEndReached={loadMore}
       onEndReachedThreshold={0.1}

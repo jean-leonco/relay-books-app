@@ -1,5 +1,6 @@
 import React from 'react';
 import { css } from 'styled-components/native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import { InvalidSessionError, UnavailableServiceError } from '@workspace/relay';
 
@@ -16,24 +17,30 @@ interface IState {
   error: Error | InvalidSessionError | UnavailableServiceError | null;
 }
 
-interface IErrorBoundary {
+interface IErrorBoundaryProps {
   children: React.ReactNode;
+  authKey: string;
+  resetRelayEnvironment(): void;
 }
 
-class ErrorBoundary extends React.Component<IErrorBoundary> {
+class ErrorBoundary extends React.Component<IErrorBoundaryProps> {
   state: IState = { error: null };
 
-  componentDidCatch(error: Error) {
+  async componentDidCatch(error: Error) {
+    const { authKey, resetRelayEnvironment } = this.props;
+
     this.setState({ error });
+
+    if (error instanceof InvalidSessionError) {
+      await AsyncStorage.removeItem(authKey);
+      resetRelayEnvironment();
+      this.setState({ error: null });
+    }
   }
 
   render() {
     const { children } = this.props;
     const { error } = this.state;
-
-    if (error instanceof InvalidSessionError) {
-      // @TODO - do something
-    }
 
     if (error) {
       return (

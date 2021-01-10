@@ -3,7 +3,7 @@ import { RequestParameters, UploadableMap, Variables } from 'relay-runtime';
 import fetchWithRetries from './fetchWithRetries';
 import { getRequestBody, handleData, isMutation } from './helpers';
 import { GRAPHQL_URL, clientErrorStatus } from './config';
-import { clearToken, getLanguage, getToken } from './utils';
+import { getLanguage, getToken } from './utils';
 import UnavailableServiceError from './UnavailableServiceError';
 import InvalidSessionError from './InvalidSessionError';
 
@@ -42,8 +42,6 @@ const fetchQuery = async (request: RequestParameters, variables: Variables, uplo
     const data = await handleData(response);
 
     if (clientErrorStatus.includes(response.status)) {
-      await clearToken();
-      //@TODO - refecth me query using ErrorBoundary or dispatch action
       throw data.errors;
     }
 
@@ -62,9 +60,9 @@ const fetchQuery = async (request: RequestParameters, variables: Variables, uplo
 
     const timeoutRegexp = new RegExp(/Still no successful response after/);
     const serverUnavailableRegexp = new RegExp(/Failed to fetch/);
-    const invalidSessionRegexp = new RegExp(/Invalid session/);
+    const invalidSessionRegexp = new RegExp(/invalid_session/);
 
-    if (Array.isArray(err) && invalidSessionRegexp.test(err[0].message)) {
+    if (Array.isArray(err) && invalidSessionRegexp.test(err[0].key)) {
       throw new InvalidSessionError('Invalid session.');
     }
 

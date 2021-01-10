@@ -6,12 +6,16 @@ import isActiveMongooseField from '../../mongoose/isActiveMongooseField';
 
 const Schema = new mongoose.Schema(
   {
-    // @TODO - add i18n keys and slug instead of just name
-    name: {
+    key: {
       type: String,
-      description: 'The category name. ex: Horror',
+      description: 'The category key. ex: horror',
       required: true,
       index: true,
+    },
+    translation: {
+      type: Map,
+      of: String,
+      description: 'The category translation. ex: { en: Horror }',
     },
     ...isActiveMongooseField,
   },
@@ -22,7 +26,8 @@ const Schema = new mongoose.Schema(
 );
 
 export interface ICategory extends Document, IStatusSchema {
-  name: string;
+  key: string;
+  translation: Record<string, string>;
 }
 
 const CategoryModel: Model<ICategory> = mongoose.model('Category', Schema);

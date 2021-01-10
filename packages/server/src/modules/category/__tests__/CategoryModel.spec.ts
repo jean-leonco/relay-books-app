@@ -12,13 +12,15 @@ afterAll(disconnectMongoose);
 
 describe('CategoryModel', () => {
   it('should create new category using CategoryModel', async () => {
-    const name = 'science and nature';
+    const key = 'science_and_nature';
+    const translation = { en: 'science and nature' };
 
-    const category = await new CategoryModel({ name }).save();
+    const category = await new CategoryModel({ key, translation }).save();
 
     const categoryObj = await CategoryModel.findOne({ _id: category._id }).lean<ICategory>();
 
-    expect(categoryObj?.name).toBe(name);
+    expect(categoryObj?.key).toBe(key);
+    expect(categoryObj?.translation).toMatchObject(translation);
   });
 
   it('should create new category using createRow', async () => {
@@ -26,16 +28,17 @@ describe('CategoryModel', () => {
 
     const categoryObj = await CategoryModel.findOne({ _id: category._id }).lean<ICategory>();
 
-    expect(categoryObj?.name).toBe('category 0');
+    expect(categoryObj?.key).toBe('category_0');
+    expect(categoryObj?.translation).toMatchObject({ en: 'category 0' });
   });
 
   it('should create new category with custom properties', async () => {
-    const name = 'science and nature';
+    const translation = { pt: 'science and nature' };
 
-    const category = await createCategory({ name });
+    const category = await createCategory({ translation });
 
     const categoryObj = await CategoryModel.findOne({ _id: category._id }).lean<ICategory>();
 
-    expect(categoryObj?.name).toBe(name);
+    expect(categoryObj?.translation).toMatchObject(translation);
   });
 });

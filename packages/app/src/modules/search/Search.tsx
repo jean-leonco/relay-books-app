@@ -34,7 +34,7 @@ const Search = () => {
         ...CategoryDropdown_query
       }
     `,
-    { visible: isDropdownVisible },
+    {},
   );
 
   return (

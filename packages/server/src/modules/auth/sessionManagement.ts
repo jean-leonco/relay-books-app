@@ -5,17 +5,19 @@ import { t } from '../../locales/helpers';
 import { GraphQLContext } from '../../types';
 import { TOKEN_SCOPES } from '../token/TokenModel';
 
-import User, * as UserLoader from '../user/UserLoader';
+import * as UserLoader from '../user/UserLoader';
+import { IUser } from '../user/UserModel';
 
 import validateJWTToken from './validateJWTToken';
 
 interface AuthorizationHeader {
+  key: null | string;
   token: null | string;
   error: string | null;
 }
 
 export interface ContextFromTokenResult {
-  user: User | null;
+  user: IUser | null;
   error?: string | null;
   abortRequest: boolean;
   unauthorized: boolean;
@@ -24,11 +26,12 @@ export interface ContextFromTokenResult {
 
 const parseAuthorizationHeader = (token: string | null): AuthorizationHeader => {
   if (!token || token === 'null' || token === 'undefined') {
-    return { token: null, error: null };
+    return { key: null, token: null, error: null };
   }
 
   if (!token.match(/JWT /)) {
     return {
+      key: 'invalid_token',
       token: null,
       error: t('auth', 'TokenInvalid'),
     };
@@ -38,12 +41,13 @@ const parseAuthorizationHeader = (token: string | null): AuthorizationHeader => 
 
   if (cleanToken === '[object Object]') {
     return {
+      key: 'invalid_token',
       token: null,
       error: t('auth', 'TokenInvalid'),
     };
   }
 
-  return { token: cleanToken, error: null };
+  return { key: null, token: cleanToken, error: null };
 };
 
 export const getUser = async (

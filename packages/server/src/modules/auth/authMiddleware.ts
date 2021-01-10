@@ -14,7 +14,7 @@ const authMiddleware: Application.Middleware<any, GraphQLContext> = async (conte
 
     context.body = {
       data: null,
-      errors: [{ message: error || t('auth', 'InvalidSession'), severity: 'WARNING' }],
+      errors: [{ key: 'invalid_session', message: error || t('auth', 'InvalidSession'), severity: 'WARNING' }],
     };
     return;
   }
