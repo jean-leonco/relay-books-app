@@ -85,7 +85,7 @@ export const generateToken = async ({
 
 export const hasReachedMaximumNumberOfSessions = async (user: IUser, scope: TOKEN_SCOPES, numberOfSessions: number) => {
   const sessionCount = await TokenModel.countDocuments({
-    userId: user._id,
+    userId: user.id,
     scope,
     isActive: true,
     expiresIn: { $gte: new Date() },

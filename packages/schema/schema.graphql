@@ -45,24 +45,32 @@ type User implements Node {
   """mongoose _id"""
   _id: String!
 
-  """User name resolver"""
+  """The user name. Ex: Jean."""
   name: String
 
-  """User surname resolver"""
+  """The user surname. Ex: Leonço."""
   surname: String
 
-  """User name resolver"""
+  """The user full name. Ex: Jean Leonço."""
   fullName: String
 
-  """User email resolver"""
+  """The user email. Ex: jean@booksapp.com."""
   email: String
 
-  """User email resolver"""
+  """If the user email was verified."""
   emailWasVerified: String
+
+  """The user language. Ex: en."""
   lang: String
 
-  """Connection to all me reviews"""
+  """Connection to all me reviews."""
   reviews(after: String, first: Int, before: String, last: Int, filters: ReviewFilters): ReviewConnection!
+
+  """The last incomplete reading."""
+  lastIncompleteReading: Reading
+
+  """If user has a reading."""
+  hasReading: Boolean
   createdAt: String
   updatedAt: String
 }
@@ -247,6 +255,23 @@ enum DirectionEnum {
   DESC
 }
 
+"""Reading data"""
+type Reading implements Node {
+  """The ID of an object"""
+  id: ID!
+
+  """mongoose _id"""
+  _id: String!
+
+  """The book being read."""
+  book: Book
+
+  """The total read pages. ex: 50"""
+  readPages: Int
+  createdAt: String
+  updatedAt: String
+}
+
 """A connection to a list of items."""
 type BookConnection implements Connection {
   """Number of items in this connection."""
@@ -408,23 +433,6 @@ type ReadingEdge {
 
   """A cursor for use in pagination."""
   cursor: String!
-}
-
-"""Reading data"""
-type Reading implements Node {
-  """The ID of an object"""
-  id: ID!
-
-  """mongoose _id"""
-  _id: String!
-
-  """The book being read."""
-  book: Book
-
-  """The total read pages. ex: 50"""
-  readPages: Int
-  createdAt: String
-  updatedAt: String
 }
 
 """Used to filter readings"""
