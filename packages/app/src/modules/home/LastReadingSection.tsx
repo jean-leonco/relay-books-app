@@ -3,29 +3,24 @@ import { graphql, useFragment } from 'react-relay/hooks';
 import { useNavigation } from '@react-navigation/native';
 
 import MainBookCard from './MainBookCard';
-import { LastReadingSection_query$key } from './__generated__/LastReadingSection_query.graphql';
+import { LastReadingSection_user$key } from './__generated__/LastReadingSection_user.graphql';
 
 interface LastReadingSectionProps {
-  lastReading: LastReadingSection_query$key;
+  lastReading: LastReadingSection_user$key;
 }
 
 const LastReadingSection = (props: LastReadingSectionProps) => {
   const navigation = useNavigation();
 
-  const data = useFragment<LastReadingSection_query$key>(
+  const { lastIncompleteReading } = useFragment<LastReadingSection_user$key>(
     graphql`
-      fragment LastReadingSection_query on Query {
-        lastReading: readings(first: 1, filters: { finished: false })
-          @connection(key: "LastReadingSection_lastReading", filters: []) {
-          edges {
-            node {
-              id
-              readPages
-              book {
-                pages
-                ...MainBookCard_book
-              }
-            }
+      fragment LastReadingSection_user on User {
+        lastIncompleteReading {
+          id
+          readPages
+          book {
+            pages
+            ...MainBookCard_book
           }
         }
       }
@@ -33,28 +28,20 @@ const LastReadingSection = (props: LastReadingSectionProps) => {
     props.lastReading,
   );
 
-  const lastReading = useMemo(() => (data.lastReading?.edges[0] ? data.lastReading.edges[0] : null), [
-    data.lastReading,
-  ]);
-
   const percentageCompleted = useMemo(() => {
-    if (!lastReading || !lastReading.node.book) {
+    if (!lastIncompleteReading || !lastIncompleteReading.book) {
       return 0;
     }
 
-    return Number(((lastReading.node.readPages! * 100) / lastReading.node.book.pages!).toFixed(0));
-  }, [lastReading]);
+    return Number(((lastIncompleteReading.readPages! * 100) / lastIncompleteReading.book.pages!).toFixed(0));
+  }, [lastIncompleteReading]);
 
   const handlePress = useCallback(() => {
-    navigation.navigate('Reading', { id: lastReading.node.id });
-  }, [lastReading, navigation]);
+    navigation.navigate('Reading', { id: lastIncompleteReading?.id });
+  }, [lastIncompleteReading, navigation]);
 
   return (
-    <MainBookCard
-      book={data.lastReading.edges[0]?.node.book}
-      percentageCompleted={percentageCompleted}
-      onPress={handlePress}
-    />
+    <MainBookCard book={lastIncompleteReading?.book} percentageCompleted={percentageCompleted} onPress={handlePress} />
   );
 };
 

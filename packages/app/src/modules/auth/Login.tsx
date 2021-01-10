@@ -1,5 +1,5 @@
 import React from 'react';
-import { ToastAndroid, TouchableOpacity } from 'react-native';
+import { ToastAndroid, TouchableOpacity, Keyboard } from 'react-native';
 import { useMutation } from 'react-relay/hooks';
 import { FormikProvider, useFormik } from 'formik';
 import * as yup from 'yup';
@@ -47,10 +47,12 @@ const Login = () => {
             return;
           }
 
+          Keyboard.dismiss();
           signIn(UserLogin.token);
         },
         onError: (error) => {
           setSubmitting(false);
+          Keyboard.dismiss();
           ToastAndroid.show(error?.message || t('unable_to_login'), ToastAndroid.SHORT);
         },
       });

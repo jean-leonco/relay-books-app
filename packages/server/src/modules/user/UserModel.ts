@@ -9,13 +9,13 @@ const EmailSchema = new mongoose.Schema(
   {
     email: {
       type: String,
-      description: 'User email to be used on login',
+      description: 'The user email. Ex: jean@booksapp.com.',
       trim: true,
       index: true,
     },
     wasVerified: {
       type: Boolean,
-      description: 'Whether or not this email was verified',
+      description: 'If the user email was verified.',
     },
   },
   {
@@ -27,25 +27,26 @@ const Schema = new mongoose.Schema(
   {
     name: {
       type: String,
-      description: 'User name',
+      description: 'The user name. Ex: Jean.',
       trim: true,
     },
     surname: {
       type: String,
-      description: 'User surname',
+      description: 'The user surname. Ex: Leonço.',
       trim: true,
     },
     password: {
       type: String,
+      description: 'The user password.',
       hidden: true,
     },
     email: {
       type: EmailSchema,
-      description: 'E-mail of this user',
+      description: 'The user email.',
     },
     lang: {
       type: String,
-      description: 'Language of the user',
+      description: 'The user language.',
     },
     ...isActiveMongooseField,
   },

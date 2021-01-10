@@ -6,6 +6,8 @@ import { css } from 'styled-components/native';
 
 import { Column, Row, Space } from '@workspace/ui';
 
+import HomePresentationSectionShimmer from './HomePresentationSectionShimmer';
+
 const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient);
 
 const containerCss = css`
@@ -59,21 +61,7 @@ const HomeShimmer = () => {
         <Column css={spacingCss}>
           <ShimmerPlaceHolder width={95} height={18} />
           <Space height={10} />
-          <ShimmerPlaceHolder width={224} height={28} />
-          <Space height={30} />
-
-          <Row align="flex-end">
-            <Column span={11}>
-              <ShimmerPlaceHolder width={160} height={240} style={{ borderRadius: 8 }} />
-            </Column>
-            <Space width={13} />
-            <Column span={8}>
-              <ShimmerPlaceHolder width={140} height={18} />
-              <Space height={4} />
-              <ShimmerPlaceHolder width={120} height={16} />
-              <Space height={4} />
-            </Column>
-          </Row>
+          <HomePresentationSectionShimmer />
         </Column>
         <Space height={60} />
 

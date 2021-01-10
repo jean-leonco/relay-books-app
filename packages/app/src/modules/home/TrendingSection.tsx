@@ -30,8 +30,7 @@ const TrendingSection = (props: TrendingSectionProps) => {
   const data = useFragment<TrendingSection_query$key>(
     graphql`
       fragment TrendingSection_query on Query {
-        trending: books(first: 10, filters: { trending: true })
-          @connection(key: "TrendingSection_trending", filters: []) {
+        trending: books(first: 10, filters: { trending: true }) {
           edges {
             node {
               id

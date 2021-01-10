@@ -49,7 +49,6 @@ const ReadItAgain = (props: ReadItAgainProps) => {
     [],
   );
 
-  // @TODO - move this list to ui package
   return (
     <FlatList
       showsHorizontalScrollIndicator={false}

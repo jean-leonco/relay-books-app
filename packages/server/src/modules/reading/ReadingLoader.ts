@@ -53,6 +53,60 @@ export const loadMeCanReview = async (context: GraphQLContext, book: IBook) => {
   return hasReadingAndDoesntHaveReview && hasReadAllBook;
 };
 
+export const loadMeLastIncompleteReading = async (context: GraphQLContext) => {
+  const { user } = context;
+
+  if (!user) {
+    return null;
+  }
+
+  const reading = await ReadingModel.aggregate<IReading>([
+    {
+      $match: {
+        userId: getObjectId(user.id),
+      },
+    },
+    {
+      $lookup: {
+        from: 'Book',
+        localField: 'bookId',
+        foreignField: '_id',
+        as: 'book',
+      },
+    },
+    { $unwind: '$book' },
+    {
+      $match: {
+        $expr: {
+          $lt: ['$readPages', '$book.pages'],
+        },
+      },
+    },
+    {
+      $sort: { createdAt: -1 },
+    },
+    { $limit: 1 },
+  ]);
+
+  if (reading.length === 0) {
+    return null;
+  }
+
+  return reading[0];
+};
+
+export const loadMeHasReading = async (context: GraphQLContext) => {
+  const { user } = context;
+
+  if (!user) {
+    return false;
+  }
+
+  const readingCount = await ReadingModel.countDocuments({ userId: user.id });
+
+  return readingCount > 0;
+};
+
 export { getLoader, clearCache, load, loadAll };
 
 export default Reading;

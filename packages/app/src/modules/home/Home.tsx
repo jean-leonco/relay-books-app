@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { ScrollView, TouchableOpacity } from 'react-native';
 import { graphql, useLazyLoadQuery } from 'react-relay/hooks';
 import { css } from 'styled-components/native';
@@ -8,11 +8,11 @@ import { Column, Row, Space, Text } from '@workspace/ui';
 
 import useTranslation from '../../locales/useTranslation';
 
-import LastReadingSection from './LastReadingSection';
+import HomePresentationSection from './HomePresentationSection';
+import HomePresentationSectionShimmer from './HomePresentationSectionShimmer';
 import LibrarySection from './LibrarySection';
 import ReleasesSection from './ReleasesSection';
 import TrendingSection from './TrendingSection';
-import TodaysSuggestion from './TodaysSuggestion';
 
 import { HomeQuery } from './__generated__/HomeQuery.graphql';
 
@@ -35,12 +35,9 @@ const Home = () => {
       query HomeQuery {
         me {
           name
+          hasReading
         }
-        readings(first: 10) {
-          count
-        }
-        ...LastReadingSection_query
-        ...TodaysSuggestion_query
+        ...HomePresentationSection_query
         ...LibrarySection_query
         ...ReleasesSection_query
         ...TrendingSection_query
@@ -57,16 +54,13 @@ const Home = () => {
             {t('hello_name', { name: data.me?.name })}
           </Text>
           <Space height={10} />
-          <Text size="title" weight="bold">
-            {data.readings?.count ? t('continue_reading') : t('todays_suggestion')}
-          </Text>
-          <Space height={30} />
-          {/* @TODO - just query today's suggestion if there is not readings */}
-          {data.readings?.count ? <LastReadingSection lastReading={data} /> : <TodaysSuggestion suggestion={data} />}
+          <Suspense fallback={<HomePresentationSectionShimmer />}>
+            <HomePresentationSection query={data} />
+          </Suspense>
         </Column>
         <Space height={60} />
 
-        {!!data.readings?.count && (
+        {data.me?.hasReading && (
           <>
             <Row align="center" justify="space-between" css={spacingCss}>
               <Text size="button">{t('my_library')}</Text>

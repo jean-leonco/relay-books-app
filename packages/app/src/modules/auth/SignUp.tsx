@@ -1,6 +1,6 @@
 import React from 'react';
 import { useMutation } from 'react-relay/hooks';
-import { ToastAndroid, TouchableOpacity } from 'react-native';
+import { ToastAndroid, TouchableOpacity, Keyboard } from 'react-native';
 import { FormikProvider, useFormik } from 'formik';
 import * as yup from 'yup';
 import { css } from 'styled-components/native';
@@ -49,10 +49,12 @@ const SignUp = () => {
             return;
           }
 
+          Keyboard.dismiss();
           signIn(UserRegistration.token);
         },
         onError: (error) => {
           setSubmitting(false);
+          Keyboard.dismiss();
           ToastAndroid.show(error?.message || t('unable_to_create_account'), ToastAndroid.SHORT);
         },
       });

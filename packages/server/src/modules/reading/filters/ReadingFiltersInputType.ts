@@ -20,6 +20,8 @@ export const readingFilterMapping: FilterMapping = {
   finished: {
     type: FILTER_CONDITION_TYPE.AGGREGATE_PIPELINE,
     pipeline: (finished: boolean) => {
+      const expressionOperator = finished ? '$eq' : '$lt';
+
       return [
         {
           $lookup: {
@@ -31,19 +33,10 @@ export const readingFilterMapping: FilterMapping = {
         },
         { $unwind: '$book' },
         {
-          $project: {
-            finished: {
-              $switch: {
-                branches: [{ case: { $eq: ['$readPages', '$book.pages'] }, then: true }],
-                default: false,
-              },
-            },
-          },
-        },
-        // @TODO - discover why the match directly is not working { $match: { readPages: '$book.pages' } }
-        {
           $match: {
-            finished,
+            $expr: {
+              [expressionOperator]: ['$readPages', '$book.pages'],
+            },
           },
         },
       ];
