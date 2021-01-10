@@ -8,6 +8,8 @@ import { BottomSheet, Column, FlatListLoader, Space } from '@workspace/ui';
 
 import ReviewCard from '../review/ReviewCard';
 
+import useKeyExtractor from '../common/useKeyExtractor';
+
 import { BookDetailsQuery } from './__generated__/BookDetailsQuery.graphql';
 import { BookDetailsPaginationQuery } from './__generated__/BookDetailsPaginationQuery.graphql';
 import { BookDetails_book$key } from './__generated__/BookDetails_book.graphql';
@@ -77,6 +79,9 @@ const BookDetails = () => {
     setBottomSheetOpen(false);
   }, []);
 
+  const renderCard = useCallback(({ item }) => <ReviewCard query={item?.node} />, []);
+  const keyExtractor = useKeyExtractor();
+
   return (
     <Column flex={1} css={containerCss}>
       <StatusBar
@@ -89,9 +94,9 @@ const BookDetails = () => {
         ListHeaderComponent={<BookInfo query={query.book} />}
         showsVerticalScrollIndicator={false}
         data={data?.reviews?.edges}
-        keyExtractor={(item) => item.node?.id}
+        keyExtractor={keyExtractor}
         style={{ marginBottom: 14 }}
-        renderItem={({ item }) => <ReviewCard query={item?.node} />}
+        renderItem={renderCard}
         onEndReached={loadMore}
         onEndReachedThreshold={0.1}
         ListFooterComponent={

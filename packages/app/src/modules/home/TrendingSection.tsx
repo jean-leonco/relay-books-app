@@ -1,9 +1,11 @@
 import React, { useCallback } from 'react';
-import { FlatList, ListRenderItem } from 'react-native';
+import { FlatList } from 'react-native';
 import { graphql, useFragment } from 'react-relay/hooks';
 import { css, useTheme } from 'styled-components/native';
 
 import { BookCard, Column, Text } from '@workspace/ui';
+
+import useKeyExtractor from '../common/useKeyExtractor';
 
 import { TrendingSection_query$key } from './__generated__/TrendingSection_query.graphql';
 
@@ -45,7 +47,7 @@ const TrendingSection = (props: TrendingSectionProps) => {
 
   const theme = useTheme();
 
-  const renderCard = useCallback<ListRenderItem<typeof data.trending.edges[0]>>(
+  const renderCard = useCallback(
     ({ index, item }) => (
       <Column style={{ position: 'relative' }}>
         <BookCard index={index} query={item?.node} showName={false} containerCss={bookCss} bannerCss={bookBannerCss} />
@@ -66,6 +68,7 @@ const TrendingSection = (props: TrendingSectionProps) => {
     ),
     [theme.colors.black],
   );
+  const keyExtractor = useKeyExtractor();
 
   return (
     <FlatList
@@ -73,7 +76,7 @@ const TrendingSection = (props: TrendingSectionProps) => {
       horizontal
       style={{ paddingVertical: 10 }}
       data={data.trending.edges}
-      keyExtractor={(item) => item?.node?.id}
+      keyExtractor={keyExtractor}
       renderItem={renderCard}
     />
   );

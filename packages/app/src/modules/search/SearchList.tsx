@@ -5,8 +5,9 @@ import { graphql, usePaginationFragment } from 'react-relay/hooks';
 import { FlatListLoader } from '@workspace/ui';
 import { useTransition } from '@workspace/relay';
 
-import SearchBook from './SearchBook';
+import useKeyExtractor from '../common/useKeyExtractor';
 
+import SearchBook from './SearchBook';
 import {
   SearchListRefetchQuery,
   SearchListRefetchQueryVariables,
@@ -66,13 +67,16 @@ const SearchList = ({ category, search, ...props }: SearchListProps) => {
     });
   }, [search, category, refetch]);
 
+  const renderCard = useCallback(({ item }) => <SearchBook book={item?.node} />, []);
+  const keyExtractor = useKeyExtractor();
+
   return (
     <FlatList
       showsVerticalScrollIndicator={false}
       data={data.books.edges}
       style={{ paddingVertical: 4 }}
-      keyExtractor={(item) => item.node?.id}
-      renderItem={({ item }) => <SearchBook book={item?.node} />}
+      keyExtractor={keyExtractor}
+      renderItem={renderCard}
       onEndReached={loadMore}
       onEndReachedThreshold={0.1}
       ListFooterComponent={isLoadingNext ? <FlatListLoader height={60} /> : null}

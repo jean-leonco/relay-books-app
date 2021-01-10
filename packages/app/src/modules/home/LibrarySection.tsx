@@ -1,8 +1,10 @@
 import React, { useCallback } from 'react';
-import { FlatList, ListRenderItem } from 'react-native';
+import { FlatList } from 'react-native';
 import { graphql, useFragment } from 'react-relay/hooks';
 
 import { BookCard } from '@workspace/ui';
+
+import useKeyExtractor from '../common/useKeyExtractor';
 
 import { LibrarySection_query$key } from './__generated__/LibrarySection_query.graphql';
 
@@ -30,10 +32,8 @@ const LibrarySection = (props: LibrarySectionProps) => {
     props.readings,
   );
 
-  const renderCard = useCallback<ListRenderItem<typeof data.readings.edges[0]>>(
-    ({ index, item }) => <BookCard index={index} query={item?.node.book} />,
-    [],
-  );
+  const renderCard = useCallback(({ index, item }) => <BookCard index={index} query={item?.node.book} />, []);
+  const keyExtractor = useKeyExtractor();
 
   return (
     <FlatList
@@ -41,7 +41,7 @@ const LibrarySection = (props: LibrarySectionProps) => {
       horizontal
       style={{ paddingVertical: 10 }}
       data={data.readings.edges}
-      keyExtractor={(item) => item.node.id}
+      keyExtractor={keyExtractor}
       renderItem={renderCard}
     />
   );

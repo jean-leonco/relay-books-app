@@ -1,8 +1,10 @@
 import React, { useCallback } from 'react';
-import { FlatList, ListRenderItem } from 'react-native';
+import { FlatList } from 'react-native';
 import { graphql, usePaginationFragment } from 'react-relay/hooks';
 
 import { FlatListLoader } from '@workspace/ui';
+
+import useKeyExtractor from '../common/useKeyExtractor';
 
 import ReadingCard from './ReadingCard';
 import { ContinueReading_query$key } from './__generated__/ContinueReading_query.graphql';
@@ -42,17 +44,15 @@ const ContinueReading = (props: ContinueReadingProps) => {
     loadNext(10);
   }, [isLoadingNext, loadNext, hasNext]);
 
-  const renderCard = useCallback<ListRenderItem<typeof data.unfinished.edges[0]>>(
-    ({ index, item }) => <ReadingCard query={item.node} index={index} />,
-    [],
-  );
+  const renderCard = useCallback(({ index, item }) => <ReadingCard query={item.node} index={index} />, []);
+  const keyExtractor = useKeyExtractor();
 
   return (
     <FlatList
       showsVerticalScrollIndicator={false}
       style={{ paddingHorizontal: 16 }}
       data={data.unfinished.edges}
-      keyExtractor={(item) => item?.node?.id}
+      keyExtractor={keyExtractor}
       renderItem={renderCard}
       onEndReached={loadMore}
       onEndReachedThreshold={0.1}

@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { FlatList, ListRenderItem } from 'react-native';
+import { FlatList } from 'react-native';
 import { graphql, useLazyLoadQuery, usePaginationFragment } from 'react-relay/hooks';
 import { css } from 'styled-components';
 import { useNavigation } from '@react-navigation/native';
@@ -7,6 +7,8 @@ import { useNavigation } from '@react-navigation/native';
 import { Column, FlatListLoader, Text } from '@workspace/ui';
 
 import useTranslation from '../../locales/useTranslation';
+
+import useKeyExtractor from '../common/useKeyExtractor';
 
 import { ReviewListQuery } from './__generated__/ReviewListQuery.graphql';
 import { ReviewListPaginationQuery } from './__generated__/ReviewListPaginationQuery.graphql';
@@ -67,12 +69,13 @@ const ReviewList = () => {
     loadNext(10);
   }, [isLoadingNext, loadNext, hasNext]);
 
-  const renderCard = useCallback<ListRenderItem<typeof data.reviews.edges[0]>>(
+  const renderCard = useCallback(
     ({ item }) => (
       <ReviewCard query={item?.node} onPress={() => navigation.navigate('ReviewEdit', { id: item?.node?.id })} />
     ),
     [navigation],
   );
+  const keyExtractor = useKeyExtractor();
 
   return (
     <Column flex={1} css={containerCss}>
@@ -84,7 +87,7 @@ const ReviewList = () => {
         }
         showsVerticalScrollIndicator={false}
         data={data?.reviews.edges}
-        keyExtractor={(item) => item?.node?.id}
+        keyExtractor={keyExtractor}
         renderItem={renderCard}
         onEndReached={loadMore}
         onEndReachedThreshold={0.1}

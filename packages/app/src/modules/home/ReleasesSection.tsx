@@ -1,8 +1,10 @@
 import React, { useCallback } from 'react';
-import { FlatList, ListRenderItem } from 'react-native';
+import { FlatList } from 'react-native';
 import { graphql, usePaginationFragment } from 'react-relay/hooks';
 
 import { BookCard, FlatListLoader } from '@workspace/ui';
+
+import useKeyExtractor from '../common/useKeyExtractor';
 
 import { ReleasesSectionPaginationQuery } from './__generated__/ReleasesSectionPaginationQuery.graphql';
 import { ReleasesSection_query$key } from './__generated__/ReleasesSection_query.graphql';
@@ -40,10 +42,8 @@ const ReleasesSection = (props: ReleasesSectionProps) => {
     loadNext(10);
   }, [isLoadingNext, loadNext, hasNext]);
 
-  const renderCard = useCallback<ListRenderItem<typeof data.releases.edges[0]>>(
-    ({ index, item }) => <BookCard index={index} query={item?.node} />,
-    [],
-  );
+  const renderCard = useCallback(({ index, item }) => <BookCard index={index} query={item?.node} />, []);
+  const keyExtractor = useKeyExtractor();
 
   return (
     <FlatList
@@ -51,7 +51,7 @@ const ReleasesSection = (props: ReleasesSectionProps) => {
       horizontal
       style={{ paddingVertical: 10 }}
       data={data.releases.edges}
-      keyExtractor={(item) => item?.node?.id}
+      keyExtractor={keyExtractor}
       renderItem={renderCard}
       onEndReached={loadMore}
       onEndReachedThreshold={0.1}
