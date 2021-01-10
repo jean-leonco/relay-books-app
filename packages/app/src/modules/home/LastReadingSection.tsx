@@ -17,18 +17,7 @@ const LastReadingSection = (props: LastReadingSectionProps) => {
       fragment LastReadingSection_query on Query {
         lastReading: readings(first: 1, filters: { finished: false })
           @connection(key: "LastReadingSection_lastReading", filters: []) {
-          count
-          totalCount
-          endCursorOffset
-          startCursorOffset
-          pageInfo {
-            hasNextPage
-            hasPreviousPage
-            startCursor
-            endCursor
-          }
           edges {
-            cursor
             node {
               id
               readPages

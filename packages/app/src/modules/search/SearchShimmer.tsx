@@ -29,7 +29,7 @@ const SearchShimmer = () => {
       <FlatList
         showsVerticalScrollIndicator={false}
         data={data}
-        keyExtractor={(item, index) => String(index)}
+        keyExtractor={(_item, index) => String(index)}
         renderItem={() => (
           <Row align="center" style={{ marginVertical: 10 }}>
             <ShimmerPlaceHolder width={90} height={110} style={{ borderRadius: 8 }} />

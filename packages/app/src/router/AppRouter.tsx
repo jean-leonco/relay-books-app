@@ -19,6 +19,7 @@ import ReviewAdd from '../modules/review/ReviewAdd';
 import ReviewEdit from '../modules/review/ReviewEdit';
 import ReviewList from '../modules/review/ReviewList';
 import EditProfile from '../modules/profile/EditProfile';
+import Language from '../modules/language/Language';
 
 const Tab = createBottomTabNavigator();
 
@@ -103,6 +104,7 @@ const App = () => {
       <Stack.Screen name="ReviewEdit" component={ReviewEdit} />
       <Stack.Screen name="ReviewList" component={ReviewList} />
       <Stack.Screen name="EditProfile" component={EditProfile} />
+      <Stack.Screen name="Language" component={Language} />
     </Stack.Navigator>
   );
 };

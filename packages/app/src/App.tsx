@@ -3,10 +3,12 @@ import React, { useCallback, useState } from 'react';
 import { StatusBar } from 'react-native';
 import { RelayEnvironmentProvider } from 'react-relay/hooks';
 import { ThemeProvider } from 'styled-components';
+import { I18nextProvider } from 'react-i18next';
 
 import { ErrorBoundary, theme } from '@workspace/ui';
 import { createRelayEnvironment } from '@workspace/relay';
 
+import i18n from './i18n';
 import Router from './router/Router';
 import SuspenseFallback from './modules/common/SuspenseFallback';
 
@@ -20,13 +22,15 @@ const App = () => {
   return (
     <RelayEnvironmentProvider environment={relayEnvironment}>
       <StatusBar backgroundColor={theme.colors.statusBar} barStyle="dark-content" />
-      <ThemeProvider theme={theme}>
-        <ErrorBoundary>
-          <React.Suspense fallback={<SuspenseFallback />}>
-            <Router resetRelayEnvironment={resetRelayEnvironment} />
-          </React.Suspense>
-        </ErrorBoundary>
-      </ThemeProvider>
+      <I18nextProvider i18n={i18n}>
+        <ThemeProvider theme={theme}>
+          <ErrorBoundary>
+            <React.Suspense fallback={<SuspenseFallback />}>
+              <Router resetRelayEnvironment={resetRelayEnvironment} />
+            </React.Suspense>
+          </ErrorBoundary>
+        </ThemeProvider>
+      </I18nextProvider>
     </RelayEnvironmentProvider>
   );
 };

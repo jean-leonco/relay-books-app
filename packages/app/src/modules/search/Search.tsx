@@ -6,6 +6,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import { Column, Space, Text, TextInput } from '@workspace/ui';
 
+import useTranslation from '../../locales/useTranslation';
+
 import { SearchQuery } from './__generated__/SearchQuery.graphql';
 
 import CategoryDropdown from './CategoryDropdown';
@@ -20,6 +22,8 @@ const Search = () => {
   const [searchValue, setSearchValue] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<any>(null);
   const [isDropdownVisible, setDropdownVisible] = useState(false);
+
+  const { t } = useTranslation();
 
   const theme = useTheme();
 
@@ -39,14 +43,14 @@ const Search = () => {
         <TextInput
           value={searchValue}
           onChangeText={setSearchValue}
-          placeholder="Search for movie, author, etc."
+          placeholder={t('search_for_bool_author_etc')}
           showErrorContainer={false}
           icon={<Ionicons name="ios-search-outline" size={20} color={theme.colors.c3} />}
         />
         <Space height={10} />
         <TouchableOpacity onPress={() => setDropdownVisible(true)}>
           <Text size="label" color="c5">
-            {selectedCategory ? `Category: ${selectedCategory.name}` : 'All Categories'}
+            {selectedCategory ? t('category_', { category: selectedCategory.name }) : t('all_categories')}
           </Text>
         </TouchableOpacity>
       </Column>

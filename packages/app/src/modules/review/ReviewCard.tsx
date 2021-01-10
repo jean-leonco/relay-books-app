@@ -4,6 +4,8 @@ import { css, DefaultTheme, FlattenInterpolation, FlattenSimpleInterpolation, Th
 
 import { Column, Row, Space, Text } from '@workspace/ui';
 
+import useTranslation from '../../locales/useTranslation';
+
 import Rating from '../rating/Rating';
 
 import { ReviewCard_review$key } from './__generated__/ReviewCard_review.graphql';
@@ -19,13 +21,22 @@ interface ReviewCardProps {
 }
 
 const ReviewCard = ({ query, cardCss, onPress, ...props }: ReviewCardProps) => {
-  const data = useFragment<ReviewCard_review$key>(
+  const { t } = useTranslation();
+
+  const { book, user, ...data } = useFragment<ReviewCard_review$key>(
     graphql`
-      fragment ReviewCard_review on Review {
+      fragment ReviewCard_review on Review
+      @argumentDefinitions(
+        hasUserName: { type: Boolean, defaultValue: false }
+        hasBookName: { type: Boolean, defaultValue: false }
+      ) {
         rating
         description
-        user {
+        user @include(if: $hasUserName) {
           fullName
+        }
+        book @include(if: $hasBookName) {
+          name
         }
       }
     `,
@@ -45,14 +56,14 @@ const ReviewCard = ({ query, cardCss, onPress, ...props }: ReviewCardProps) => {
     <Column css={columnCss} touchable={!!onPress} onPress={onPress} {...props}>
       <Row align="center">
         <Text size="label" color="c5">
-          {data.user?.fullName}
+          {book?.name ? book.name : user?.fullName}
         </Text>
         <Space width={20} />
         <Rating initialRating={data.rating} size={14} disabled />
       </Row>
       <Space height={8} />
       <Text color="c3" italic={!data.description}>
-        {data.description || 'No description'}
+        {data.description || t('no_description')}
       </Text>
     </Column>
   );

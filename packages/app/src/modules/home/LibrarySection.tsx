@@ -1,5 +1,5 @@
-import React from 'react';
-import { FlatList } from 'react-native';
+import React, { useCallback } from 'react';
+import { FlatList, ListRenderItem } from 'react-native';
 import { graphql, useFragment } from 'react-relay/hooks';
 
 import { BookCard } from '@workspace/ui';
@@ -15,18 +15,7 @@ const LibrarySection = (props: LibrarySectionProps) => {
     graphql`
       fragment LibrarySection_query on Query {
         readings(first: 10) @connection(key: "LibrarySection_readings", filters: []) {
-          count
-          totalCount
-          endCursorOffset
-          startCursorOffset
-          pageInfo {
-            hasNextPage
-            hasPreviousPage
-            startCursor
-            endCursor
-          }
           edges {
-            cursor
             node {
               id
               book {
@@ -41,6 +30,11 @@ const LibrarySection = (props: LibrarySectionProps) => {
     props.readings,
   );
 
+  const renderCard = useCallback<ListRenderItem<typeof data.readings.edges[0]>>(
+    ({ index, item }) => <BookCard index={index} query={item?.node.book} />,
+    [],
+  );
+
   return (
     <FlatList
       showsHorizontalScrollIndicator={false}
@@ -48,7 +42,7 @@ const LibrarySection = (props: LibrarySectionProps) => {
       style={{ paddingVertical: 10 }}
       data={data.readings.edges}
       keyExtractor={(item) => item.node.id}
-      renderItem={({ item, index }) => <BookCard index={index} book={item?.node.book} />}
+      renderItem={renderCard}
     />
   );
 };

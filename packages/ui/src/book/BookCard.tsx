@@ -25,7 +25,7 @@ const Banner = styled.Image<{ css?: FlattenSimpleInterpolation }>`
 `;
 
 interface BookCardProps {
-  book: BookCard_book$key;
+  query: BookCard_book$key;
   index: number;
   containerCss?: FlattenSimpleInterpolation;
   bannerCss?: FlattenSimpleInterpolation;
@@ -44,7 +44,7 @@ const BookCard = ({ containerCss, bannerCss, showName = true, route = 'Book', ..
         bannerUrl
       }
     `,
-    props.book,
+    props.query,
   );
 
   return (

@@ -7,6 +7,7 @@ import { useTheme } from 'styled-components';
 
 import { Column, Row, Space, Text } from '@workspace/ui';
 
+import useTranslation from '../../locales/useTranslation';
 import useRouterAuth from '../../router/useRouterAuth';
 
 import { ProfileQuery } from './__generated__/ProfileQuery.graphql';
@@ -37,6 +38,7 @@ const optionCss = css`
 `;
 
 const Profile = () => {
+  const { t } = useTranslation();
   const { signOut } = useRouterAuth();
 
   const navigation = useNavigation();
@@ -68,21 +70,26 @@ const Profile = () => {
     () => [
       {
         icon: 'file-tray',
-        label: 'My Reviews',
+        label: t('my_reviews'),
         onPress: () => navigation.navigate('ReviewList'),
       },
       {
         icon: 'person-outline',
-        label: 'Edit Profile',
+        label: t('edit_profile'),
         onPress: () => navigation.navigate('EditProfile'),
       },
       {
+        icon: 'earth-outline',
+        label: t('language'),
+        onPress: () => navigation.navigate('Language'),
+      },
+      {
         icon: 'exit-outline',
-        label: 'Log out',
+        label: t('log_out'),
         onPress: signOut,
       },
     ],
-    [navigation, signOut],
+    [navigation, signOut, t],
   );
 
   const theme = useTheme();
@@ -99,7 +106,7 @@ const Profile = () => {
             {data.me?.reviews.count}
           </Text>
           <Text size="label" color="c3">
-            Reviews
+            {t('reviews')}
           </Text>
         </Column>
         <Separator />
@@ -108,7 +115,7 @@ const Profile = () => {
             {data.readings.count}
           </Text>
           <Text size="label" color="c3">
-            Read Books
+            {t('read_books')}
           </Text>
         </Column>
       </Row>

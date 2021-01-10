@@ -6,6 +6,8 @@ import { css } from 'styled-components/native';
 
 import { Column, Row, Space } from '@workspace/ui';
 
+import useTranslation from '../../locales/useTranslation';
+
 const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient);
 
 const containerCss = css`
@@ -31,7 +33,7 @@ const ReadItAgain = ({ containerWidth = 120, bannerSize = { width: 110, height: 
     horizontal
     style={{ paddingVertical: 10 }}
     data={data}
-    keyExtractor={(item, index) => String(index)}
+    keyExtractor={(_item, index) => String(index)}
     renderItem={({ index }) => (
       <Column style={{ width: containerWidth, marginLeft: index === 0 ? 12 : 0 }}>
         <ShimmerPlaceHolder width={bannerSize.width} height={bannerSize.height} style={{ borderRadius: 8 }} />
@@ -47,7 +49,7 @@ const ContinueReading = () => (
     showsVerticalScrollIndicator={false}
     style={{ paddingHorizontal: 16 }}
     data={data}
-    keyExtractor={(item, index) => String(index)}
+    keyExtractor={(_item, index) => String(index)}
     renderItem={() => (
       <Row align="flex-end" style={{ marginVertical: 10 }}>
         <ShimmerPlaceHolder width={90} height={110} style={{ borderRadius: 8 }} />
@@ -66,12 +68,14 @@ const ContinueReading = () => (
 );
 
 const LibraryShimmer = () => {
+  const { t } = useTranslation();
+
   const list = useMemo(
     () => [
-      { title: 'Read it again', render: () => <ReadItAgain /> },
-      { title: 'Continue Reading', render: () => <ContinueReading /> },
+      { title: t('read_it_again'), render: () => <ReadItAgain /> },
+      { title: t('continue_reading'), render: () => <ContinueReading /> },
     ],
-    [],
+    [t],
   );
 
   return (

@@ -6,6 +6,8 @@ import { useNavigation } from '@react-navigation/native';
 
 import { Column, FlatListLoader, Text } from '@workspace/ui';
 
+import useTranslation from '../../locales/useTranslation';
+
 import { ReviewListQuery } from './__generated__/ReviewListQuery.graphql';
 import { ReviewListPaginationQuery } from './__generated__/ReviewListPaginationQuery.graphql';
 import { ReviewList_user$key } from './__generated__/ReviewList_user.graphql';
@@ -22,6 +24,8 @@ const titleCss = css`
 `;
 
 const ReviewList = () => {
+  const { t } = useTranslation();
+
   const navigation = useNavigation();
 
   const { me } = useLazyLoadQuery<ReviewListQuery>(
@@ -47,7 +51,7 @@ const ReviewList = () => {
           edges {
             node {
               id
-              ...ReviewCard_review
+              ...ReviewCard_review @arguments(hasBookName: true)
             }
           }
         }
@@ -75,7 +79,7 @@ const ReviewList = () => {
       <FlatList
         ListHeaderComponent={
           <Text size="title" weight="bold" css={titleCss}>
-            My Reviews
+            {t('my_reviews')}
           </Text>
         }
         showsVerticalScrollIndicator={false}

@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, ListRenderItem } from 'react-native';
 import { graphql, usePaginationFragment } from 'react-relay/hooks';
 
 import { BookCard, FlatListLoader } from '@workspace/ui';
@@ -40,14 +40,19 @@ const ReleasesSection = (props: ReleasesSectionProps) => {
     loadNext(10);
   }, [isLoadingNext, loadNext, hasNext]);
 
+  const renderCard = useCallback<ListRenderItem<typeof data.releases.edges[0]>>(
+    ({ index, item }) => <BookCard index={index} query={item?.node} />,
+    [],
+  );
+
   return (
     <FlatList
       showsHorizontalScrollIndicator={false}
       horizontal
       style={{ paddingVertical: 10 }}
       data={data.releases.edges}
-      keyExtractor={(item) => item?.node.id}
-      renderItem={({ item, index }) => <BookCard index={index} book={item?.node} />}
+      keyExtractor={(item) => item?.node?.id}
+      renderItem={renderCard}
       onEndReached={loadMore}
       onEndReachedThreshold={0.1}
       ListFooterComponent={isLoadingNext ? <FlatListLoader /> : null}

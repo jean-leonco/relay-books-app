@@ -54,19 +54,10 @@ const BookDetails = () => {
       @argumentDefinitions(first: { type: Int, defaultValue: 10 }, after: { type: String })
       @refetchable(queryName: "BookDetailsPaginationQuery") {
         reviews(first: $first, after: $after) @connection(key: "BookDetails_reviews", filters: []) {
-          endCursorOffset
-          startCursorOffset
-          count
-          pageInfo {
-            hasNextPage
-            hasPreviousPage
-            startCursor
-            endCursor
-          }
           edges {
             node {
               id
-              ...ReviewCard_review
+              ...ReviewCard_review @arguments(hasUserName: true)
             }
           }
         }
@@ -97,10 +88,10 @@ const BookDetails = () => {
         onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: false })}
         ListHeaderComponent={<BookInfo query={query.book} />}
         showsVerticalScrollIndicator={false}
-        data={data.reviews.edges}
-        keyExtractor={(item) => item.node.id}
+        data={data?.reviews?.edges}
+        keyExtractor={(item) => item.node?.id}
         style={{ marginBottom: 14 }}
-        renderItem={({ item }) => <ReviewCard query={item.node} />}
+        renderItem={({ item }) => <ReviewCard query={item?.node} />}
         onEndReached={loadMore}
         onEndReachedThreshold={0.1}
         ListFooterComponent={
