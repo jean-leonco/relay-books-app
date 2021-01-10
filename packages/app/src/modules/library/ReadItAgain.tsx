@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, ListRenderItem } from 'react-native';
 import { graphql, usePaginationFragment } from 'react-relay/hooks';
 
 import { BookCard, FlatListLoader } from '@workspace/ui';
@@ -22,18 +22,7 @@ const ReadItAgain = (props: ReadItAgainProps) => {
       @refetchable(queryName: "ReadItAgainPaginationQuery") {
         finished: readings(first: $first, after: $after, filters: { finished: true })
           @connection(key: "ReadItAgain_finished", filters: []) {
-          count
-          totalCount
-          endCursorOffset
-          startCursorOffset
-          pageInfo {
-            hasNextPage
-            hasPreviousPage
-            startCursor
-            endCursor
-          }
           edges {
-            cursor
             node {
               id
               book {
@@ -55,6 +44,11 @@ const ReadItAgain = (props: ReadItAgainProps) => {
     loadNext(10);
   }, [isLoadingNext, loadNext, hasNext]);
 
+  const renderCard = useCallback<ListRenderItem<typeof data.finished.edges[0]>>(
+    ({ index, item }) => <BookCard index={index} query={item?.node.book} />,
+    [],
+  );
+
   // @TODO - move this list to ui package
   return (
     <FlatList
@@ -62,8 +56,8 @@ const ReadItAgain = (props: ReadItAgainProps) => {
       horizontal
       style={{ paddingVertical: 10 }}
       data={data.finished.edges}
-      keyExtractor={(item) => item.node.id}
-      renderItem={({ item, index }) => <BookCard index={index} book={item?.node.book} />}
+      keyExtractor={(item) => item?.node?.id}
+      renderItem={renderCard}
       onEndReached={loadMore}
       onEndReachedThreshold={0.1}
       ListFooterComponent={isLoadingNext ? <FlatListLoader height={60} /> : null}

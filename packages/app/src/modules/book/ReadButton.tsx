@@ -6,6 +6,8 @@ import { useNavigation } from '@react-navigation/native';
 
 import { Button } from '@workspace/ui';
 
+import useTranslation from '../../locales/useTranslation';
+
 import { ReadingAdd, readingAddUpdater } from './mutations/ReadingAddMutation';
 import { ReadingAddMutation } from './mutations/__generated__/ReadingAddMutation.graphql';
 import { ReadItAgain, readItAgainUpdater } from './mutations/ReadItAgainMutation';
@@ -27,6 +29,8 @@ interface ReadButtonProps {
 
 const ReadButton = ({ bookId, ...props }: ReadButtonProps) => {
   const [isSubmitting, setSubmitting] = useState(false);
+
+  const { t } = useTranslation();
 
   const [readingAdd] = useMutation<ReadingAddMutation>(ReadingAdd);
   const [readItAgain] = useMutation<ReadItAgainMutation>(ReadItAgain);
@@ -60,25 +64,25 @@ const ReadButton = ({ bookId, ...props }: ReadButtonProps) => {
 
   const label = useMemo(() => {
     if (data.readings.count === 0) {
-      return 'Start Reading';
+      return t('start_reading');
     }
 
     if (reading?.readPages < reading?.book.pages) {
-      return 'Continue to Read';
+      return t('continue_to_read');
     } else if (reading?.readPages >= reading?.book.pages) {
-      return 'Read It Again';
+      return t('read_it_again');
     }
-  }, [data.readings, reading]);
+  }, [data.readings.count, reading, t]);
 
   const handlePress = useCallback(() => {
-    if (label === 'Start Reading') {
+    if (label === t('start_reading')) {
       readingAdd({
         variables: { input: { bookId } },
         onCompleted: ({ ReadingAdd }) => {
           setSubmitting(false);
 
           if (!ReadingAdd || ReadingAdd.error) {
-            ToastAndroid.show(ReadingAdd?.error || 'Unable to create reading', ToastAndroid.SHORT);
+            ToastAndroid.show(ReadingAdd?.error || t('unable_to_create_reading'), ToastAndroid.SHORT);
             return;
           }
 
@@ -86,11 +90,11 @@ const ReadButton = ({ bookId, ...props }: ReadButtonProps) => {
         },
         onError: (error) => {
           setSubmitting(false);
-          ToastAndroid.show(error?.message || 'Unable to create reading', ToastAndroid.SHORT);
+          ToastAndroid.show(error?.message || t('unable_to_create_reading'), ToastAndroid.SHORT);
         },
         updater: readingAddUpdater,
       });
-    } else if (label === 'Read It Again') {
+    } else if (label === t('read_it_again')) {
       setSubmitting(true);
 
       readItAgain({
@@ -99,7 +103,7 @@ const ReadButton = ({ bookId, ...props }: ReadButtonProps) => {
           setSubmitting(false);
 
           if (!ReadingEditPage || ReadingEditPage.error) {
-            ToastAndroid.show(ReadingEditPage?.error || 'Unable to update read pages', ToastAndroid.SHORT);
+            ToastAndroid.show(ReadingEditPage?.error || t('unable_to_update_read_pages'), ToastAndroid.SHORT);
             return;
           }
 
@@ -107,14 +111,14 @@ const ReadButton = ({ bookId, ...props }: ReadButtonProps) => {
         },
         onError: (error) => {
           setSubmitting(false);
-          ToastAndroid.show(error?.message || 'Unable to update read pages', ToastAndroid.SHORT);
+          ToastAndroid.show(error?.message || t('unable_to_update_read_pages'), ToastAndroid.SHORT);
         },
         updater: readItAgainUpdater(reading!.id),
       });
-    } else if (label === 'Continue to Read') {
+    } else if (label === t('continue_to_read')) {
       navigation.navigate('Reading', { id: reading?.id });
     }
-  }, [bookId, label, navigation, readItAgain, reading, readingAdd]);
+  }, [bookId, label, navigation, readItAgain, reading, readingAdd, t]);
 
   return (
     <Button onPress={handlePress} buttonCss={buttonCss} loading={isSubmitting}>

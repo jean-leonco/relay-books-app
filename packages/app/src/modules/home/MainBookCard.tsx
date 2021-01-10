@@ -25,7 +25,6 @@ const MainBookCard = ({ percentageCompleted, footer, onPress, ...props }: MainBo
   const data = useFragment<MainBookCard_book$key>(
     graphql`
       fragment MainBookCard_book on Book {
-        id
         bannerUrl
         name
         author

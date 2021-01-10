@@ -4,7 +4,6 @@ import LinearGradient from 'react-native-linear-gradient';
 import styled, { css, useTheme } from 'styled-components/native';
 
 import Space from './Space';
-
 import Text from './Text';
 
 type ButtonType = 'primary' | 'text' | 'bordered' | 'gradient';
@@ -109,7 +108,6 @@ const Button = ({
   type = 'primary',
   borderColor,
   labelColor,
-  tintColor,
   radius,
   ...props
 }: ButtonProps) => {

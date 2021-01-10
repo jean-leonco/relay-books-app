@@ -6,6 +6,8 @@ import { useNavigation } from '@react-navigation/native';
 
 import { Column, Row, Space, Text } from '@workspace/ui';
 
+import useTranslation from '../../locales/useTranslation';
+
 import LastReadingSection from './LastReadingSection';
 import LibrarySection from './LibrarySection';
 import ReleasesSection from './ReleasesSection';
@@ -24,6 +26,8 @@ const spacingCss = css`
 `;
 
 const Home = () => {
+  const { t } = useTranslation();
+
   const navigation = useNavigation();
 
   const data = useLazyLoadQuery<HomeQuery>(
@@ -50,11 +54,11 @@ const Home = () => {
       <Column flex={1} css={containerCss}>
         <Column css={spacingCss}>
           <Text size="button" color="c3">
-            Hello, {data.me?.name}!
+            {t('hello_name', { name: data.me?.name })}
           </Text>
           <Space height={10} />
           <Text size="title" weight="bold">
-            {data.readings?.count ? 'Continue Reading' : "Today's suggestion"}
+            {data.readings?.count ? t('continue_reading') : t('todays_suggestion')}
           </Text>
           <Space height={30} />
           {/* @TODO - just query today's suggestion if there is not readings */}
@@ -65,10 +69,10 @@ const Home = () => {
         {!!data.readings?.count && (
           <>
             <Row align="center" justify="space-between" css={spacingCss}>
-              <Text size="button">My Library</Text>
+              <Text size="button">{t('my_library')}</Text>
               <TouchableOpacity onPress={() => navigation.navigate('Library')}>
                 <Text size="label" color="primary">
-                  See all
+                  {t('see_all')}
                 </Text>
               </TouchableOpacity>
             </Row>
@@ -79,14 +83,14 @@ const Home = () => {
         )}
 
         <Text size="button" css={spacingCss}>
-          Releases
+          {t('releases')}
         </Text>
         <Space height={10} />
         <ReleasesSection releases={data} />
         <Space height={30} />
 
         <Text size="button" css={spacingCss}>
-          Top 10 Last 7 Days
+          {t('top__last__days')}
         </Text>
         <Space height={10} />
         <TrendingSection trending={data} />

@@ -6,6 +6,8 @@ import styled, { useTheme } from 'styled-components/native';
 
 import { Column, Text } from '@workspace/ui';
 
+import useTranslation from '../../locales/useTranslation';
+
 import { CategoryDropdown_query$key } from './__generated__/CategoryDropdown_query.graphql';
 
 const CloseButton = styled.TouchableOpacity`
@@ -26,7 +28,9 @@ interface CategoryDropdownProps extends ModalProps {
   handleSelectCategory(category?: any): void;
 }
 
-const CategoryDropdown = ({ handleClose, handleSelectCategory, catogories, ...props }: CategoryDropdownProps) => {
+const CategoryDropdown = ({ handleClose, handleSelectCategory, catogories }: CategoryDropdownProps) => {
+  const { t } = useTranslation();
+
   // @TODO - fix problem with skip when modal is closed
   const data = useFragment<CategoryDropdown_query$key>(
     graphql`
@@ -58,7 +62,7 @@ const CategoryDropdown = ({ handleClose, handleSelectCategory, catogories, ...pr
           }}
         >
           <Text color="white" size="button">
-            All Categories
+            {t('all_categories')}
           </Text>
         </TouchableOpacity>
         {data.categories?.edges.map((edge) => (

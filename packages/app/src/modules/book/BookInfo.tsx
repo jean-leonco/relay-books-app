@@ -4,6 +4,8 @@ import styled from 'styled-components/native';
 
 import { Column, Row, Space, Text } from '@workspace/ui';
 
+import useTranslation from '../../locales/useTranslation';
+
 import Rating from '../rating/Rating';
 
 import { BookInfo_book$key } from './__generated__/BookInfo_book.graphql';
@@ -28,10 +30,11 @@ interface BookInfoProps {
 }
 
 const BookInfo = (props: BookInfoProps) => {
+  const { t } = useTranslation();
+
   const data = useFragment<BookInfo_book$key>(
     graphql`
       fragment BookInfo_book on Book {
-        id
         bannerUrl
         name
         author
@@ -65,7 +68,7 @@ const BookInfo = (props: BookInfoProps) => {
               {data.releaseYear}
             </Text>
             <Space height={4} />
-            <Text color="c3">Year of Release</Text>
+            <Text color="c3">{t('year_of_release')}</Text>
           </Column>
           <Separator />
           <Column align="center" justify="center">
@@ -73,14 +76,14 @@ const BookInfo = (props: BookInfoProps) => {
               {data.pages}
             </Text>
             <Space height={4} />
-            <Text color="c3">Amount of Pages</Text>
+            <Text color="c3">{t('amount_of_pages')}</Text>
           </Column>
         </Row>
         <Space height={40} />
       </Column>
 
       <Text size="button" weight="bold">
-        About
+        {t('about')}
       </Text>
       <Space height={10} />
       <Text size="label" color="c3">
@@ -88,7 +91,7 @@ const BookInfo = (props: BookInfoProps) => {
       </Text>
       <Space height={30} />
       <Text size="button" weight="bold">
-        Reviews
+        {t('reviews')}
       </Text>
     </Column>
   );

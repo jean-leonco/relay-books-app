@@ -8,6 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import { Column, FormikButton, FormikInput, Space, Text } from '@workspace/ui';
 
+import useTranslation from '../../locales/useTranslation';
 import useRouterAuth from '../../router/useRouterAuth';
 
 import { UserLogin } from './mutations/UserLoginMutation';
@@ -19,7 +20,9 @@ const containerCss = css`
 `;
 
 const Login = () => {
+  const { t } = useTranslation();
   const { signIn } = useRouterAuth();
+
   const [userLogin] = useMutation<UserLoginMutation>(UserLogin);
 
   const navigation = useNavigation();
@@ -30,8 +33,8 @@ const Login = () => {
       password: '',
     },
     validationSchema: yup.object().shape({
-      email: yup.string().email('Must be a valid email').required('Email is required.'),
-      password: yup.string().required('Password is required.'),
+      email: yup.string().email(t('must_be_a_valid_email')).required(t('email_is_required')),
+      password: yup.string().required(t('password_is_required')),
     }),
     onSubmit: (input, { setSubmitting }) => {
       userLogin({
@@ -40,7 +43,7 @@ const Login = () => {
           setSubmitting(false);
 
           if (!UserLogin || UserLogin.error || !UserLogin.token) {
-            ToastAndroid.show(UserLogin?.error || 'Unable to login', ToastAndroid.SHORT);
+            ToastAndroid.show(UserLogin?.error || t('unable_to_login'), ToastAndroid.SHORT);
             return;
           }
 
@@ -48,7 +51,7 @@ const Login = () => {
         },
         onError: (error) => {
           setSubmitting(false);
-          ToastAndroid.show(error?.message || 'Unable to login', ToastAndroid.SHORT);
+          ToastAndroid.show(error?.message || t('unable_to_login'), ToastAndroid.SHORT);
         },
       });
     },
@@ -59,19 +62,19 @@ const Login = () => {
   return (
     <Column align="center" justify="center" flex={1} css={containerCss}>
       <Text size="h2" weight="bold" center>
-        Welcome Back
+        {t('welcome_back')}
       </Text>
       <Space height={40} />
       <FormikProvider value={formik}>
-        <FormikInput name="email" label="Email" placeholder="email@example.com" textContentType="emailAddress" />
+        <FormikInput name="email" label={t('email')} placeholder="email@example.com" textContentType="emailAddress" />
         <Space height={10} />
-        <FormikInput name="password" label="Password" placeholder="Your password" secureTextEntry />
+        <FormikInput name="password" label={t('password')} placeholder={t('your_password')} secureTextEntry />
         <Space height={40} />
-        <FormikButton onPress={() => handleSubmit()}>Submit</FormikButton>
+        <FormikButton onPress={() => handleSubmit()}>{t('submit')}</FormikButton>
       </FormikProvider>
       <Space height={30} />
       <TouchableOpacity onPress={() => navigation.navigate('SignUp')} style={{ paddingVertical: 20 }}>
-        <Text>Don't have an account? Create now</Text>
+        <Text>{t('dont_have_an_account_create_now')}</Text>
       </TouchableOpacity>
     </Column>
   );

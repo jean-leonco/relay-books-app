@@ -7,6 +7,8 @@ import { useNavigation } from '@react-navigation/native';
 
 import { Column, Row, Space, Text } from '@workspace/ui';
 
+import useTranslation from '../../locales/useTranslation';
+
 import Rating from '../rating/Rating';
 
 import { SearchBook_book$key } from './__generated__/SearchBook_book.graphql';
@@ -27,6 +29,8 @@ interface SearchBookProps {
 }
 
 const SearchBook = (props: SearchBookProps) => {
+  const { t } = useTranslation();
+
   const data = useFragment<SearchBook_book$key>(
     graphql`
       fragment SearchBook_book on Book {
@@ -59,7 +63,7 @@ const SearchBook = (props: SearchBookProps) => {
             {data.author}
           </Text>
           <Space height={8} />
-          <Text color="c2">Based on {data.reviews?.count} reviews</Text>
+          <Text color="c2">{t('based_on_reviews', { reviews: data.reviews?.count })}</Text>
           <Space height={4} />
           <Rating disabled initialRating={data.rating} />
           <Space height={4} />

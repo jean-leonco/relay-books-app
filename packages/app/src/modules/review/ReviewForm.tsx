@@ -7,6 +7,8 @@ import * as yup from 'yup';
 
 import { Column, FormikButton, FormikInput, Space, Text } from '@workspace/ui';
 
+import useTranslation from '../../locales/useTranslation';
+
 import FormikRating from '../rating/FormikRating';
 
 import { ReviewForm_book$key } from './__generated__/ReviewForm_book.graphql';
@@ -35,10 +37,11 @@ interface ReviewFormProps {
 }
 
 const ReviewForm = ({ query, initialValues, onSubmit, submitLabel }: ReviewFormProps) => {
+  const { t } = useTranslation();
+
   const data = useFragment(
     graphql`
       fragment ReviewForm_book on Book {
-        id
         name
         author
         bannerUrl
@@ -50,8 +53,8 @@ const ReviewForm = ({ query, initialValues, onSubmit, submitLabel }: ReviewFormP
   const formik = useFormik({
     initialValues,
     validationSchema: yup.object().shape({
-      rating: yup.number().min(1, 'The rating should be at least one.').max(5, 'The rating should not be more than 5.'),
-      description: yup.string().max(280, 'The description should not have more than 280 characters.'),
+      rating: yup.number().min(1, t('the_rating_should_be_at_least_')).max(5, t('the_rating_should_not_be_more_than_')),
+      description: yup.string().max(280, t('the_description_should_not_have_more_than_')),
     }),
     onSubmit,
   });
@@ -78,12 +81,12 @@ const ReviewForm = ({ query, initialValues, onSubmit, submitLabel }: ReviewFormP
         <FormikProvider value={formik}>
           <FormikInput
             name="description"
-            label="Description"
-            placeholder="How would you describe your experience?"
+            label={t('description')}
+            placeholder={t('how_would_you_describe_your_experience')}
             multiline
             style={{ height: 100, textAlignVertical: 'top', paddingTop: 10 }}
           />
-          <FormikRating label="Rating" name="rating" size={25} />
+          <FormikRating label={t('rating')} name="rating" size={25} />
           <Space height={40} />
           <FormikButton onPress={() => handleSubmit()}>{submitLabel}</FormikButton>
         </FormikProvider>

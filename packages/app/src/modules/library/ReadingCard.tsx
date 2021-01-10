@@ -6,6 +6,8 @@ import { useNavigation } from '@react-navigation/native';
 
 import { Column, PercentageCompletedBar, Row, Space, Text } from '@workspace/ui';
 
+import useTranslation from '../../locales/useTranslation';
+
 import { ReadingCard_reading$key } from './__generated__/ReadingCard_reading.graphql';
 
 const containerCss = css`
@@ -25,6 +27,8 @@ interface ReadingCardProps {
 }
 
 const ReadingCard = (props: ReadingCardProps) => {
+  const { t } = useTranslation();
+
   const navigation = useNavigation();
 
   const data = useFragment<ReadingCard_reading$key>(
@@ -68,7 +72,7 @@ const ReadingCard = (props: ReadingCardProps) => {
           <Space height={12} />
           <Row align="center" justify="flex-end">
             <Text size="12px" color="c3">
-              {data.readPages} of {data.book?.pages} pages
+              {t('read_pages_of_pages', { readPages: data.readPages, pages: data.book?.pages })}
             </Text>
           </Row>
           <Space height={8} />

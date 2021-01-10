@@ -35,17 +35,7 @@ const SearchList = ({ category, search, ...props }: SearchListProps) => {
       )
       @refetchable(queryName: "SearchListRefetchQuery") {
         books(first: $first, after: $after, filters: $filters) @connection(key: "SearchList_books") {
-          endCursorOffset
-          startCursorOffset
-          count
-          pageInfo {
-            hasNextPage
-            hasPreviousPage
-            startCursor
-            endCursor
-          }
           edges {
-            cursor
             node {
               id
               ...SearchBook_book

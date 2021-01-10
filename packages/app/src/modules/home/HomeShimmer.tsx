@@ -37,7 +37,7 @@ const ShimmerList = ({
     horizontal
     style={{ paddingVertical: 10 }}
     data={data}
-    keyExtractor={(item, index) => String(index)}
+    keyExtractor={(_item, index) => String(index)}
     renderItem={({ index }) => (
       <Column style={{ width: containerWidth, marginLeft: index === 0 ? 12 : 0 }}>
         <ShimmerPlaceHolder width={bannerSize.width} height={bannerSize.height} style={{ borderRadius: 8 }} />
@@ -93,7 +93,6 @@ const HomeShimmer = () => {
         <ShimmerPlaceHolder width={120} height={18} style={spacingStyle} />
         <Space height={10} />
         <ShimmerList showName={false} containerWidth={190} bannerSize={{ width: 180, height: 250 }} />
-        {/* <TrendingSection trending={data} /> */}
         <Space height={30} />
 
         <ShimmerPlaceHolder width={120} height={18} style={spacingStyle} />

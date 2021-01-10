@@ -6,6 +6,8 @@ import { graphql, useLazyLoadQuery, useMutation } from 'react-relay/hooks';
 
 import { Column, Text } from '@workspace/ui';
 
+import useTranslation from '../../locales/useTranslation';
+
 import { ReadingRemove, readingsRemoveMutationConnectionUpdater } from './mutations/ReadingRemoveMutation';
 import { ReadingRemoveMutation } from './mutations/__generated__/ReadingRemoveMutation.graphql';
 
@@ -20,6 +22,8 @@ const Button = styled.TouchableOpacity`
 `;
 
 const OptionBottomSheet = ({ handleClose }) => {
+  const { t } = useTranslation();
+
   const [readingRemove] = useMutation<ReadingRemoveMutation>(ReadingRemove);
 
   const navigation = useNavigation();
@@ -29,7 +33,6 @@ const OptionBottomSheet = ({ handleClose }) => {
     graphql`
       query OptionBottomSheetQuery($filters: ReadingFilters) {
         readings(first: 1, filters: $filters) {
-          count
           edges {
             node {
               id
@@ -60,24 +63,24 @@ const OptionBottomSheet = ({ handleClose }) => {
       variables: { input: { id: reading!.id } },
       onCompleted: ({ ReadingRemove }) => {
         if (!ReadingRemove || ReadingRemove.error) {
-          ToastAndroid.show(ReadingRemove?.error || 'Unable to remove book', ToastAndroid.SHORT);
+          ToastAndroid.show(ReadingRemove?.error || t('unable_to_remove_book'), ToastAndroid.SHORT);
           return;
         }
 
-        ToastAndroid.show('Book removed with success', ToastAndroid.SHORT);
+        ToastAndroid.show(t('book_removed_with_success'), ToastAndroid.SHORT);
 
         navigation.goBack();
         handleClose();
       },
       onError: (error) => {
-        ToastAndroid.show(error?.message || 'Unable to remove book', ToastAndroid.SHORT);
+        ToastAndroid.show(error?.message || t('unable_to_remove_book'), ToastAndroid.SHORT);
 
         navigation.goBack();
         handleClose();
       },
       updater: readingsRemoveMutationConnectionUpdater(reading!.readPages === reading!.book!.pages),
     });
-  }, [handleClose, navigation, reading, readingRemove]);
+  }, [handleClose, navigation, reading, readingRemove, t]);
 
   const handleReview = useCallback(() => {
     navigation.navigate('ReviewAdd', { bookId: route.params.id });
@@ -86,11 +89,11 @@ const OptionBottomSheet = ({ handleClose }) => {
 
   const photoOptions = useMemo(
     () => [
-      ...(reading?.book?.meCanReview ? [{ label: 'ReviewAdd', onPress: handleReview }] : []),
-      ...(reading ? [{ label: 'Remove From Library', onPress: handleRemoveFromLibrary }] : []),
-      { label: 'Close', onPress: handleClose },
+      ...(reading?.book?.meCanReview ? [{ label: t('review'), onPress: handleReview }] : []),
+      ...(reading ? [{ label: t('remove_from_library'), onPress: handleRemoveFromLibrary }] : []),
+      { label: t('close'), onPress: handleClose },
     ],
-    [handleRemoveFromLibrary, reading, handleReview, handleClose],
+    [reading, t, handleReview, handleRemoveFromLibrary, handleClose],
   );
 
   return (

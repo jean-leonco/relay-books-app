@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, ListRenderItem } from 'react-native';
 import { graphql, usePaginationFragment } from 'react-relay/hooks';
 
 import { FlatListLoader } from '@workspace/ui';
@@ -23,18 +23,7 @@ const ContinueReading = (props: ContinueReadingProps) => {
       @refetchable(queryName: "ContinueReadingPaginationQuery") {
         unfinished: readings(first: $first, after: $after, filters: { finished: false })
           @connection(key: "ContinueReading_unfinished", filters: []) {
-          count
-          totalCount
-          endCursorOffset
-          startCursorOffset
-          pageInfo {
-            hasNextPage
-            hasPreviousPage
-            startCursor
-            endCursor
-          }
           edges {
-            cursor
             node {
               id
               ...ReadingCard_reading
@@ -53,13 +42,18 @@ const ContinueReading = (props: ContinueReadingProps) => {
     loadNext(10);
   }, [isLoadingNext, loadNext, hasNext]);
 
+  const renderCard = useCallback<ListRenderItem<typeof data.unfinished.edges[0]>>(
+    ({ index, item }) => <ReadingCard query={item.node} index={index} />,
+    [],
+  );
+
   return (
     <FlatList
       showsVerticalScrollIndicator={false}
       style={{ paddingHorizontal: 16 }}
       data={data.unfinished.edges}
-      keyExtractor={(item) => item.node.id}
-      renderItem={({ item, index }) => <ReadingCard query={item.node} index={index} />}
+      keyExtractor={(item) => item?.node?.id}
+      renderItem={renderCard}
       onEndReached={loadMore}
       onEndReachedThreshold={0.1}
       ListFooterComponent={isLoadingNext ? <FlatListLoader height={50} /> : null}

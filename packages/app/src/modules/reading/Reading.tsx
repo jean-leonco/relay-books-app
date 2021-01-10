@@ -8,6 +8,8 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 
 import { Column, Row, Space, Text } from '@workspace/ui';
 
+import useTranslation from '../../locales/useTranslation';
+
 import {
   ReadingEditPage,
   readingEditPageOptimisticResponse,
@@ -30,6 +32,8 @@ const { width, height } = Dimensions.get('window');
 const source = { uri: 'http://samples.leanpub.com/thereactnativebook-sample.pdf', cache: true };
 
 const Reading = () => {
+  const { t } = useTranslation();
+
   const navigation = useNavigation();
   const route = useRoute();
   const theme = useTheme();
@@ -45,7 +49,6 @@ const Reading = () => {
             book {
               id
               name
-              bannerUrl
               pages
             }
           }
@@ -65,12 +68,12 @@ const Reading = () => {
         variables: { input },
         onCompleted: ({ ReadingEditPage }) => {
           if (!ReadingEditPage || ReadingEditPage.error) {
-            ToastAndroid.show(ReadingEditPage?.error || 'Unable to update read pages', ToastAndroid.SHORT);
+            ToastAndroid.show(ReadingEditPage?.error || t('unable_to_update_read_pages'), ToastAndroid.SHORT);
             return;
           }
         },
         onError: (error) => {
-          ToastAndroid.show(error?.message || 'Unable to update read pages', ToastAndroid.SHORT);
+          ToastAndroid.show(error?.message || t('unable_to_update_read_pages'), ToastAndroid.SHORT);
         },
         optimisticResponse: readingEditPageOptimisticResponse({
           id: route.params.id,
@@ -80,7 +83,7 @@ const Reading = () => {
         updater: readingEditPageUpdater(input, data.reading.book.pages),
       });
     },
-    [readingEditPage, route.params.id, data.reading.book],
+    [route.params.id, readingEditPage, data.reading.book, t],
   );
 
   return (

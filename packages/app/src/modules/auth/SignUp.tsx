@@ -8,6 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import { Column, FormikButton, FormikInput, Space, Text } from '@workspace/ui';
 
+import useTranslation from '../../locales/useTranslation';
 import useRouterAuth from '../../router/useRouterAuth';
 
 import { UserRegistration } from './mutations/UserRegistrationMutation';
@@ -19,7 +20,9 @@ const containerCss = css`
 `;
 
 const SignUp = () => {
+  const { t } = useTranslation();
   const { signIn } = useRouterAuth();
+
   const [userRegistration] = useMutation<UserRegistrationMutation>(UserRegistration);
 
   const navigation = useNavigation();
@@ -31,9 +34,9 @@ const SignUp = () => {
       password: '',
     },
     validationSchema: yup.object().shape({
-      name: yup.string().required('Name is required.'),
-      email: yup.string().email('Must be a valid email').required('Email is required.'),
-      password: yup.string().required('Password is required.').min(6, 'Password must be at least 6 characters.'),
+      name: yup.string().required(t('name_is_required')),
+      email: yup.string().email(t('must_be_a_valid_email')).required(t('email_is_required')),
+      password: yup.string().required(t('password_is_required')).min(6, t('password_must_be_at_least_6_characters')),
     }),
     onSubmit: (input, { setSubmitting }) => {
       userRegistration({
@@ -42,7 +45,7 @@ const SignUp = () => {
           setSubmitting(false);
 
           if (!UserRegistration || UserRegistration.error || !UserRegistration.token) {
-            ToastAndroid.show(UserRegistration?.error || 'Unable to create account', ToastAndroid.SHORT);
+            ToastAndroid.show(UserRegistration?.error || t('unable_to_create_account'), ToastAndroid.SHORT);
             return;
           }
 
@@ -50,7 +53,7 @@ const SignUp = () => {
         },
         onError: (error) => {
           setSubmitting(false);
-          ToastAndroid.show(error?.message || 'Unable to create account', ToastAndroid.SHORT);
+          ToastAndroid.show(error?.message || t('unable_to_create_account'), ToastAndroid.SHORT);
         },
       });
     },
@@ -61,21 +64,21 @@ const SignUp = () => {
   return (
     <Column align="center" justify="center" flex={1} css={containerCss}>
       <Text size="h2" weight="bold" center>
-        Create your account
+        {t('create_your_account')}
       </Text>
       <Space height={40} />
       <FormikProvider value={formik}>
-        <FormikInput name="name" label="Name" placeholder="Full name" textContentType="name" />
+        <FormikInput name="name" label={t('name')} placeholder={t('full_name')} textContentType="name" />
         <Space height={10} />
-        <FormikInput name="email" label="Email" placeholder="email@example.com" textContentType="emailAddress" />
+        <FormikInput name="email" label={t('email')} placeholder="email@example.com" textContentType="emailAddress" />
         <Space height={10} />
-        <FormikInput name="password" label="Password" placeholder="Your password" secureTextEntry />
+        <FormikInput name="password" label={t('password')} placeholder={t('your_password')} secureTextEntry />
         <Space height={40} />
-        <FormikButton onPress={() => handleSubmit()}>Submit</FormikButton>
+        <FormikButton onPress={() => handleSubmit()}>{t('submit')}</FormikButton>
       </FormikProvider>
       <Space height={30} />
       <TouchableOpacity onPress={() => navigation.navigate('Login')} style={{ paddingVertical: 20 }}>
-        <Text>Already have an account? Go back to login</Text>
+        <Text>{t('already_have_an_account_go_back_to_login')}</Text>
       </TouchableOpacity>
     </Column>
   );

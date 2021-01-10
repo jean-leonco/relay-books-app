@@ -1,5 +1,5 @@
-import React from 'react';
-import { FlatList } from 'react-native';
+import React, { useCallback } from 'react';
+import { FlatList, ListRenderItem } from 'react-native';
 import { graphql, useFragment } from 'react-relay/hooks';
 import { css, useTheme } from 'styled-components/native';
 
@@ -46,31 +46,36 @@ const TrendingSection = (props: TrendingSectionProps) => {
 
   const theme = useTheme();
 
+  const renderCard = useCallback<ListRenderItem<typeof data.trending.edges[0]>>(
+    ({ index, item }) => (
+      <Column style={{ position: 'relative' }}>
+        <BookCard index={index} query={item?.node} showName={false} containerCss={bookCss} bannerCss={bookBannerCss} />
+        <Text
+          size="extraLarge"
+          color="white"
+          css={positionTextCss}
+          style={{
+            marginLeft: index === 0 ? 12 : 0,
+            textShadowColor: theme.colors.black,
+            textShadowOffset: { width: 5, height: 5 },
+            textShadowRadius: 10,
+          }}
+        >
+          {index + 1}
+        </Text>
+      </Column>
+    ),
+    [theme.colors.black],
+  );
+
   return (
     <FlatList
       showsHorizontalScrollIndicator={false}
       horizontal
       style={{ paddingVertical: 10 }}
       data={data.trending.edges}
-      keyExtractor={(item) => item?.node.id}
-      renderItem={({ item, index }) => (
-        <Column style={{ position: 'relative' }}>
-          <BookCard index={index} book={item?.node} showName={false} containerCss={bookCss} bannerCss={bookBannerCss} />
-          <Text
-            size="extraLarge"
-            color="white"
-            css={positionTextCss}
-            style={{
-              marginLeft: index === 0 ? 12 : 0,
-              textShadowColor: theme.colors.black,
-              textShadowOffset: { width: 5, height: 5 },
-              textShadowRadius: 10,
-            }}
-          >
-            {index + 1}
-          </Text>
-        </Column>
-      )}
+      keyExtractor={(item) => item?.node?.id}
+      renderItem={renderCard}
     />
   );
 };

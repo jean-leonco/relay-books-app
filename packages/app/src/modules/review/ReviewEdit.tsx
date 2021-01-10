@@ -3,6 +3,8 @@ import { ToastAndroid } from 'react-native';
 import { graphql, useLazyLoadQuery, useMutation } from 'react-relay/hooks';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
+import useTranslation from '../../locales/useTranslation';
+
 import ReviewForm from './ReviewForm';
 
 import { ReviewEdit } from './mutations/ReviewEditMutation';
@@ -10,6 +12,8 @@ import { ReviewEditMutation } from './mutations/__generated__/ReviewEditMutation
 import { ReviewEditQuery } from './__generated__/ReviewEditQuery.graphql';
 
 const Review = () => {
+  const { t } = useTranslation();
+
   const route = useRoute();
   const navigation = useNavigation();
 
@@ -51,20 +55,20 @@ const Review = () => {
           setSubmitting(false);
 
           if (!ReviewEdit || ReviewEdit.error) {
-            ToastAndroid.show(ReviewEdit?.error || 'Unable to edit review', ToastAndroid.SHORT);
+            ToastAndroid.show(ReviewEdit?.error || t('unable_to_edit_review'), ToastAndroid.SHORT);
             return;
           }
 
-          ToastAndroid.show('Review edited with success', ToastAndroid.SHORT);
+          ToastAndroid.show(t('review_edited_with_success'), ToastAndroid.SHORT);
           navigation.goBack();
         },
         onError: (error) => {
           setSubmitting(false);
-          ToastAndroid.show(error?.message || 'Unable to edit review', ToastAndroid.SHORT);
+          ToastAndroid.show(error?.message || t('unable_to_edit_review'), ToastAndroid.SHORT);
         },
       });
     },
-    [navigation, reviewEdit, route.params.id],
+    [navigation, reviewEdit, route.params.id, t],
   );
 
   return (
@@ -72,7 +76,7 @@ const Review = () => {
       query={data.review?.book}
       initialValues={initialValues}
       onSubmit={handleSubmit}
-      submitLabel="Edit Review"
+      submitLabel={t('edit_review')}
     />
   );
 };
