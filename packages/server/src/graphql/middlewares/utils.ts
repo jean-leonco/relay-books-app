@@ -6,7 +6,7 @@ interface Field extends GraphQLField<any, any> {
   extensions: Extensions | null | undefined;
 }
 
-export function getMutationFields(info: GraphQLResolveInfo, mutationName: string): Field | null {
+export const getMutationFields = (info: GraphQLResolveInfo, mutationName: string): Field | null => {
   const mutationType = info.schema.getMutationType();
   if (!mutationType) {
     return null;
@@ -14,4 +14,4 @@ export function getMutationFields(info: GraphQLResolveInfo, mutationName: string
 
   const fields = mutationType.getFields();
   return fields[mutationName];
-}
+};

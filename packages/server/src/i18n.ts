@@ -19,7 +19,9 @@ i18next.init({
 export const i18nMiddleware: Middleware = async (context, next) => {
   const { lang } = context.header;
 
-  if (lang) await i18next.changeLanguage(lang);
+  if (lang) {
+    await i18next.changeLanguage(lang);
+  }
 
   return next();
 };

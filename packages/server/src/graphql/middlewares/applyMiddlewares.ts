@@ -5,7 +5,9 @@ import { GraphQLSchema } from 'graphql';
 import authenticatedOnlyMutation from './authenticatedOnlyMutation';
 import validationSchemaMutation from './validationSchemaMutation';
 
-export default function applyMiddlewares(schema: GraphQLSchema) {
+const applyMiddlewares = (schema: GraphQLSchema) => {
   addMiddleware(schema, 'Mutation', authenticatedOnlyMutation);
   addMiddleware(schema, 'Mutation', validationSchemaMutation);
-}
+};
+
+export default applyMiddlewares;

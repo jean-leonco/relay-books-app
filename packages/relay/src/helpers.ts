@@ -13,10 +13,10 @@ export const handleData = (response) => {
   return response.text();
 };
 
-export function getRequestBody(request: RequestParameters, variables: Variables) {
+export const getRequestBody = (request: RequestParameters, variables: Variables) => {
   return JSON.stringify({
     name: request.name,
     query: request.text, // GraphQL text from input
     variables,
   });
-}
+};

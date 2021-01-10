@@ -3,7 +3,7 @@ import { RequestParameters, UploadableMap, Variables } from 'relay-runtime';
 import fetchWithRetries from './fetchWithRetries';
 import { getRequestBody, handleData, isMutation } from './helpers';
 import { GRAPHQL_URL, clientErrorStatus } from './config';
-import { clearToken, getToken } from './security';
+import { clearToken, getLanguage, getToken } from './utils';
 import UnavailableServiceError from './UnavailableServiceError';
 import InvalidSessionError from './InvalidSessionError';
 
@@ -16,12 +16,14 @@ enum PLATFORM {
 const fetchQuery = async (request: RequestParameters, variables: Variables, uploadables: UploadableMap | null) => {
   const body = getRequestBody(request, variables, uploadables);
   const token = await getToken();
+  const lang = await getLanguage();
 
   const headers = {
     Accept: 'application/json',
     'Content-type': 'application/json',
     appplatform: PLATFORM.APP,
     authorization: token ? `JWT ${token}` : null,
+    lang,
   };
 
   try {

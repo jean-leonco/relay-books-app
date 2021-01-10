@@ -1,6 +1,8 @@
 /* eslint-disable no-console */
 import { ConnectionHandler, RecordSourceSelectorProxy } from 'relay-runtime';
 
+//@TODO - remove this helpers and use relay connection helpers
+
 interface ConnectionUpdaterOptions {
   store: RecordSourceSelectorProxy;
   parentId: string;
@@ -11,7 +13,7 @@ interface ConnectionUpdaterOptions {
   cursor?: string;
 }
 
-export function connectionUpdater({ store, parentId, connectionName, edge, before }: ConnectionUpdaterOptions) {
+export const connectionUpdater = ({ store, parentId, connectionName, edge, before }: ConnectionUpdaterOptions) => {
   if (!edge) {
     // eslint-disable-next-line no-console
     console.log('[Connection Updater] Maybe you forgot to pass an edge:', edge);
@@ -49,7 +51,7 @@ export function connectionUpdater({ store, parentId, connectionName, edge, befor
   } else {
     ConnectionHandler.insertEdgeAfter(connection, edge);
   }
-}
+};
 
 interface ConnectionDeleteEdgeUpdaterOptions {
   parentId: string;
@@ -59,13 +61,13 @@ interface ConnectionDeleteEdgeUpdaterOptions {
   filters?: any;
 }
 
-export function connectionDeleteEdgeUpdater({
+export const connectionDeleteEdgeUpdater = ({
   parentId,
   connectionName,
   nodeId,
   store,
   filters,
-}: ConnectionDeleteEdgeUpdaterOptions) {
+}: ConnectionDeleteEdgeUpdaterOptions) => {
   const parentProxy = parentId === null ? store.getRoot() : store.get(parentId);
   const connection = ConnectionHandler.getConnection(parentProxy, connectionName, filters);
 
@@ -81,4 +83,4 @@ export function connectionDeleteEdgeUpdater({
   connection.setValue(count - 1, 'count');
 
   ConnectionHandler.deleteNode(connection, nodeId);
-}
+};

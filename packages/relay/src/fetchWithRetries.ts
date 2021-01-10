@@ -18,7 +18,7 @@ const DEFAULT_RETRIES = [1000, 3000];
  * Makes a POST request to the server with the given data as the payload.
  * Automatic retries are done based on the values in `retryDelays`.
  */
-function fetchWithRetries(uri: string, initWithRetries?: InitWithRetries | null): Promise<Response> {
+const fetchWithRetries = (uri: string, initWithRetries?: InitWithRetries | null): Promise<Response> => {
   const { fetchTimeout, retryDelays, ...init } = initWithRetries || {};
   const _fetchTimeout = fetchTimeout != null ? fetchTimeout : DEFAULT_TIMEOUT;
   const _retryDelays = retryDelays != null ? retryDelays : DEFAULT_RETRIES;
@@ -30,7 +30,7 @@ function fetchWithRetries(uri: string, initWithRetries?: InitWithRetries | null)
      * Sends a request to the server that will timeout after `fetchTimeout`.
      * If the request fails or times out a new request might be scheduled.
      */
-    function sendTimedRequest(): void {
+    const sendTimedRequest = () => {
       requestsAttempted++;
       requestStartTime = Date.now();
       let isRequestAlive = true;
@@ -81,28 +81,28 @@ function fetchWithRetries(uri: string, initWithRetries?: InitWithRetries | null)
             reject(error);
           }
         });
-    }
+    };
 
     /**
      * Schedules another run of sendTimedRequest based on how much time has
      * passed between the time the last request was sent and now.
      */
-    function retryRequest(): void {
+    const retryRequest = () => {
       const retryDelay = _retryDelays[requestsAttempted - 1];
       const retryStartTime = requestStartTime + retryDelay;
       // Schedule retry for a configured duration after last request started.
       setTimeout(sendTimedRequest, retryStartTime - Date.now());
-    }
+    };
 
     /**
      * Checks if another attempt should be done to send a request to the server.
      */
-    function shouldRetry(attempt: number): boolean {
+    const shouldRetry = (attempt: number) => {
       return ExecutionEnvironment.canUseDOM && attempt <= _retryDelays.length;
-    }
+    };
 
     sendTimedRequest();
   });
-}
+};
 
 export default fetchWithRetries;
