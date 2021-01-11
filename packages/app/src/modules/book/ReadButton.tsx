@@ -8,9 +8,9 @@ import { Button } from '@workspace/ui';
 
 import useTranslation from '../../locales/useTranslation';
 
-import { ReadingAdd, readingAddUpdater } from './mutations/ReadingAddMutation';
+import { ReadingAdd, getReadingAddUpdater } from './mutations/ReadingAddMutation';
 import { ReadingAddMutation } from './mutations/__generated__/ReadingAddMutation.graphql';
-import { ReadItAgain, readItAgainUpdater } from './mutations/ReadItAgainMutation';
+import { ReadItAgain, getReadItAgainUpdater } from './mutations/ReadItAgainMutation';
 import { ReadItAgainMutation } from './mutations/__generated__/ReadItAgainMutation.graphql';
 
 import { ReadButton_query$key } from './__generated__/ReadButton_query.graphql';
@@ -92,7 +92,7 @@ const ReadButton = ({ bookId, ...props }: ReadButtonProps) => {
           setSubmitting(false);
           ToastAndroid.show(error?.message || t('unable_to_create_reading'), ToastAndroid.SHORT);
         },
-        updater: readingAddUpdater,
+        updater: getReadingAddUpdater,
       });
     } else if (label === t('read_it_again')) {
       setSubmitting(true);
@@ -113,7 +113,7 @@ const ReadButton = ({ bookId, ...props }: ReadButtonProps) => {
           setSubmitting(false);
           ToastAndroid.show(error?.message || t('unable_to_update_read_pages'), ToastAndroid.SHORT);
         },
-        updater: readItAgainUpdater(reading!.id),
+        updater: getReadItAgainUpdater(reading!.id),
       });
     } else if (label === t('continue_to_read')) {
       navigation.navigate('Reading', { id: reading?.id });

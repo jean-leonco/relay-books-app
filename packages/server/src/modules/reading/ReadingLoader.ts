@@ -44,8 +44,8 @@ export const loadMeCanReview = async (context: GraphQLContext, book: IBook) => {
     return false;
   }
 
-  const reading = await ReadingModel.findOne({ userId: user.id, bookId: book._id });
-  const review = await ReviewModel.findOne({ userId: user.id, bookId: book._id });
+  const reading = await ReadingModel.findOne({ userId: user.id, bookId: book._id, isActive: true });
+  const review = await ReviewModel.findOne({ userId: user.id, bookId: book._id, isActive: true });
 
   const hasReadingAndDoesntHaveReview = reading && !review;
   const hasReadAllBook = reading?.readPages === book.pages;
@@ -64,6 +64,7 @@ export const loadMeLastIncompleteReading = async (context: GraphQLContext) => {
     {
       $match: {
         userId: getObjectId(user.id),
+        isActive: true,
       },
     },
     {
@@ -102,7 +103,7 @@ export const loadMeHasReading = async (context: GraphQLContext) => {
     return false;
   }
 
-  const readingCount = await ReadingModel.countDocuments({ userId: user.id });
+  const readingCount = await ReadingModel.countDocuments({ userId: user.id, isActive: true });
 
   return readingCount > 0;
 };

@@ -9,10 +9,11 @@ export interface RatingProps {
   onFinishRating?(rating: number): void;
   size?: number;
   disabled?: boolean;
+  fixedValue?: number;
 }
 
 // @TODO - add not integer rating
-const Rating = ({ initialRating = 3, onFinishRating, ...props }: RatingProps) => {
+const Rating = ({ initialRating = 3, fixedValue, onFinishRating, ...props }: RatingProps) => {
   const [rating, setRating] = useState(initialRating);
 
   const handleRatingChange = useCallback(
@@ -28,11 +29,11 @@ const Rating = ({ initialRating = 3, onFinishRating, ...props }: RatingProps) =>
 
   return (
     <Row align="center">
-      {[1, 2, 3, 4, 5].map((star, index) => (
+      {[1, 2, 3, 4, 5].map((_star, index) => (
         <Star
           key={index}
           position={index + 1}
-          fill={rating >= index + 1}
+          fill={(fixedValue || rating) >= index + 1}
           index={index}
           handleRatingChange={handleRatingChange}
           {...props}

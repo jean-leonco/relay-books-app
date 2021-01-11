@@ -59,7 +59,7 @@ const ReviewCard = ({ query, cardCss, onPress, ...props }: ReviewCardProps) => {
           {book?.name ? book.name : user?.fullName}
         </Text>
         <Space width={20} />
-        <Rating initialRating={data.rating} size={14} disabled />
+        <Rating fixedValue={data.rating} size={14} disabled />
       </Row>
       <Space height={8} />
       <Text color="c3" italic={!data.description}>

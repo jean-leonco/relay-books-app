@@ -12,8 +12,8 @@ import useTranslation from '../../locales/useTranslation';
 
 import {
   ReadingEditPage,
-  readingEditPageOptimisticResponse,
-  readingEditPageUpdater,
+  getReadingEditPageOptimisticResponse,
+  getReadingEditPageUpdater,
 } from './mutations/ReadingEditPageMutation';
 import {
   ReadingEditPageInput,
@@ -75,15 +75,19 @@ const Reading = () => {
         onError: (error) => {
           ToastAndroid.show(error?.message || t('unable_to_update_read_pages'), ToastAndroid.SHORT);
         },
-        optimisticResponse: readingEditPageOptimisticResponse({
+        optimisticResponse: getReadingEditPageOptimisticResponse({
           id: route.params.id,
           currentPage,
           book: data.reading.book,
         }),
-        updater: readingEditPageUpdater(input, data.reading.book.pages),
+        updater: getReadingEditPageUpdater({
+          input,
+          bookPages: data.reading?.book?.pages,
+          bookId: data.reading?.book?.id,
+        }),
       });
     },
-    [route.params.id, readingEditPage, data.reading.book, t],
+    [route.params.id, readingEditPage, data, t],
   );
 
   return (

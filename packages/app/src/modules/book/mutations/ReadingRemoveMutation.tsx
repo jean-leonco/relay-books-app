@@ -1,5 +1,5 @@
 import { graphql } from 'react-relay';
-import { RecordSourceSelectorProxy, ROOT_ID, SelectorStoreUpdater } from 'relay-runtime';
+import { RecordSourceSelectorProxy, SelectorStoreUpdater } from 'relay-runtime';
 
 import { connectionDeleteEdgeUpdater } from '@workspace/relay';
 
@@ -13,52 +13,33 @@ export const ReadingRemove = graphql`
   }
 `;
 
-export const readingsRemoveMutationConnectionUpdater = (isFinished: boolean): SelectorStoreUpdater => (
+export const getReadingRemoveMutationUpdater = (isFinished: boolean): SelectorStoreUpdater => (
   store: RecordSourceSelectorProxy,
 ) => {
-  const deletedID = store.getRootField('ReadingRemove').getValue('deletedID');
+  const deletedID = store.getRootField('ReadingRemove')?.getValue('deletedID') as string;
 
-  if (isFinished) {
-    connectionDeleteEdgeUpdater({
-      parentId: ROOT_ID,
-      connectionName: 'Home_readings',
-      nodeId: deletedID,
-      store,
-    });
-
-    connectionDeleteEdgeUpdater({
-      parentId: ROOT_ID,
-      connectionName: 'ReadItAgain_finished',
-      nodeId: deletedID,
-      store,
-    });
-
-    connectionDeleteEdgeUpdater({
-      parentId: ROOT_ID,
-      connectionName: 'Profile_readings',
-      nodeId: deletedID,
-      store,
-    });
-  } else {
-    connectionDeleteEdgeUpdater({
-      parentId: ROOT_ID,
-      connectionName: 'LastReadingSection_lastReading',
-      nodeId: deletedID,
-      store,
-    });
-
-    connectionDeleteEdgeUpdater({
-      parentId: ROOT_ID,
-      connectionName: 'ContinueReading_unfinished',
-      nodeId: deletedID,
-      store,
-    });
+  if (!deletedID) {
+    return;
   }
 
-  connectionDeleteEdgeUpdater({
-    parentId: ROOT_ID,
-    connectionName: 'LibrarySection_readings',
-    nodeId: deletedID,
-    store,
-  });
+  if (isFinished) {
+    const meReadingsProxy = store.getRoot().getLinkedRecord(`readings(filters:{\"finished\":true},first:1)`);
+    if (meReadingsProxy) {
+      const count = meReadingsProxy.getValue('count') as number;
+      meReadingsProxy.setValue(count > 0 ? count - 1 : 0, 'count');
+    }
+
+    connectionDeleteEdgeUpdater({ store, connectionName: 'ReadItAgain_finished', nodeID: deletedID });
+  } else {
+    const meProxy = store.getRoot().getLinkedRecord('me')!;
+    const lastReadingProxy = meProxy.getLinkedRecord('lastIncompleteReading');
+
+    if (lastReadingProxy && lastReadingProxy.getDataID() === deletedID) {
+      lastReadingProxy.invalidateRecord();
+    }
+
+    connectionDeleteEdgeUpdater({ store, connectionName: 'ContinueReading_unfinished', nodeID: deletedID });
+  }
+
+  connectionDeleteEdgeUpdater({ store, connectionName: 'LibrarySection_readings', nodeID: deletedID });
 };

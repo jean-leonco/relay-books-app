@@ -37,6 +37,7 @@ export const loadTrendingBooks = async (context: GraphQLContext) => {
     {
       $match: {
         createdAt: { $gte: start },
+        isActive: true,
       },
     },
     {

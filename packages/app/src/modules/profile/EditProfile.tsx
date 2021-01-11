@@ -10,7 +10,7 @@ import { Column, FormikButton, FormikInput, Space, Text } from '@workspace/ui';
 
 import useTranslation from '../../locales/useTranslation';
 
-import { MeEdit } from './mutations/MeEditMutation';
+import { getMeEditOptimisticResponse, MeEdit } from './mutations/MeEditMutation';
 import { MeEditMutation } from './mutations/__generated__/MeEditMutation.graphql';
 import { EditProfileQuery } from './__generated__/EditProfileQuery.graphql';
 
@@ -26,6 +26,7 @@ const EditProfile = () => {
     graphql`
       query EditProfileQuery {
         me {
+          id
           fullName
           email
         }
@@ -39,8 +40,8 @@ const EditProfile = () => {
 
   const formik = useFormik({
     initialValues: {
-      name: data.me.fullName,
-      email: data.me.email,
+      name: data.me?.fullName,
+      email: data.me?.email,
       password: '',
     },
     validationSchema: yup.object().shape({
@@ -61,7 +62,7 @@ const EditProfile = () => {
           setSubmitting(false);
 
           if (!MeEdit || MeEdit.error) {
-            ToastAndroid.show(MeEdit.error || t('unable_to_update_account'), ToastAndroid.SHORT);
+            ToastAndroid.show(MeEdit?.error || t('unable_to_update_account'), ToastAndroid.SHORT);
             return;
           }
 
@@ -71,6 +72,7 @@ const EditProfile = () => {
           setSubmitting(false);
           ToastAndroid.show(error?.message || t('unable_to_update_account'), ToastAndroid.SHORT);
         },
+        optimisticResponse: getMeEditOptimisticResponse({ id: data.me?.id, ...input }),
       });
     },
   });

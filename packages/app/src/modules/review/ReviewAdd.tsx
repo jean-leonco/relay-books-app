@@ -7,8 +7,8 @@ import useTranslation from '../../locales/useTranslation';
 
 import ReviewForm from './ReviewForm';
 
-import { ReviewAdd, reviewAddMutationConnectionUpdater } from './mutations/ReviewAddMutation';
-import { ReviewAddMutation } from './mutations/__generated__/ReviewAddMutation.graphql';
+import { ReviewAdd, getReviewAddMutationUpdater } from './mutations/ReviewAddMutation';
+import { ReviewAddInput, ReviewAddMutation } from './mutations/__generated__/ReviewAddMutation.graphql';
 import { ReviewAddQuery } from './__generated__/ReviewAddQuery.graphql';
 
 const Review = () => {
@@ -22,10 +22,8 @@ const Review = () => {
   const data = useLazyLoadQuery<ReviewAddQuery>(
     graphql`
       query ReviewAddQuery($id: ID!) {
-        me {
-          id
-        }
         book: node(id: $id) {
+          id
           ...ReviewForm_book
         }
       }
@@ -43,8 +41,10 @@ const Review = () => {
 
   const handleSubmit = useCallback(
     ({ description, rating }, { setSubmitting }) => {
+      const input: ReviewAddInput = { bookId: route.params.bookId, description, rating };
+
       reviewAdd({
-        variables: { input: { bookId: route.params.bookId, description, rating } },
+        variables: { input },
         onCompleted: ({ ReviewAdd }) => {
           setSubmitting(false);
 
@@ -60,10 +60,10 @@ const Review = () => {
           setSubmitting(false);
           ToastAndroid.show(error?.message || t('unable_to_create_review'), ToastAndroid.SHORT);
         },
-        updater: reviewAddMutationConnectionUpdater(data.book.id, data.me.id),
+        updater: getReviewAddMutationUpdater(data.book!.id),
       });
     },
-    [data.book, data.me, navigation, reviewAdd, route.params.bookId, t],
+    [data.book, navigation, reviewAdd, route.params, t],
   );
 
   return (

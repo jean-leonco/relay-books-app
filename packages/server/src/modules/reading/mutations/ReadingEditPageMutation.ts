@@ -31,7 +31,7 @@ const mutation = mutationWithClientMutationId({
     const { user, t } = context;
     const { id, currentPage } = args;
 
-    const reading = await ReadingModel.findOne({ _id: fromGlobalId(id).id, userId: user.id });
+    const reading = await ReadingModel.findOne({ _id: fromGlobalId(id).id, userId: user.id, isActive: true });
 
     if (!reading) {
       return { error: t('book', 'BookNotFound') };
@@ -48,7 +48,7 @@ const mutation = mutationWithClientMutationId({
     }
 
     const updatedReading = await ReadingModel.findOneAndUpdate(
-      { _id: fromGlobalId(id).id, userId: user.id },
+      { _id: fromGlobalId(id).id, userId: user.id, isActive: true },
       { readPages: currentPage || 1 },
     );
 

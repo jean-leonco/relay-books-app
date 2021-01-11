@@ -39,6 +39,8 @@ export interface IReading extends Document, IStatusSchema {
   readPages: number;
 }
 
+Schema.index({ createdAt: 1 });
+
 const ReadingModel: Model<IReading> = mongoose.model('Reading', Schema);
 
 export default ReadingModel;

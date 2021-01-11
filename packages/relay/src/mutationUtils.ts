@@ -1,50 +1,38 @@
 /* eslint-disable no-console */
-import { ConnectionHandler, RecordSourceSelectorProxy } from 'relay-runtime';
+import { ConnectionHandler, RecordProxy, RecordSourceSelectorProxy } from 'relay-runtime';
 
-//@TODO - remove this helpers and use relay connection helpers
-
-interface ConnectionUpdaterOptions {
+interface ConnectionAddEdgeUpdaterOptions {
   store: RecordSourceSelectorProxy;
-  parentId: string;
+  rootID?: string;
   connectionName: string;
-  edge: any;
+  edge: RecordProxy | null;
   before?: boolean;
-  filters?: any;
-  cursor?: string;
 }
-
-export const connectionUpdater = ({ store, parentId, connectionName, edge, before }: ConnectionUpdaterOptions) => {
+export const connectionAddEdgeUpdater = ({
+  store,
+  rootID,
+  connectionName,
+  edge,
+  before = true,
+}: ConnectionAddEdgeUpdaterOptions) => {
   if (!edge) {
-    // eslint-disable-next-line no-console
-    console.log('[Connection Updater] Maybe you forgot to pass an edge:', edge);
     return;
   }
 
-  if (!parentId) {
-    // eslint-disable-next-line no-console
-    console.log('[Connection Updater] Maybe you forgot to pass a parentId:', parentId);
-    return;
-  }
-
-  const parentProxy = store.get(parentId);
+  const parentProxy = rootID ? store.get(rootID) : store.getRoot();
   if (!parentProxy) {
-    // eslint-disable-next-line no-console
-    console.log('[Connection Updater] Maybe this parentProxy is invalid:', parentProxy);
     return;
   }
+
   const connection = ConnectionHandler.getConnection(parentProxy, connectionName);
-
   if (!connection) {
-    // eslint-disable-next-line no-console
-    console.log('[Connection Updater] Maybe this connection is not in relay store yet:', connectionName);
     return;
   }
 
-  const newEndCursorOffset = connection.getValue('endCursorOffset');
-  connection.setValue(Number(newEndCursorOffset) + 1, 'endCursorOffset');
-
-  const newCount = connection.getValue('count');
-  connection.setValue(Number(newCount) + 1, 'count');
+  const newEndCursorOffset = connection.getValue('endCursorOffset') as number;
+  connection.setValue(newEndCursorOffset + 1, 'endCursorOffset');
+  const newCount = connection.getValue('count') as number;
+  connection.setValue(newCount + 1, 'count');
 
   if (before) {
     ConnectionHandler.insertEdgeBefore(connection, edge);
@@ -54,33 +42,29 @@ export const connectionUpdater = ({ store, parentId, connectionName, edge, befor
 };
 
 interface ConnectionDeleteEdgeUpdaterOptions {
-  parentId: string;
-  connectionName: string;
-  nodeId: string;
   store: RecordSourceSelectorProxy;
-  filters?: any;
+  rootID?: string;
+  connectionName: string;
+  nodeID: string;
 }
-
 export const connectionDeleteEdgeUpdater = ({
-  parentId,
-  connectionName,
-  nodeId,
   store,
-  filters,
+  rootID,
+  connectionName,
+  nodeID,
 }: ConnectionDeleteEdgeUpdaterOptions) => {
-  const parentProxy = parentId === null ? store.getRoot() : store.get(parentId);
-  const connection = ConnectionHandler.getConnection(parentProxy, connectionName, filters);
-
-  if (!connection) {
-    // eslint-disable-next-line no-console
-    console.log(
-      `Connection ${connectionName} not found on ${parentId}, maybe this connection is not in relay store yet`,
-    );
+  const parentProxy = rootID ? store.get(rootID) : store.getRoot();
+  if (!parentProxy) {
     return;
   }
 
-  const count = connection.getValue('count');
+  const connection = ConnectionHandler.getConnection(parentProxy, connectionName);
+  if (!connection) {
+    return;
+  }
+
+  const count = connection.getValue('count') as number;
   connection.setValue(count - 1, 'count');
 
-  ConnectionHandler.deleteNode(connection, nodeId);
+  ConnectionHandler.deleteNode(connection, nodeID);
 };
