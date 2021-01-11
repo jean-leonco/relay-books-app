@@ -1,7 +1,7 @@
 import { graphql } from 'react-relay';
-import { RecordSourceSelectorProxy, ROOT_ID } from 'relay-runtime';
+import { ConnectionHandler, RecordSourceSelectorProxy } from 'relay-runtime';
 
-import { connectionUpdater } from '@workspace/relay';
+import { connectionAddEdgeUpdater } from '@workspace/relay';
 
 export const ReadingAdd = graphql`
   mutation ReadingAddMutation($input: ReadingAddInput!) {
@@ -9,6 +9,12 @@ export const ReadingAdd = graphql`
       readingEdge {
         node {
           id
+          readPages
+          book {
+            id
+            pages
+            ...MainBookCard_book
+          }
           ...ReadingCard_reading
         }
       }
@@ -17,22 +23,23 @@ export const ReadingAdd = graphql`
   }
 `;
 
-export const readingAddUpdater = (store: RecordSourceSelectorProxy) => {
-  const edge = store.getRootField('ReadingAdd').getLinkedRecord('readingEdge');
+export const getReadingAddUpdater = (store: RecordSourceSelectorProxy) => {
+  const edge = store.getRootField('ReadingAdd')?.getLinkedRecord('readingEdge');
 
-  connectionUpdater({
-    store,
-    parentId: ROOT_ID,
-    connectionName: 'ContinueReading_unfinished',
-    edge,
-    before: true,
-  });
+  if (!edge) {
+    return;
+  }
 
-  connectionUpdater({
-    store,
-    parentId: ROOT_ID,
-    connectionName: 'ReadButton_readings',
-    edge,
-    before: true,
-  });
+  const rootProxy = store.getRoot();
+  const meProxy = rootProxy.getLinkedRecord('me')!;
+
+  meProxy.setLinkedRecord(edge.getLinkedRecord('node'), 'lastIncompleteReading');
+
+  const unfinishedConnectionProxy = ConnectionHandler.getConnection(rootProxy, 'ContinueReading_unfinished');
+
+  if (unfinishedConnectionProxy) {
+    connectionAddEdgeUpdater({ store, connectionName: 'ContinueReading_unfinished', edge });
+  }
+
+  connectionAddEdgeUpdater({ store, connectionName: 'ReadButton_readings', edge });
 };

@@ -1,7 +1,7 @@
 import { graphql } from 'react-relay';
-import { RecordSourceSelectorProxy, ROOT_ID } from 'relay-runtime';
+import { ConnectionHandler, RecordSourceSelectorProxy } from 'relay-runtime';
 
-import { connectionDeleteEdgeUpdater, connectionUpdater } from '@workspace/relay';
+import { connectionDeleteEdgeUpdater, connectionAddEdgeUpdater } from '@workspace/relay';
 
 import { ReadingEditPageInput } from './__generated__/ReadingEditPageMutation.graphql';
 
@@ -19,7 +19,7 @@ export const ReadingEditPage = graphql`
   }
 `;
 
-export const readingEditPageOptimisticResponse = (reading) => ({
+export const getReadingEditPageOptimisticResponse = (reading) => ({
   ReadingEditPage: {
     error: null,
     readingEdge: {
@@ -31,32 +31,54 @@ export const readingEditPageOptimisticResponse = (reading) => ({
   },
 });
 
-export const readingEditPageUpdater = (input: ReadingEditPageInput, bookPages: number) => (
+interface GetReadingEditPageUpdaterProps {
+  input: ReadingEditPageInput;
+  bookPages: number;
+  bookId: string;
+  meId: string;
+}
+
+export const getReadingEditPageUpdater = ({ input, bookPages, bookId }: GetReadingEditPageUpdaterProps) => (
   store: RecordSourceSelectorProxy,
 ) => {
+  const edge = store.getRootField('ReadingEditPage')!.getLinkedRecord('readingEdge');
+
   if (input.currentPage === bookPages) {
-    const edge = store.getRootField('ReadingEditPage').getLinkedRecord('readingEdge');
+    const meReadingsProxy = store.getRoot().getLinkedRecord(`readings(filters:{\"finished\":true},first:1)`);
+    if (meReadingsProxy) {
+      const count = meReadingsProxy.getValue('count') as number;
+      meReadingsProxy.setValue(count + 1, 'count');
+    }
 
-    connectionDeleteEdgeUpdater({
-      parentId: ROOT_ID,
-      connectionName: 'ContinueReading_unfinished',
-      nodeId: input.id,
-      store,
-    });
+    const lastReadingProxy = store.getRoot().getLinkedRecord('me')!.getLinkedRecord('lastIncompleteReading');
 
-    connectionUpdater({
-      parentId: ROOT_ID,
-      connectionName: 'ReadItAgain_finished',
-      edge,
-      before: true,
-      store,
-    });
+    if (lastReadingProxy) {
+      const lastReadingBookProxy = lastReadingProxy.getLinkedRecord('book')!;
 
-    connectionUpdater({
-      parentId: ROOT_ID,
-      connectionName: 'Profile_readings',
-      edge,
-      store,
-    });
+      if (lastReadingBookProxy.getDataID() === bookId) {
+        lastReadingProxy.invalidateRecord();
+      }
+    }
+
+    connectionDeleteEdgeUpdater({ store, connectionName: 'ContinueReading_unfinished', nodeID: input.id });
+    connectionAddEdgeUpdater({ store, connectionName: 'ReadItAgain_finished', edge });
+  } else {
+    const rootProxy = store.getRoot();
+    const finishedConnectionProxy = ConnectionHandler.getConnection(rootProxy, 'ReadItAgain_finished');
+
+    if (finishedConnectionProxy) {
+      const finishedConnectionEdgesProxy = finishedConnectionProxy.getLinkedRecords('edges')!;
+
+      for (let i = 0; i < finishedConnectionEdgesProxy.length; i++) {
+        const finishedConnectionEdgeProxy = finishedConnectionEdgesProxy[i].getLinkedRecord('node')!;
+        const finishedConnectionEdgeBookProxy = finishedConnectionEdgeProxy.getLinkedRecord('book')!;
+
+        if (finishedConnectionEdgeBookProxy.getDataID() === bookId) {
+          connectionDeleteEdgeUpdater({ store, connectionName: 'ReadItAgain_finished', nodeID: input.id });
+          connectionAddEdgeUpdater({ store, connectionName: 'ContinueReading_unfinished', edge });
+          break;
+        }
+      }
+    }
   }
 };

@@ -1,7 +1,7 @@
 import { graphql } from 'react-relay';
-import { RecordSourceSelectorProxy, ROOT_ID } from 'relay-runtime';
+import { RecordSourceSelectorProxy } from 'relay-runtime';
 
-import { connectionDeleteEdgeUpdater, connectionUpdater } from '@workspace/relay';
+import { connectionDeleteEdgeUpdater, connectionAddEdgeUpdater } from '@workspace/relay';
 
 export const ReadItAgain = graphql`
   mutation ReadItAgainMutation($input: ReadingEditPageInput!) {
@@ -17,28 +17,19 @@ export const ReadItAgain = graphql`
   }
 `;
 
-export const readItAgainUpdater = (readingId: string) => (store: RecordSourceSelectorProxy) => {
-  const edge = store.getRootField('ReadingEditPage').getLinkedRecord('readingEdge');
+export const getReadItAgainUpdater = (nodeID: string) => (store: RecordSourceSelectorProxy) => {
+  const edge = store.getRootField('ReadingEditPage')?.getLinkedRecord('readingEdge');
 
-  connectionDeleteEdgeUpdater({
-    parentId: ROOT_ID,
-    connectionName: 'ReadItAgain_finished',
-    nodeId: readingId,
-    store,
-  });
+  if (!edge) {
+    return;
+  }
 
-  connectionDeleteEdgeUpdater({
-    parentId: ROOT_ID,
-    connectionName: 'Profile_readings',
-    nodeId: readingId,
-    store,
-  });
+  const meReadingsProxy = store.getRoot().getLinkedRecord(`readings(filters:{\"finished\":true},first:1)`);
+  if (meReadingsProxy) {
+    const count = meReadingsProxy.getValue('count') as number;
+    meReadingsProxy.setValue(count > 0 ? count - 1 : 0, 'count');
+  }
 
-  connectionUpdater({
-    store,
-    parentId: ROOT_ID,
-    connectionName: 'ContinueReading_unfinished',
-    edge,
-    before: true,
-  });
+  connectionDeleteEdgeUpdater({ store, connectionName: 'ReadItAgain_finished', nodeID });
+  connectionAddEdgeUpdater({ store, connectionName: 'ContinueReading_unfinished', edge });
 };

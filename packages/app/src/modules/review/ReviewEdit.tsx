@@ -7,8 +7,8 @@ import useTranslation from '../../locales/useTranslation';
 
 import ReviewForm from './ReviewForm';
 
-import { ReviewEdit } from './mutations/ReviewEditMutation';
-import { ReviewEditMutation } from './mutations/__generated__/ReviewEditMutation.graphql';
+import { getReviewEditMutationOptimisticUpdater, ReviewEdit } from './mutations/ReviewEditMutation';
+import { ReviewEditInput, ReviewEditMutation } from './mutations/__generated__/ReviewEditMutation.graphql';
 import { ReviewEditQuery } from './__generated__/ReviewEditQuery.graphql';
 
 const Review = () => {
@@ -41,16 +41,18 @@ const Review = () => {
 
   const initialValues = useMemo(
     () => ({
-      description: data.review.description,
-      rating: data.review.rating,
+      description: data.review?.description,
+      rating: data.review?.rating,
     }),
     [data.review],
   );
 
   const handleSubmit = useCallback(
     ({ description, rating }, { setSubmitting }) => {
+      const input: ReviewEditInput = { id: route.params.id, description, rating };
+
       reviewEdit({
-        variables: { input: { id: route.params.id, description, rating } },
+        variables: { input },
         onCompleted: ({ ReviewEdit }) => {
           setSubmitting(false);
 
@@ -66,6 +68,7 @@ const Review = () => {
           setSubmitting(false);
           ToastAndroid.show(error?.message || t('unable_to_edit_review'), ToastAndroid.SHORT);
         },
+        optimisticUpdater: getReviewEditMutationOptimisticUpdater(route.params.id, input),
       });
     },
     [navigation, reviewEdit, route.params.id, t],

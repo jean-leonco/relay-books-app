@@ -1,7 +1,7 @@
 import { graphql } from 'react-relay';
-import { RecordSourceSelectorProxy, SelectorStoreUpdater } from 'relay-runtime';
+import { ConnectionHandler, RecordSourceSelectorProxy, SelectorStoreUpdater } from 'relay-runtime';
 
-import { connectionUpdater } from '@workspace/relay';
+import { connectionAddEdgeUpdater } from '@workspace/relay';
 
 export const ReviewAdd = graphql`
   mutation ReviewAddMutation($input: ReviewAddInput!) {
@@ -9,7 +9,7 @@ export const ReviewAdd = graphql`
       reviewEdge {
         node {
           id
-          ...ReviewCard_review
+          ...ReviewCard_review @arguments(hasUserName: true)
         }
       }
       error
@@ -17,32 +17,37 @@ export const ReviewAdd = graphql`
   }
 `;
 
-export const reviewAddMutationConnectionUpdater = (bookId: string, meId: string): SelectorStoreUpdater => (
+export const getReviewAddMutationUpdater = (bookId: string): SelectorStoreUpdater => (
   store: RecordSourceSelectorProxy,
 ) => {
-  const newEdge = store.getRootField('ReviewAdd').getLinkedRecord('reviewEdge');
+  const edge = store.getRootField('ReviewAdd')?.getLinkedRecord('reviewEdge');
 
-  connectionUpdater({
-    store,
-    parentId: bookId,
-    connectionName: 'BookDetails_reviews',
-    edge: newEdge,
-    before: true,
-  });
+  if (!edge) {
+    return;
+  }
 
-  connectionUpdater({
-    store,
-    parentId: meId,
-    connectionName: 'Profile_reviews',
-    edge: newEdge,
-    before: true,
-  });
+  const meProxy = store.getRoot().getLinkedRecord('me')!;
 
-  connectionUpdater({
-    store,
-    parentId: meId,
-    connectionName: 'ReviewList_reviews',
-    edge: newEdge,
-    before: true,
-  });
+  const meReviewsProxy = meProxy?.getLinkedRecord('reviews(first:1)');
+  if (meReviewsProxy) {
+    const count = meReviewsProxy.getValue('count') as number;
+    meReviewsProxy.setValue(count + 1, 'count');
+  }
+
+  const bookProxy = store.get(bookId);
+  if (!bookProxy) {
+    // eslint-disable-next-line no-console
+    console.log(`book ${bookId} not found on store.`);
+    return;
+  }
+
+  bookProxy.setValue(false, 'meCanReview');
+
+  connectionAddEdgeUpdater({ store, rootID: bookId, connectionName: 'BookDetails_reviews', edge });
+
+  const reviewConnection = meProxy ? ConnectionHandler.getConnection(meProxy, 'ReviewList_reviews') : null;
+
+  if (reviewConnection) {
+    connectionAddEdgeUpdater({ store, rootID: meProxy.getDataID(), connectionName: 'ReviewList_reviews', edge });
+  }
 };

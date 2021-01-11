@@ -44,6 +44,8 @@ export interface IReview extends Document, IStatusSchema {
   description?: string;
 }
 
+Schema.index({ createdAt: 1 });
+
 const ReviewModel: Model<IReview> = mongoose.model('Review', Schema);
 
 export default ReviewModel;

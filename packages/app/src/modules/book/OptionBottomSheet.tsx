@@ -8,7 +8,7 @@ import { Column, Text } from '@workspace/ui';
 
 import useTranslation from '../../locales/useTranslation';
 
-import { ReadingRemove, readingsRemoveMutationConnectionUpdater } from './mutations/ReadingRemoveMutation';
+import { ReadingRemove, getReadingRemoveMutationUpdater } from './mutations/ReadingRemoveMutation';
 import { ReadingRemoveMutation } from './mutations/__generated__/ReadingRemoveMutation.graphql';
 
 import { OptionBottomSheetQuery } from './__generated__/OptionBottomSheetQuery.graphql';
@@ -78,7 +78,7 @@ const OptionBottomSheet = ({ handleClose }) => {
         navigation.goBack();
         handleClose();
       },
-      updater: readingsRemoveMutationConnectionUpdater(reading!.readPages === reading!.book!.pages),
+      updater: getReadingRemoveMutationUpdater(reading!.readPages === reading!.book!.pages),
     });
   }, [handleClose, navigation, reading, readingRemove, t]);
 

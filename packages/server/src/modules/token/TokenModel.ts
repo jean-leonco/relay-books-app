@@ -67,6 +67,8 @@ export interface IToken extends Document, IStatusSchema {
   isBlocked: boolean;
 }
 
+Schema.index({ createdAt: 1 });
+
 const TokenModel: Model<IToken> = mongoose.model('Token', Schema);
 
 export default TokenModel;

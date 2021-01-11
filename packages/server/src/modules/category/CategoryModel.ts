@@ -30,6 +30,8 @@ export interface ICategory extends Document, IStatusSchema {
   translation: Record<string, string>;
 }
 
+Schema.index({ createdAt: 1 });
+
 const CategoryModel: Model<ICategory> = mongoose.model('Category', Schema);
 
 export default CategoryModel;

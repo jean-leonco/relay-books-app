@@ -1,4 +1,4 @@
-import { createLoader, DataLoaderKey } from '@entria/graphql-mongo-helpers';
+import { createLoader, DataLoaderKey, getObjectId } from '@entria/graphql-mongo-helpers';
 
 import { GraphQLContext, LoggedGraphQLContext } from '../../types';
 import { isLoggedAndDataIsActiveViewerCanSee } from '../../security';
@@ -38,19 +38,24 @@ registerLoader('UserLoader', getLoader);
 
 export const findUserByEmail = async (_context: GraphQLContext, email: string, raw = true): Promise<IUser | null> => {
   const result = raw
-    ? await UserModel.findOne({ 'email.email': email }).lean<IUser>()
-    : await UserModel.findOne({ 'email.email': email });
+    ? await UserModel.findOne({ 'email.email': email, isActive: true }).lean<IUser>()
+    : await UserModel.findOne({ 'email.email': email, isActive: true });
 
   return result;
 };
 
 export const userEmailExists = async (_context: GraphQLContext, email: string): Promise<number | null> => {
-  return await UserModel.countDocuments({ 'email.email': email });
+  return UserModel.countDocuments({ 'email.email': email });
 };
 
 export const meEmailExists = async (context: LoggedGraphQLContext, email: string): Promise<number | null> => {
-  const { user } = context;
-  return await UserModel.countDocuments({ 'email.email': email, _id: { $ne: user.id } });
+  return UserModel.countDocuments({
+    _id: {
+      $ne: getObjectId(context.user.id),
+    },
+    'email.email': email,
+    isActive: true,
+  });
 };
 
 export { getLoader, clearCache, load };

@@ -30,7 +30,7 @@ export const loadBookAverageRating = async (context: GraphQLContext, bookId: Obj
   }
 
   const aggregate = await ReviewModel.aggregate<{ average: number }>([
-    { $match: { bookId } },
+    { $match: { bookId, isActive: true } },
     {
       $group: {
         _id: null,

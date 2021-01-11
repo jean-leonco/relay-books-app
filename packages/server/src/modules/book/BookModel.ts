@@ -75,6 +75,8 @@ export interface IBook extends Document, IStatusSchema {
   categoryId: ObjectId;
 }
 
+Schema.index({ createdAt: 1 });
+
 const BookModel: Model<IBook> = mongoose.model('Book', Schema);
 
 export default BookModel;

@@ -16,7 +16,7 @@ const LibrarySection = (props: LibrarySectionProps) => {
   const data = useFragment<LibrarySection_query$key>(
     graphql`
       fragment LibrarySection_query on Query {
-        readings(first: 10) {
+        readings(first: 10) @connection(key: "LibrarySection_readings", filters: []) {
           edges {
             node {
               id

@@ -57,7 +57,7 @@ const mutation = mutationWithClientMutationId({
       ...(password ? { password } : {}),
     };
 
-    const updatedUser = await UserModel.findOneAndUpdate({ _id: user.id }, userNewInfo);
+    const updatedUser = await UserModel.findOneAndUpdate({ _id: user.id, isActive: true }, userNewInfo);
 
     if (!updatedUser) {
       return {

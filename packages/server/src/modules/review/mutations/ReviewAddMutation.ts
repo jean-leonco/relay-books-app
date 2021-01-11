@@ -46,13 +46,13 @@ const mutation = mutationWithClientMutationId({
       return { error: t('book', 'TheBookIdIsInvalid') };
     }
 
-    const prevReview = await ReviewModel.findOne({ userId: user.id, bookId: book.id });
+    const prevReview = await ReviewModel.findOne({ userId: user.id, bookId: book.id, isActive: true });
 
     if (prevReview) {
       return { error: t('review', 'AReviewForThisBookWasAlreadyCreated') };
     }
 
-    const reading = await ReadingModel.findOne({ userId: user.id, bookId: book.id });
+    const reading = await ReadingModel.findOne({ userId: user.id, bookId: book.id, isActive: true });
 
     if (!reading || reading.readPages < book.pages) {
       return { error: t('review', 'UnableToReviewBookWithoutFinishingIt') };

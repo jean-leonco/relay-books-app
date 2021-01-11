@@ -121,6 +121,8 @@ export interface IUser extends Document, IStatusSchema {
   authenticate: (plainTextPassword: string) => boolean;
 }
 
+Schema.index({ createdAt: 1 });
+
 const UserModel: UserModel = mongoose.model<IUser, UserModel>('User', Schema);
 
 export default UserModel;

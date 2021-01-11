@@ -41,7 +41,10 @@ const mutation = mutationWithClientMutationId({
       ...(description ? { description } : {}),
     };
 
-    const review = await ReviewModel.findOneAndUpdate({ _id: fromGlobalId(id).id, userId: user.id }, newData);
+    const review = await ReviewModel.findOneAndUpdate(
+      { _id: fromGlobalId(id).id, userId: user.id, isActive: true },
+      newData,
+    );
 
     if (!review) {
       return { error: t('review', 'ReviewNotFound') };
