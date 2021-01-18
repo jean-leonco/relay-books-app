@@ -3,7 +3,7 @@ import { createLoader, NullConnection } from '@entria/graphql-mongo-helpers';
 import { connectionFromMongoAggregate } from '@entria/graphql-mongoose-loader';
 
 import { isLoggedAndDataIsActiveViewerCanSee } from '../../security';
-import { GraphQLContext } from '../../types';
+import { GraphQLContext, ObjectId } from '../../types';
 
 import { registerLoader } from '../loader/loaderRegister';
 import ReadingModel from '../reading/ReadingModel';
@@ -55,6 +55,32 @@ export const loadTrendingBooks = async (context: GraphQLContext) => {
     args: {},
     loader: load as any,
   });
+};
+
+export const loadTodaySuggestion = async (context: GraphQLContext) => {
+  if (!context.user) {
+    return null;
+  }
+
+  const start = startOfDay(new Date());
+
+  const aggregate = await ReadingModel.aggregate<{ _id: ObjectId; readingsCount: number }>([
+    {
+      $match: {
+        createdAt: { $gte: start },
+        isActive: true,
+      },
+    },
+    {
+      $group: {
+        _id: '$bookId',
+        readingsCount: { $sum: 1 },
+      },
+    },
+    { $sort: { readingsCount: -1 } },
+  ]);
+
+  return load(context, aggregate[0]._id);
 };
 
 export { getLoader, clearCache, load, loadAll };

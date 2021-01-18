@@ -10,7 +10,7 @@ import * as UserLoader from '../modules/user/UserLoader';
 import UserType from '../modules/user/UserType';
 
 import * as BookLoader from '../modules/book/BookLoader';
-import { BookConnection } from '../modules/book/BookType';
+import BookType, { BookConnection } from '../modules/book/BookType';
 import BookFiltersInputType from '../modules/book/filters/BookFiltersInputType';
 
 import * as ReviewLoader from '../modules/review/ReviewLoader';
@@ -35,13 +35,13 @@ const QueryType = new GraphQLObjectType({
 
     me: {
       type: UserType,
-      description: 'Me is the logged User',
+      description: 'Me is the logged User.',
       resolve: (_obj, _args, context: GraphQLContext) => UserLoader.load(context, context.user && context.user.id),
     },
 
     books: {
       type: GraphQLNonNull(BookConnection.connectionType),
-      description: 'Connection to all books',
+      description: 'Connection to all books.',
       args: {
         ...connectionArgs,
         filters: {
@@ -52,9 +52,15 @@ const QueryType = new GraphQLObjectType({
         args.filters?.trending ? BookLoader.loadTrendingBooks(context) : BookLoader.loadAll(context, args),
     },
 
+    todaySuggestion: {
+      type: BookType,
+      description: "The today's suggestion",
+      resolve: (_obj, _args, context) => BookLoader.loadTodaySuggestion(context),
+    },
+
     reviews: {
       type: GraphQLNonNull(ReviewConnection.connectionType),
-      description: 'Connection to all reviews',
+      description: 'Connection to all reviews.',
       args: {
         ...connectionArgs,
         filters: {
@@ -66,7 +72,7 @@ const QueryType = new GraphQLObjectType({
 
     categories: {
       type: GraphQLNonNull(CategoryConnection.connectionType),
-      description: 'Connection to all categories',
+      description: 'Connection to all categories.',
       args: {
         ...connectionArgs,
         filters: {
@@ -78,7 +84,7 @@ const QueryType = new GraphQLObjectType({
 
     readings: {
       type: GraphQLNonNull(ReadingConnection.connectionType),
-      description: 'Connection to all me readings',
+      description: 'Connection to all me readings.',
       args: {
         ...connectionArgs,
         filters: {

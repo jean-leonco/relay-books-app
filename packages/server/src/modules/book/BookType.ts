@@ -1,4 +1,4 @@
-import { GraphQLObjectType, GraphQLString, GraphQLFloat, GraphQLInt, GraphQLBoolean } from 'graphql';
+import { GraphQLObjectType, GraphQLString, GraphQLFloat, GraphQLInt, GraphQLBoolean, GraphQLEnumType } from 'graphql';
 import { globalIdField, toGlobalId } from 'graphql-relay';
 import {
   connectionArgs,
@@ -16,6 +16,7 @@ import { ReviewConnection } from '../review/ReviewType';
 import ReviewFiltersInputType from '../review/filters/ReviewFiltersInputType';
 
 import * as ReadingLoader from '../reading/ReadingLoader';
+import ReadingType from '../reading/ReadingType';
 
 import { IBook } from './BookModel';
 import { load } from './BookLoader';
@@ -28,12 +29,12 @@ const BookType = new GraphQLObjectType<IBook, GraphQLContext>({
     ...objectIdResolver,
     name: {
       type: GraphQLString,
-      description: 'The book name. ex: O Alienista',
+      description: 'The book name. ex: O Alienista.',
       resolve: (obj) => obj.name,
     },
     author: {
       type: GraphQLString,
-      description: 'The book author. ex: Machado de Assis',
+      description: 'The book author. ex: Machado de Assis.',
       resolve: (obj) => obj.author,
     },
     description: {
@@ -43,12 +44,12 @@ const BookType = new GraphQLObjectType<IBook, GraphQLContext>({
     },
     releaseYear: {
       type: GraphQLInt,
-      description: 'The book release year. ex: 1882',
+      description: 'The book release year. ex: 1882.',
       resolve: (obj) => obj.releaseYear,
     },
     pages: {
       type: GraphQLInt,
-      description: 'The book total page. ex: 96',
+      description: 'The book total page. ex: 96.',
       resolve: (obj) => obj.pages,
     },
     bannerUrl: {
@@ -58,22 +59,22 @@ const BookType = new GraphQLObjectType<IBook, GraphQLContext>({
     },
     ISBN: {
       type: GraphQLInt,
-      description: 'The book banner ISBN. ex: 9780850515060',
+      description: 'The book banner ISBN. ex: 9780850515060.',
       resolve: (obj) => obj.ISBN,
     },
     language: {
       type: GraphQLString,
-      description: 'The book language. ex: Portuguese',
+      description: 'The book language. ex: Portuguese.',
       resolve: (obj) => obj.language,
     },
     rating: {
       type: GraphQLFloat,
-      description: 'The book average rating based on user reviews',
+      description: 'The book average rating based on user reviews.',
       resolve: (obj, _args, context) => ReviewLoader.loadBookAverageRating(context, obj._id),
     },
     reviews: {
       type: ReviewConnection.connectionType,
-      description: 'The book reviews',
+      description: 'The book reviews.',
       args: {
         ...connectionArgs,
         filters: { type: ReviewFiltersInputType },
@@ -85,8 +86,13 @@ const BookType = new GraphQLObjectType<IBook, GraphQLContext>({
     },
     meCanReview: {
       type: GraphQLBoolean,
-      description: 'Retuns if the context user can review the book',
+      description: 'Retuns if the context user can review the book.',
       resolve: async (obj, _args, context) => ReadingLoader.loadMeCanReview(context, obj),
+    },
+    meReading: {
+      type: ReadingType,
+      description: 'Retuns the context user reading of this book.',
+      resolve: async (obj, _args, context) => ReadingLoader.loadMeReading(context, obj),
     },
     ...timestampResolver,
   }),

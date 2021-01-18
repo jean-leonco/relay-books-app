@@ -35,7 +35,7 @@ export const getReadingRemoveMutationUpdater = (isFinished: boolean): SelectorSt
     const lastReadingProxy = meProxy.getLinkedRecord('lastIncompleteReading');
 
     if (lastReadingProxy && lastReadingProxy.getDataID() === deletedID) {
-      lastReadingProxy.invalidateRecord();
+      meProxy.setValue(null, 'lastIncompleteReading');
     }
 
     connectionDeleteEdgeUpdater({ store, connectionName: 'ContinueReading_unfinished', nodeID: deletedID });

@@ -43,7 +43,7 @@ export const getReviewAddMutationUpdater = (bookId: string): SelectorStoreUpdate
 
   bookProxy.setValue(false, 'meCanReview');
 
-  connectionAddEdgeUpdater({ store, rootID: bookId, connectionName: 'BookDetails_reviews', edge });
+  connectionAddEdgeUpdater({ store, rootID: bookId, connectionName: 'BookReviews_reviews', edge });
 
   const reviewConnection = meProxy ? ConnectionHandler.getConnection(meProxy, 'ReviewList_reviews') : null;
 

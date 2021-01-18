@@ -4,11 +4,12 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { css, useTheme } from 'styled-components/native';
 import { graphql, useLazyLoadQuery, useMutation } from 'react-relay/hooks';
 import Pdf from 'react-native-pdf';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 import { Column, Row, Space, Text } from '@workspace/ui';
 
 import useTranslation from '../../locales/useTranslation';
+import useRouteWithParams from '../hooks/useRouteWithParams';
 
 import {
   ReadingEditPage,
@@ -35,10 +36,10 @@ const Reading = () => {
   const { t } = useTranslation();
 
   const navigation = useNavigation();
-  const route = useRoute();
-  const theme = useTheme();
+  const route = useRouteWithParams<{ id: string }>();
 
   const [readingEditPage] = useMutation<ReadingEditPageMutation>(ReadingEditPage);
+
   const data = useLazyLoadQuery<ReadingQuery>(
     graphql`
       query ReadingQuery($id: ID!) {
@@ -57,6 +58,8 @@ const Reading = () => {
     `,
     { id: route.params.id },
   );
+
+  const theme = useTheme();
 
   const [initialPage] = useState(data.reading.readPages);
 

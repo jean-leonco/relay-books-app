@@ -15,19 +15,22 @@ type Query {
     ids: [ID!]!
   ): [Node]!
 
-  """Me is the logged User"""
+  """Me is the logged User."""
   me: User
 
-  """Connection to all books"""
+  """Connection to all books."""
   books(after: String, first: Int, before: String, last: Int, filters: BookFilters): BookConnection!
 
-  """Connection to all reviews"""
+  """The today's suggestion"""
+  todaySuggestion: Book
+
+  """Connection to all reviews."""
   reviews(after: String, first: Int, before: String, last: Int, filters: ReviewFilters): ReviewConnection!
 
-  """Connection to all categories"""
+  """Connection to all categories."""
   categories(after: String, first: Int, before: String, last: Int, filters: CategoryFilters): CategoryConnection!
 
-  """Connection to all me readings"""
+  """Connection to all me readings."""
   readings(after: String, first: Int, before: String, last: Int, filters: ReadingFilters): ReadingConnection!
 }
 
@@ -179,38 +182,41 @@ type Book implements Node {
   """mongoose _id"""
   _id: String!
 
-  """The book name. ex: O Alienista"""
+  """The book name. ex: O Alienista."""
   name: String
 
-  """The book author. ex: Machado de Assis"""
+  """The book author. ex: Machado de Assis."""
   author: String
 
   """The book description."""
   description: String
 
-  """The book release year. ex: 1882"""
+  """The book release year. ex: 1882."""
   releaseYear: Int
 
-  """The book total page. ex: 96"""
+  """The book total page. ex: 96."""
   pages: Int
 
   """The book banner url."""
   bannerUrl: String
 
-  """The book banner ISBN. ex: 9780850515060"""
+  """The book banner ISBN. ex: 9780850515060."""
   ISBN: Int
 
-  """The book language. ex: Portuguese"""
+  """The book language. ex: Portuguese."""
   language: String
 
-  """The book average rating based on user reviews"""
+  """The book average rating based on user reviews."""
   rating: Float
 
-  """The book reviews"""
+  """The book reviews."""
   reviews(after: String, first: Int, before: String, last: Int, filters: ReviewFilters): ReviewConnection
 
-  """Retuns if the context user can review the book"""
+  """Retuns if the context user can review the book."""
   meCanReview: Boolean
+
+  """Retuns the context user reading of this book."""
+  meReading: Reading
   createdAt: String
   updatedAt: String
 }
@@ -266,7 +272,7 @@ type Reading implements Node {
   """The book being read."""
   book: Book
 
-  """The total read pages. ex: 50"""
+  """The total read pages. ex: 50."""
   readPages: Int
   createdAt: String
   updatedAt: String

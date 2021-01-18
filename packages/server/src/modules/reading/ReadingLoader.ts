@@ -93,7 +93,7 @@ export const loadMeLastIncompleteReading = async (context: GraphQLContext) => {
     return null;
   }
 
-  return reading[0];
+  return load(context, reading[0]._id);
 };
 
 export const loadMeHasReading = async (context: GraphQLContext) => {
@@ -106,6 +106,18 @@ export const loadMeHasReading = async (context: GraphQLContext) => {
   const readingCount = await ReadingModel.countDocuments({ userId: user.id, isActive: true });
 
   return readingCount > 0;
+};
+
+export const loadMeReading = async (context: GraphQLContext, book: IBook) => {
+  const { user } = context;
+
+  if (!user) {
+    return null;
+  }
+
+  const reading = await ReadingModel.findOne({ userId: user.id, bookId: book._id, isActive: true }).lean<IReading>();
+
+  return reading;
 };
 
 export { getLoader, clearCache, load, loadAll };

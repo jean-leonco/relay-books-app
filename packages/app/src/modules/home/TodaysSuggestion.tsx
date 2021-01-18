@@ -12,16 +12,12 @@ interface TodaysSuggestionProps {
 const TodaysSuggestion = (props: TodaysSuggestionProps) => {
   const navigation = useNavigation();
 
-  const data = useFragment<TodaysSuggestion_query$key>(
+  const { todaySuggestion } = useFragment<TodaysSuggestion_query$key>(
     graphql`
       fragment TodaysSuggestion_query on Query {
-        suggestion: books(first: 1, filters: { trending: true }) {
-          edges {
-            node {
-              id
-              ...MainBookCard_book
-            }
-          }
+        todaySuggestion {
+          id
+          ...MainBookCard_book
         }
       }
     `,
@@ -29,10 +25,14 @@ const TodaysSuggestion = (props: TodaysSuggestionProps) => {
   );
 
   const handlePress = useCallback(() => {
-    navigation.navigate('Book', { id: data.suggestion.edges[0]?.node?.id });
-  }, [data.suggestion.edges, navigation]);
+    navigation.navigate('Book', { id: todaySuggestion?.id });
+  }, [todaySuggestion, navigation]);
 
-  return <MainBookCard book={data.suggestion.edges[0]?.node} onPress={handlePress} />;
+  if (!todaySuggestion) {
+    return null;
+  }
+
+  return <MainBookCard book={todaySuggestion} onPress={handlePress} />;
 };
 
 export default TodaysSuggestion;

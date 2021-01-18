@@ -50,13 +50,14 @@ export const getReadingEditPageUpdater = ({ input, bookPages, bookId }: GetReadi
       meReadingsProxy.setValue(count + 1, 'count');
     }
 
-    const lastReadingProxy = store.getRoot().getLinkedRecord('me')!.getLinkedRecord('lastIncompleteReading');
+    const meProxy = store.getRoot().getLinkedRecord('me');
+    const lastReadingProxy = meProxy!.getLinkedRecord('lastIncompleteReading');
 
     if (lastReadingProxy) {
-      const lastReadingBookProxy = lastReadingProxy.getLinkedRecord('book')!;
+      const lastReadingBookId = lastReadingProxy.getLinkedRecord('book')!.getDataID();
 
-      if (lastReadingBookProxy.getDataID() === bookId) {
-        lastReadingProxy.invalidateRecord();
+      if (lastReadingBookId === bookId) {
+        meProxy!.setValue(null, 'lastIncompleteReading');
       }
     }
 

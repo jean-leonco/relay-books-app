@@ -32,14 +32,19 @@ export const getReadingAddUpdater = (store: RecordSourceSelectorProxy) => {
 
   const rootProxy = store.getRoot();
   const meProxy = rootProxy.getLinkedRecord('me')!;
+  const nodeProxy = edge.getLinkedRecord('node');
 
-  meProxy.setLinkedRecord(edge.getLinkedRecord('node'), 'lastIncompleteReading');
+  meProxy.setLinkedRecord(nodeProxy, 'lastIncompleteReading');
 
   const unfinishedConnectionProxy = ConnectionHandler.getConnection(rootProxy, 'ContinueReading_unfinished');
-
   if (unfinishedConnectionProxy) {
     connectionAddEdgeUpdater({ store, connectionName: 'ContinueReading_unfinished', edge });
   }
 
-  connectionAddEdgeUpdater({ store, connectionName: 'ReadButton_readings', edge });
+  const bookId = nodeProxy?.getLinkedRecord('book')?.getDataID();
+  const bookProxy = bookId ? store.get(bookId) : null;
+
+  if (bookProxy) {
+    bookProxy.setLinkedRecord(nodeProxy, 'meReading');
+  }
 };

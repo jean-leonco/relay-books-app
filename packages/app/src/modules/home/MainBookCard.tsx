@@ -36,7 +36,7 @@ const MainBookCard = ({ percentageCompleted, footer, onPress, ...props }: MainBo
   return (
     <Row align="flex-end" touchable onPress={onPress}>
       <Column span={11}>
-        <Banner source={{ uri: data?.bannerUrl }} />
+        <Banner source={{ uri: data.bannerUrl! }} />
       </Column>
       <Space width={13} />
       <Column span={8}>

@@ -50,9 +50,9 @@ const BookInfo = (props: BookInfoProps) => {
   return (
     <Column>
       <Column align="center" justify="center">
-        <Banner source={{ uri: data.bannerUrl }} />
+        <Banner source={{ uri: data.bannerUrl! }} />
         <Space height={15} />
-        <Rating initialRating={data.rating} disabled />
+        <Rating initialRating={data.rating!} disabled />
         <Space height={10} />
         <Text size="title" weight="bold" center>
           {data.name}
