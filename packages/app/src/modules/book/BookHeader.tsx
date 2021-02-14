@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Animated, TouchableOpacity, Text } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
@@ -40,17 +40,21 @@ const BookHeader = ({ setBottomSheetOpen, scrollY, ...props }: BookHeaderProps) 
     props.query,
   );
 
-  const color = scrollY.interpolate({
-    inputRange: [0, 250],
-    outputRange: ['rgba(255,255,255,0)', theme.colors.background],
-    extrapolate: 'clamp',
-  });
+  const color = useRef(
+    scrollY.interpolate({
+      inputRange: [300, 400],
+      outputRange: ['rgba(255,255,255,0)', theme.colors.background],
+      extrapolate: 'clamp',
+    }),
+  ).current;
 
-  const opacity = scrollY.interpolate({
-    inputRange: [0, 100],
-    outputRange: [0, 1],
-    extrapolate: 'clamp',
-  });
+  const opacity = useRef(
+    scrollY.interpolate({
+      inputRange: [350, 400],
+      outputRange: [0, 1],
+      extrapolate: 'clamp',
+    }),
+  ).current;
 
   return (
     <Row animated style={{ backgroundColor: color }} align="center" justify="space-between" css={headerCss}>

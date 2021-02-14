@@ -13,7 +13,7 @@ import { ReadingAddMutation } from './mutations/__generated__/ReadingAddMutation
 import { ReadItAgain, getReadItAgainUpdater } from './mutations/ReadItAgainMutation';
 import { ReadItAgainMutation } from './mutations/__generated__/ReadItAgainMutation.graphql';
 
-import { ReadButton_query$key } from './__generated__/ReadButton_query.graphql';
+import { ReadButton_book$key } from './__generated__/ReadButton_book.graphql';
 
 const buttonCss = css`
   position: absolute;
@@ -23,7 +23,7 @@ const buttonCss = css`
 `;
 
 interface ReadButtonProps {
-  query: ReadButton_query$key;
+  query: ReadButton_book$key;
   bookId: string;
 }
 
@@ -37,42 +37,28 @@ const ReadButton = ({ bookId, ...props }: ReadButtonProps) => {
 
   const navigation = useNavigation();
 
-  const data = useFragment<ReadButton_query$key>(
+  const { meReading, pages } = useFragment<ReadButton_book$key>(
     graphql`
-      fragment ReadButton_query on Query @argumentDefinitions(filters: { type: ReadingFilters }) {
-        readings(first: 1, filters: $filters) @connection(key: "ReadButton_readings", filters: []) {
-          count
-          edges {
-            node {
-              id
-              readPages
-              book {
-                id
-                pages
-              }
-            }
-          }
+      fragment ReadButton_book on Book {
+        pages
+        meReading {
+          id
+          readPages
         }
       }
     `,
     props.query,
   );
 
-  const reading = useMemo(() => (data.readings.edges.length > 0 ? data.readings.edges[0]?.node : null), [
-    data.readings,
-  ]);
-
   const label = useMemo(() => {
-    if (data.readings.count === 0) {
+    if (!meReading) {
       return t('start_reading');
-    }
-
-    if (reading?.readPages < reading?.book.pages) {
+    } else if (meReading.readPages! < pages!) {
       return t('continue_to_read');
-    } else if (reading?.readPages >= reading?.book.pages) {
+    } else if (meReading.readPages! === pages) {
       return t('read_it_again');
     }
-  }, [data.readings.count, reading, t]);
+  }, [pages, meReading, t]);
 
   const handlePress = useCallback(() => {
     if (label === t('start_reading')) {
@@ -98,7 +84,7 @@ const ReadButton = ({ bookId, ...props }: ReadButtonProps) => {
       setSubmitting(true);
 
       readItAgain({
-        variables: { input: { id: reading!.id, currentPage: 1 } },
+        variables: { input: { id: meReading!.id, currentPage: 1 } },
         onCompleted: ({ ReadingEditPage }) => {
           setSubmitting(false);
 
@@ -113,12 +99,12 @@ const ReadButton = ({ bookId, ...props }: ReadButtonProps) => {
           setSubmitting(false);
           ToastAndroid.show(error?.message || t('unable_to_update_read_pages'), ToastAndroid.SHORT);
         },
-        updater: getReadItAgainUpdater(reading!.id),
+        updater: getReadItAgainUpdater(meReading!.id),
       });
     } else if (label === t('continue_to_read')) {
-      navigation.navigate('Reading', { id: reading?.id });
+      navigation.navigate('Reading', { id: meReading!.id });
     }
-  }, [bookId, label, navigation, readItAgain, reading, readingAdd, t]);
+  }, [bookId, label, navigation, readItAgain, meReading, readingAdd, t]);
 
   return (
     <Button onPress={handlePress} buttonCss={buttonCss} loading={isSubmitting}>

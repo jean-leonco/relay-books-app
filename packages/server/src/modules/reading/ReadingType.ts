@@ -25,7 +25,7 @@ const ReadingType = new GraphQLObjectType<IReading, GraphQLContext>({
     },
     readPages: {
       type: GraphQLInt,
-      description: 'The total read pages. ex: 50',
+      description: 'The total read pages. ex: 50.',
       resolve: (obj) => obj.readPages,
     },
     ...timestampResolver,

@@ -1,23 +1,19 @@
-import React, { Suspense, useCallback, useRef, useState } from 'react';
-import { FlatList, Animated, StatusBar } from 'react-native';
-import { graphql, useLazyLoadQuery, usePaginationFragment } from 'react-relay/hooks';
-import { useRoute } from '@react-navigation/native';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
+import { Animated, StatusBar } from 'react-native';
+import { graphql, useLazyLoadQuery } from 'react-relay/hooks';
 import { css } from 'styled-components/native';
 
-import { BottomSheet, Column, FlatListLoader, Space } from '@workspace/ui';
+import { BottomSheet, Column } from '@workspace/ui';
 
-import ReviewCard from '../review/ReviewCard';
+import useRouteWithParams from '../hooks/useRouteWithParams';
 
-import useKeyExtractor from '../common/useKeyExtractor';
+import BookHeader from './BookHeader';
+import BookInfo from './BookInfo';
+import BookReviews from './BookReviews';
+import ReadButton from './ReadButton';
+import OptionBottomSheet from './OptionBottomSheet';
 
 import { BookDetailsQuery } from './__generated__/BookDetailsQuery.graphql';
-import { BookDetailsPaginationQuery } from './__generated__/BookDetailsPaginationQuery.graphql';
-import { BookDetails_book$key } from './__generated__/BookDetails_book.graphql';
-
-import BookInfo from './BookInfo';
-import OptionBottomSheet from './OptionBottomSheet';
-import BookHeader from './BookHeader';
-import ReadButton from './ReadButton';
 
 const containerCss = css`
   padding: 48px 24px 0;
@@ -27,60 +23,37 @@ const containerCss = css`
 const BookDetails = () => {
   const [isBottomSheetOpen, setBottomSheetOpen] = useState(false);
 
-  const route = useRoute();
-
-  const scrollY = useRef(new Animated.Value(0)).current;
+  const route = useRouteWithParams<{ id: string }>();
 
   const query = useLazyLoadQuery<BookDetailsQuery>(
     graphql`
-      query BookDetailsQuery($id: ID!, $readingFilters: ReadingFilters) {
+      query BookDetailsQuery($id: ID!) {
         book: node(id: $id) {
           ... on Book {
             ...BookHeader_book
             ...BookInfo_book
-            ...BookDetails_book
-          }
-        }
-        ...ReadButton_query @arguments(filters: $readingFilters)
-      }
-    `,
-    { id: route.params.id, readingFilters: { book: route.params.id } },
-  );
-
-  const { data, loadNext, isLoadingNext, hasNext } = usePaginationFragment<
-    BookDetailsPaginationQuery,
-    BookDetails_book$key
-  >(
-    graphql`
-      fragment BookDetails_book on Book
-      @argumentDefinitions(first: { type: Int, defaultValue: 10 }, after: { type: String })
-      @refetchable(queryName: "BookDetailsPaginationQuery") {
-        reviews(first: $first, after: $after) @connection(key: "BookDetails_reviews", filters: []) {
-          edges {
-            node {
-              id
-              ...ReviewCard_review @arguments(hasUserName: true)
-            }
+            ...BookReviews_book
+            ...ReadButton_book
+            ...OptionBottomSheet_book
           }
         }
       }
     `,
-    query.book,
+    { id: route.params.id },
   );
 
-  const loadMore = useCallback(() => {
-    if (isLoadingNext || !hasNext) {
-      return;
-    }
-    loadNext(10);
-  }, [isLoadingNext, loadNext, hasNext]);
+  const scrollY = useRef(new Animated.Value(0)).current;
+
+  const ListHeaderComponent = useMemo(() => (query.book ? <BookInfo query={query.book} /> : null), [query.book]);
 
   const handleSheetClose = useCallback(() => {
     setBottomSheetOpen(false);
   }, []);
 
-  const renderCard = useCallback(({ item }) => <ReviewCard query={item?.node} />, []);
-  const keyExtractor = useKeyExtractor();
+  //@TODO - treat this cases
+  if (!query.book) {
+    return null;
+  }
 
   return (
     <Column flex={1} css={containerCss}>
@@ -89,28 +62,8 @@ const BookDetails = () => {
         barStyle={isBottomSheetOpen ? 'light-content' : 'dark-content'}
       />
       <BookHeader query={query.book} scrollY={scrollY} setBottomSheetOpen={setBottomSheetOpen} />
-      <FlatList
-        onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: false })}
-        ListHeaderComponent={<BookInfo query={query.book} />}
-        showsVerticalScrollIndicator={false}
-        data={data?.reviews?.edges}
-        keyExtractor={keyExtractor}
-        style={{ marginBottom: 14 }}
-        renderItem={renderCard}
-        onEndReached={loadMore}
-        onEndReachedThreshold={0.1}
-        ListFooterComponent={
-          isLoadingNext ? (
-            <>
-              <FlatListLoader height={60} />
-              <Space height={50} />
-            </>
-          ) : (
-            <Space height={50} />
-          )
-        }
-      />
-      <ReadButton query={query} bookId={route.params.id} />
+      <BookReviews ListHeaderComponent={ListHeaderComponent} query={query.book} scrollY={scrollY} />
+      <ReadButton query={query.book} bookId={route.params.id} />
       <BottomSheet
         isVisible={isBottomSheetOpen}
         swipeDirection="down"
@@ -120,9 +73,7 @@ const BookDetails = () => {
         onBackdropPress={handleSheetClose}
         onSwipeComplete={handleSheetClose}
       >
-        <Suspense fallback={<FlatListLoader height={160} />}>
-          <OptionBottomSheet handleClose={handleSheetClose} />
-        </Suspense>
+        <OptionBottomSheet query={query.book} handleClose={handleSheetClose} />
       </BottomSheet>
     </Column>
   );

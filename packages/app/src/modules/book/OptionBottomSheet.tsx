@@ -1,17 +1,18 @@
 import React, { useCallback, useMemo } from 'react';
 import { ToastAndroid } from 'react-native';
 import styled, { css } from 'styled-components/native';
-import { useNavigation, useRoute } from '@react-navigation/native';
-import { graphql, useLazyLoadQuery, useMutation } from 'react-relay/hooks';
+import { useNavigation } from '@react-navigation/native';
+import { graphql, useFragment, useMutation } from 'react-relay/hooks';
 
 import { Column, Text } from '@workspace/ui';
 
 import useTranslation from '../../locales/useTranslation';
+import useRouteWithParams from '../hooks/useRouteWithParams';
 
 import { ReadingRemove, getReadingRemoveMutationUpdater } from './mutations/ReadingRemoveMutation';
 import { ReadingRemoveMutation } from './mutations/__generated__/ReadingRemoveMutation.graphql';
 
-import { OptionBottomSheetQuery } from './__generated__/OptionBottomSheetQuery.graphql';
+import { OptionBottomSheet_book$key } from './__generated__/OptionBottomSheet_book.graphql';
 
 const containerCss = css`
   background: ${(p) => p.theme.colors.background};
@@ -21,46 +22,36 @@ const Button = styled.TouchableOpacity`
   padding: 15px 5px;
 `;
 
-const OptionBottomSheet = ({ handleClose }) => {
+interface OptionBottomSheetProps {
+  handleClose(): void;
+  query: OptionBottomSheet_book$key;
+}
+
+const OptionBottomSheet = ({ handleClose, ...props }: OptionBottomSheetProps) => {
   const { t } = useTranslation();
 
-  const [readingRemove] = useMutation<ReadingRemoveMutation>(ReadingRemove);
-
   const navigation = useNavigation();
-  const route = useRoute();
+  const route = useRouteWithParams<{ id: string }>();
 
-  const data = useLazyLoadQuery<OptionBottomSheetQuery>(
+  const { meReading, pages, meCanReview } = useFragment<OptionBottomSheet_book$key>(
     graphql`
-      query OptionBottomSheetQuery($filters: ReadingFilters) {
-        readings(first: 1, filters: $filters) {
-          edges {
-            node {
-              id
-              readPages
-              book {
-                id
-                pages
-                meCanReview
-              }
-            }
-          }
+      fragment OptionBottomSheet_book on Book {
+        pages
+        meCanReview
+        meReading {
+          id
+          readPages
         }
       }
     `,
-    { filters: { book: route.params.id } },
+    props.query,
   );
 
-  const reading = useMemo(() => {
-    if (!data.readings || !data.readings.edges[0]) {
-      return null;
-    }
-
-    return data.readings.edges[0].node;
-  }, [data]);
+  const [readingRemove] = useMutation<ReadingRemoveMutation>(ReadingRemove);
 
   const handleRemoveFromLibrary = useCallback(async () => {
     readingRemove({
-      variables: { input: { id: reading!.id } },
+      variables: { input: { id: meReading!.id } },
       onCompleted: ({ ReadingRemove }) => {
         if (!ReadingRemove || ReadingRemove.error) {
           ToastAndroid.show(ReadingRemove?.error || t('unable_to_remove_book'), ToastAndroid.SHORT);
@@ -78,9 +69,9 @@ const OptionBottomSheet = ({ handleClose }) => {
         navigation.goBack();
         handleClose();
       },
-      updater: getReadingRemoveMutationUpdater(reading!.readPages === reading!.book!.pages),
+      updater: getReadingRemoveMutationUpdater(meReading!.readPages === pages!),
     });
-  }, [handleClose, navigation, reading, readingRemove, t]);
+  }, [readingRemove, meReading, pages, t, navigation, handleClose]);
 
   const handleReview = useCallback(() => {
     navigation.navigate('ReviewAdd', { bookId: route.params.id });
@@ -89,11 +80,11 @@ const OptionBottomSheet = ({ handleClose }) => {
 
   const photoOptions = useMemo(
     () => [
-      ...(reading?.book?.meCanReview ? [{ label: t('review'), onPress: handleReview }] : []),
-      ...(reading ? [{ label: t('remove_from_library'), onPress: handleRemoveFromLibrary }] : []),
+      ...(meCanReview ? [{ label: t('review'), onPress: handleReview }] : []),
+      ...(meReading ? [{ label: t('remove_from_library'), onPress: handleRemoveFromLibrary }] : []),
       { label: t('close'), onPress: handleClose },
     ],
-    [reading, t, handleReview, handleRemoveFromLibrary, handleClose],
+    [meCanReview, t, handleReview, meReading, handleRemoveFromLibrary, handleClose],
   );
 
   return (

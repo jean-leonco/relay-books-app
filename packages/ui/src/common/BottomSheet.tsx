@@ -19,7 +19,7 @@ const containerCss = css`
   padding: 10px;
 `;
 
-const BottomSheet = ({ children, ...props }: ModalProps) => {
+const BottomSheet = ({ children, ...props }: Partial<ModalProps>) => {
   return (
     <Modal
       swipeDirection="down"

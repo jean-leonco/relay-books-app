@@ -6,6 +6,8 @@ import { connectDatabase } from './database';
 import app from './app';
 import { GRAPHQL_HOST, GRAPHQL_PORT, isProduction } from './config';
 
+process.env.TZ = 'UTC';
+
 const runServer = async () => {
   try {
     console.log('\n🔗 Connecting to database...');
