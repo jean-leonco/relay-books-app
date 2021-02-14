@@ -2333,6 +2333,24 @@
   dependencies:
     "@swc-node/core" "^1.2.0"
 
+"@swc-node/register@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@swc-node/register/-/register-1.0.4.tgz#0d55e2976a27262b00e312eea6ed9c9fcf363178"
+  integrity sha512-svYIPXdApREvZwc3gAufs8A4dT8pWjJdwsPfuFxcJ0hKnTWqWN11XOLOEFOVIR+76BYIRKZxlcNrDF2rP1FIzw==
+  dependencies:
+    "@swc-node/core" "^1.2.0"
+    "@swc-node/sourcemap-support" "^0.1.8"
+    chalk "^4.1.0"
+    debug "^4.3.1"
+    pirates "^4.0.1"
+
+"@swc-node/sourcemap-support@^0.1.8":
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/@swc-node/sourcemap-support/-/sourcemap-support-0.1.8.tgz#8cf74175ae5e3374612011e7e75c03637019db4c"
+  integrity sha512-AOH32yNN8UJh6Ayc+r3mnPdrjqqEjtXr9wsEiEhh3OqJWFXqkMOHC+18FYhHdTzGzhaYqUshQONjqOTC38yx7Q==
+  dependencies:
+    source-map-support "^0.5.19"
+
 "@swc/core-android-arm64@^1.2.47":
   version "1.2.47"
   resolved "https://registry.yarnpkg.com/@swc/core-android-arm64/-/core-android-arm64-1.2.47.tgz#554106c849eaa28904f7f98e4cec0413d72642a1"
@@ -4759,7 +4777,7 @@ debug@4, debug@^4.0.1, debug@^4.1.1, debug@^4.2.0:
   dependencies:
     ms "2.1.2"
 
-debug@^4.1.0:
+debug@^4.1.0, debug@^4.3.1:
   version "4.3.1"
   resolved "https://registry.yarnpkg.com/debug/-/debug-4.3.1.tgz#f0d229c505e0c6d8c49ac553d1b13dc183f6b2ee"
   integrity sha512-doEwdvm4PCeK4K3RQN2ZC2BYUBaxwLARCqZmMjtF8a51J2Rb0xpVloFRnCODwqjpwnAoao4pelN8l3RJdv3gRQ==
@@ -10657,7 +10675,7 @@ source-map-resolve@^0.5.0:
     source-map-url "^0.4.0"
     urix "^0.1.0"
 
-source-map-support@^0.5.16, source-map-support@^0.5.6, source-map-support@~0.5.19:
+source-map-support@^0.5.16, source-map-support@^0.5.19, source-map-support@^0.5.6, source-map-support@~0.5.19:
   version "0.5.19"
   resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.5.19.tgz#a98b62f86dcaf4f67399648c085291ab9e8fed61"
   integrity sha512-Wonm7zOCIJzBGQdB+thsPar0kYuCIzYvxZwlBa87yi/Mdjv7Tip2cyVbLj5o0cFPN4EVkuTwb3GDDyUx2DGnGw==

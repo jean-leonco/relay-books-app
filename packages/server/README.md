@@ -6,7 +6,6 @@ The Server is designed to match [Relay Server Specification](https://relay.dev/d
 
 |    command    | function                               |
 | :-----------: | :------------------------------------- |
-|       b       | run babel-node                         |
 |     build     | build server                           |
 |     seed      | seed database                          |
 |     start     | run development graphql server         |
