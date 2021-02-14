@@ -11,16 +11,16 @@ export const connectDatabase = () => {
     mongoose.Promise = global.Promise;
     mongoose.connection
       .on('error', (error) => {
-        console.log('\n❌ ERROR: Connection to DB failed');
+        console.log('❌ ERROR: Connection to DB failed');
         reject(error);
       })
       .on('close', () => {
-        console.log('\n🛑 ERROR: Connection to DB lost');
+        console.log('🛑 ERROR: Connection to DB lost');
         process.exit(1);
       })
       .once('open', () => {
         const infos = mongoose.connections;
-        infos.map((info) => console.log(`\n⛓️  Connected to ${info.host}:${info.port}/${info.name}`));
+        infos.map((info) => console.log(`⛓️  Connected to ${info.host}:${info.port}/${info.name}`));
         resolve(cachedMongoConn);
       });
 

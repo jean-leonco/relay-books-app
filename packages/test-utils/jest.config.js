@@ -3,12 +3,12 @@ const pack = require('./package');
 module.exports = {
   displayName: pack.name,
   name: pack.name,
-  testPathIgnorePatterns: ['/node_modules/', './dist'],
+  testPathIgnorePatterns: ['/node_modules/'],
   coverageReporters: ['lcov', 'html'],
   resetModules: false,
   reporters: ['default'],
   transform: {
-    '^.+\\.(js|ts|tsx)?$': '<rootDir>/src/babel-transformer',
+    '^.+\\.(js|ts|tsx)?$': '@swc-node/jest',
   },
   testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(js|ts|tsx)?$',
   moduleFileExtensions: ['ts', 'js', 'tsx', 'json'],

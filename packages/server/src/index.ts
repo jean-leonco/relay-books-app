@@ -18,10 +18,11 @@ const runServer = async () => {
   const server = createServer(app.callback());
 
   server.listen(GRAPHQL_PORT, () => {
-    console.info(`\n🚀 Server started at http://${GRAPHQL_HOST}:${GRAPHQL_PORT}`);
+    console.log();
+    console.log(`🚀 Server started at http://${GRAPHQL_HOST}:${GRAPHQL_PORT}`);
 
     if (!isProduction) {
-      console.info(`\n🎠 GraphQL Playground available at http://${GRAPHQL_HOST}:${GRAPHQL_PORT}/playground\n`);
+      console.log(`🎠 GraphQL Playground available at http://${GRAPHQL_HOST}:${GRAPHQL_PORT}/playground`);
     }
   });
 };

@@ -9,22 +9,11 @@ import schema from '../src/schema/schema';
 
 const writeFileAsync = promisify(fs.writeFile);
 
-const schemaFolderSrc = './schema/schema.graphql';
-const schemaFileDest = '../schema/schema.graphql';
-
-const copySchemaToProject = () => {
-  try {
-    fs.copyFileSync(schemaFolderSrc, schemaFileDest);
-    // eslint-disable-next-line
-    console.info(`Schema successfully copied to: ${schemaFileDest}`);
-  } catch (error) {
-    // eslint-disable-next-line
-    console.error(`Error while trying to copy schema to: ${schemaFileDest}`, error);
-  }
-};
+const schemaFileDest = '../../schema/schema.graphql';
 
 (async () => {
-  await writeFileAsync(path.join(__dirname, `../schema/schema.graphql`), printSchema(schema));
-  copySchemaToProject();
+  await writeFileAsync(path.join(__dirname, schemaFileDest), printSchema(schema));
+  // eslint-disable-next-line no-console
+  console.log(`Schema successfully copied to: ${schemaFileDest}`);
   process.exit(0);
 })();

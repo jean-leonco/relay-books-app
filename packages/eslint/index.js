@@ -1,27 +1,25 @@
 module.exports = {
-  parser: '@typescript-eslint/parser', // Specifies the ESLint parser
+  parser: '@typescript-eslint/parser',
   plugins: ['react', 'import', 'relay', 'react-hooks'],
   extends: [
-    'plugin:react/recommended', // Uses the recommended rules from @eslint-plugin-react
-    'plugin:@typescript-eslint/recommended', // Uses the recommended rules from @typescript-eslint/eslint-plugin
+    'plugin:react/recommended',
+    'plugin:@typescript-eslint/recommended',
     'plugin:prettier/recommended',
     'plugin:import/errors',
     'plugin:import/warnings',
     'plugin:relay/recommended',
   ],
   parserOptions: {
-    ecmaVersion: 2018, // Allows for the parsing of modern ECMAScript features
-    sourceType: 'module', // Allows for the use of imports
+    ecmaVersion: 2021,
+    sourceType: 'module',
     ecmaFeatures: {
-      jsx: true, // Allows for the parsing of JSX
+      jsx: true,
     },
   },
   rules: {
-    // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
-    // e.g. '@typescript-eslint/explicit-function-return-type': 'off',
+    'no-console': 'error',
     indent: 'off',
-    'react/no-unescaped-entities': 'off',
-    '@typescript-eslint/indent': 'off', // conflicts with prettier
+    '@typescript-eslint/indent': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
@@ -33,9 +31,9 @@ module.exports = {
     '@typescript-eslint/ban-ts-ignore': 'off',
     '@typescript-eslint/no-empty-function': 'warn',
     '@typescript-eslint/ban-types': 'warn',
+    '@typescript-eslint/camelcase': ['off', { ignoreDestructuring: true }],
+    '@typescript-eslint/ban-ts-comment': 'off',
     'import/named': 'off',
-    'react/prop-types': 'off',
-    'no-console': 'error',
     'import/first': 'warn',
     'import/namespace': ['error', { allowComputed: true }],
     'import/no-duplicates': 'error',
@@ -50,20 +48,21 @@ module.exports = {
     'import/no-cycle': 'error',
     'import/no-self-import': 'warn',
     'import/extensions': ['off', 'never', { ts: 'never' }],
+    'react/prop-types': 'off',
+    'react/display-name': ['off', { ignoreTranspilerName: false }],
+    'react/no-unescaped-entities': 'off',
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'warn',
     'relay/graphql-syntax': 'error',
     'relay/compat-uses-vars': 'warn',
     'relay/graphql-naming': 'error',
     'relay/generated-flow-types': 'off',
     'relay/no-future-added-value': 'warn',
     'relay/unused-fields': 'warn',
-    'react-hooks/rules-of-hooks': 'error',
-    'react-hooks/exhaustive-deps': 'warn',
-    '@typescript-eslint/camelcase': ['off', { ignoreDestructuring: true }],
-    'react/display-name': ['off', { ignoreTranspilerName: false }],
   },
   settings: {
     react: {
-      version: 'detect', // Tells eslint-plugin-react to automatically detect the version of React to use
+      version: 'detect',
     },
     'import/ignore': ['node_modules/react-native/index\\.js$'],
     'import/resolver': {

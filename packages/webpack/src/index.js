@@ -1,6 +1,8 @@
+const server = require('./webpack.server');
+
 const ReloadServerPlugin = require('./ReloadServerPlugin');
 
-// @TODO - add common config
 module.exports = {
+  server,
   ReloadServerPlugin,
 };
