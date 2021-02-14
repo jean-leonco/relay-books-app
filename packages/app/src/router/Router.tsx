@@ -1,16 +1,16 @@
-import React, { useCallback, useMemo } from 'react';
-import { useLazyLoadQuery, graphql, useRelayEnvironment, fetchQuery } from 'react-relay/hooks';
-import { NavigationContainer } from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
+import { NavigationContainer } from '@react-navigation/native';
+import React, { useCallback, useMemo } from 'react';
+import { fetchQuery, graphql, useLazyLoadQuery, useRelayEnvironment } from 'react-relay/hooks';
 //import SplashScreen from 'react-native-splash-screen';
 
 import { AUTH_KEY } from '../common/config';
 
+import { RouterQuery } from './__generated__/RouterQuery.graphql';
+
+import App from './AppRouter';
 import AuthContext from './AuthContext';
 import Auth from './AuthRouter';
-import App from './AppRouter';
-
-import { RouterQuery } from './__generated__/RouterQuery.graphql';
 
 const routerQuery = graphql`
   query RouterQuery {

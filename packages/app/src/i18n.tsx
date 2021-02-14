@@ -1,7 +1,7 @@
-import { NativeModules, Platform } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import i18n, { LanguageDetectorAsyncModule } from 'i18next';
 import { initReactI18next } from 'react-i18next';
+import { NativeModules, Platform } from 'react-native';
 
 import { I18N_KEY } from './common/config';
 

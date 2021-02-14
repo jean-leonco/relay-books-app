@@ -1,5 +1,5 @@
 import { Variables } from 'react-relay';
-import { RequestParameters, QueryResponseCache, CacheConfig } from 'relay-runtime';
+import { CacheConfig, QueryResponseCache, RequestParameters } from 'relay-runtime';
 
 import fetchQuery from './fetchQuery';
 import { forceFetch, isMutation, isQuery } from './helpers';

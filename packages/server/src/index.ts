@@ -2,9 +2,9 @@
 
 import { createServer } from 'http';
 
-import { connectDatabase } from './database';
 import app from './app';
 import { GRAPHQL_HOST, GRAPHQL_PORT, isProduction } from './config';
+import { connectDatabase } from './database';
 
 process.env.TZ = 'UTC';
 

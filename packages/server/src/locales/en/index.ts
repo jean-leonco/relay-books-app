@@ -1,6 +1,6 @@
-import common, { Keys as CommonKeys } from './common';
 import auth, { Keys as AuthKeys } from './auth';
 import book, { Keys as BookKeys } from './book';
+import common, { Keys as CommonKeys } from './common';
 import review, { Keys as ReviewKeys } from './review';
 
 const namespaces = {

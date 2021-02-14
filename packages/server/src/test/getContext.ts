@@ -1,15 +1,12 @@
 import i18next from 'i18next';
 
-import { GraphQLContext } from '../types';
-import { PLATFORM } from '../security';
-
+import en from '../locales/en';
+import { t } from '../locales/helpers';
 import { getDataloaders } from '../modules/loader/loaderRegister';
-
 import User from '../modules/user/UserLoader';
 import { IUser } from '../modules/user/UserModel';
-
-import { t } from '../locales/helpers';
-import en from '../locales/en';
+import { PLATFORM } from '../security';
+import { GraphQLContext } from '../types';
 
 i18next.init({
   lng: 'en',

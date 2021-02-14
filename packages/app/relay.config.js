@@ -1,8 +1,11 @@
-const packages = ['app', 'ui'];
+const path = require('path');
+
+let workspaces = ['app', 'ui']; // Workspaces that should be bundled/watched by webpack.
+workspaces = workspaces.map((ws) => path.resolve(__dirname, ws, 'src', '**')); // Transform workspace name into absolute path.
 
 module.exports = {
-  src: '../.',
-  schema: '../schema/schema.graphql',
-  language: 'typescript',
-  include: [...packages.map((pkg) => `./${pkg}/src/**`)],
+  schema: '../schema/schema.graphql', // Path to schema.graphql or schema.json.
+  src: '../.', // Root directory of application code.
+  include: workspaces, // Directories to include under src.
+  language: 'typescript', // The name of the language plugin used for input files and artifacts.
 };

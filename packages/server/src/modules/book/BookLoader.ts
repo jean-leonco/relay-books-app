@@ -1,6 +1,6 @@
-import { startOfDay, subDays } from 'date-fns';
-import { createLoader, NullConnection } from '@entria/graphql-mongo-helpers';
+import { NullConnection, createLoader } from '@entria/graphql-mongo-helpers';
 import { connectionFromMongoAggregate } from '@entria/graphql-mongoose-loader';
+import { startOfDay, subDays } from 'date-fns';
 
 import { isLoggedAndDataIsActiveViewerCanSee } from '../../security';
 import { GraphQLContext, ObjectId } from '../../types';

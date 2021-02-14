@@ -1,15 +1,15 @@
-import { GraphQLString, GraphQLNonNull } from 'graphql';
-import { mutationWithClientMutationId } from 'graphql-relay';
 import { errorField, successField } from '@entria/graphql-mongo-helpers';
+import { GraphQLNonNull, GraphQLString } from 'graphql';
+import { mutationWithClientMutationId } from 'graphql-relay';
 
+import { getPlatform } from '../../../security';
 import { GraphQLContext, MutationField } from '../../../types';
 
-import { TOKEN_SCOPES } from '../../token/TokenModel';
 import { generateToken } from '../../auth/generateToken';
-import { getPlatform } from '../../../security';
+import { TOKEN_SCOPES } from '../../token/TokenModel';
 
-import UserModel from '../UserModel';
 import * as UserLoader from '../UserLoader';
+import UserModel from '../UserModel';
 
 import UserRegistrationMutationSchema from './validationSchemas/UserRegistrationMutationSchema';
 

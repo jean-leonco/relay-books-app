@@ -1,25 +1,24 @@
-import { GraphQLObjectType, GraphQLString, GraphQLFloat, GraphQLInt, GraphQLBoolean, GraphQLEnumType } from 'graphql';
-import { globalIdField, toGlobalId } from 'graphql-relay';
 import {
   connectionArgs,
   connectionDefinitions,
   objectIdResolver,
   timestampResolver,
 } from '@entria/graphql-mongo-helpers';
+import { GraphQLBoolean, GraphQLEnumType, GraphQLFloat, GraphQLInt, GraphQLObjectType, GraphQLString } from 'graphql';
+import { globalIdField, toGlobalId } from 'graphql-relay';
 
 import { GraphQLContext } from '../../types';
 
 import { nodeInterface, registerTypeLoader } from '../node/typeRegister';
 
-import * as ReviewLoader from '../review/ReviewLoader';
-import { ReviewConnection } from '../review/ReviewType';
-import ReviewFiltersInputType from '../review/filters/ReviewFiltersInputType';
-
 import * as ReadingLoader from '../reading/ReadingLoader';
 import ReadingType from '../reading/ReadingType';
+import ReviewFiltersInputType from '../review/filters/ReviewFiltersInputType';
+import * as ReviewLoader from '../review/ReviewLoader';
+import { ReviewConnection } from '../review/ReviewType';
 
-import { IBook } from './BookModel';
 import { load } from './BookLoader';
+import { IBook } from './BookModel';
 
 const BookType = new GraphQLObjectType<IBook, GraphQLContext>({
   name: 'Book',

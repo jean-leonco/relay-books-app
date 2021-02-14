@@ -1,9 +1,10 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useMemo } from 'react';
 import { graphql, useFragment } from 'react-relay/hooks';
-import { useNavigation } from '@react-navigation/native';
+
+import { LastReadingSection_user$key } from './__generated__/LastReadingSection_user.graphql';
 
 import MainBookCard from './MainBookCard';
-import { LastReadingSection_user$key } from './__generated__/LastReadingSection_user.graphql';
 
 interface LastReadingSectionProps {
   lastReading: LastReadingSection_user$key;

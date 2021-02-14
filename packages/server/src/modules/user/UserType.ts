@@ -1,26 +1,24 @@
-import { GraphQLBoolean, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
-import { globalIdField, toGlobalId } from 'graphql-relay';
 import {
   connectionArgs,
   connectionDefinitions,
   objectIdResolver,
   timestampResolver,
 } from '@entria/graphql-mongo-helpers';
+import { GraphQLBoolean, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
+import { globalIdField, toGlobalId } from 'graphql-relay';
 
 import { GraphQLContext } from '../../types';
 
 import { nodeInterface, registerTypeLoader } from '../node/typeRegister';
 
+import * as ReadingLoader from '../reading/ReadingLoader';
+import ReadingType from '../reading/ReadingType';
+import ReviewFiltersInputType from '../review/filters/ReviewFiltersInputType';
 import * as ReviewLoader from '../review/ReviewLoader';
 import { ReviewConnection } from '../review/ReviewType';
-import ReviewFiltersInputType from '../review/filters/ReviewFiltersInputType';
 
-import * as ReadingLoader from '../reading/ReadingLoader';
-
-import ReadingType from '../reading/ReadingType';
-
-import { IUser } from './UserModel';
 import { load } from './UserLoader';
+import { IUser } from './UserModel';
 
 // @TODO - add avatar
 const UserType = new GraphQLObjectType<IUser, GraphQLContext>({

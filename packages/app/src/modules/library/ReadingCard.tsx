@@ -1,8 +1,8 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useMemo } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { graphql, useFragment } from 'react-relay/hooks';
 import styled, { css } from 'styled-components/native';
-import { useNavigation } from '@react-navigation/native';
 
 import { Column, PercentageCompletedBar, Row, Space, Text } from '@workspace/ui';
 

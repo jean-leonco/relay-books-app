@@ -5,7 +5,7 @@ import {
   sanitizeTestObject,
 } from '@workspace/test-utils';
 
-import { getContext, createUser } from '../../../test/utils';
+import { createUser, getContext } from '../../../test/utils';
 
 import * as UserLoader from '../UserLoader';
 

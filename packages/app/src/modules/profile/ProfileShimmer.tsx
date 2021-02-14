@@ -1,9 +1,8 @@
 import React from 'react';
+import { Dimensions } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder';
 import { css } from 'styled-components/native';
-
-import { Dimensions } from 'react-native';
 
 import { Column, Space } from '@workspace/ui';
 

@@ -2,17 +2,18 @@ import React, { useCallback, useEffect } from 'react';
 import { FlatList } from 'react-native';
 import { graphql, usePaginationFragment } from 'react-relay/hooks';
 
-import { FlatListLoader } from '@workspace/ui';
 import { useTransition } from '@workspace/relay';
+import { FlatListLoader } from '@workspace/ui';
 
 import useKeyExtractor from '../common/useKeyExtractor';
 
-import SearchBook from './SearchBook';
+import { SearchList_query$key } from './__generated__/SearchList_query.graphql';
 import {
   SearchListRefetchQuery,
   SearchListRefetchQueryVariables,
 } from './__generated__/SearchListRefetchQuery.graphql';
-import { SearchList_query$key } from './__generated__/SearchList_query.graphql';
+
+import SearchBook from './SearchBook';
 
 interface SearchListProps {
   query: SearchList_query$key;

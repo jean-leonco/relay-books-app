@@ -3,9 +3,9 @@ import createRelayEnvironment from './createRelayEnvironment';
 import ExecuteEnvironment from './ExecuteEnvironment';
 import fetchQuery from './fetchQuery';
 import fetchWithRetries from './fetchWithRetries';
-import { connectionDeleteEdgeUpdater, connectionAddEdgeUpdater } from './mutationUtils';
-import UnavailableServiceError from './UnavailableServiceError';
 import InvalidSessionError from './InvalidSessionError';
+import { connectionAddEdgeUpdater, connectionDeleteEdgeUpdater } from './mutationUtils';
+import UnavailableServiceError from './UnavailableServiceError';
 import useTransition from './useTransition';
 
 export {

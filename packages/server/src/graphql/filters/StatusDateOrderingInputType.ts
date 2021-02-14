@@ -1,5 +1,5 @@
 import { DirectionEnumType } from '@entria/graphql-mongo-helpers';
-import { GraphQLInputObjectType, GraphQLNonNull, GraphQLEnumType } from 'graphql';
+import { GraphQLEnumType, GraphQLInputObjectType, GraphQLNonNull } from 'graphql';
 
 import { GraphqlSortArg } from '../../types';
 

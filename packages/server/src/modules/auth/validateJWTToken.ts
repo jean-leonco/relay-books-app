@@ -1,9 +1,8 @@
 import jwt, { TokenExpiredError } from 'jsonwebtoken';
 
 import { JWT_KEY } from '../../config';
-import { GraphQLContext } from '../../types';
-
 import { t } from '../../locales/helpers';
+import { GraphQLContext } from '../../types';
 
 import TokenModel, { IToken, TOKEN_SCOPES } from '../token/TokenModel';
 

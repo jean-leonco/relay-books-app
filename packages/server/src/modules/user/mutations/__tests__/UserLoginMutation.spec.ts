@@ -1,21 +1,20 @@
 import { graphql } from 'graphql';
 
 import {
-  connectMongoose,
   clearDbAndRestartCounters,
+  connectMongoose,
   disconnectMongoose,
   gql,
   sanitizeTestObject,
 } from '@workspace/test-utils';
 
-import { getPlatform, PLATFORM } from '../../../../security';
+import schema from '../../../../schema/schema';
+import { PLATFORM, getPlatform } from '../../../../security';
 
 import { createUser, getContext } from '../../../../test/utils';
 
-import { TOKEN_SCOPES } from '../../../token/TokenModel';
 import { generateToken } from '../../../auth/generateToken';
-
-import schema from '../../../../schema/schema';
+import { TOKEN_SCOPES } from '../../../token/TokenModel';
 
 beforeAll(connectMongoose);
 

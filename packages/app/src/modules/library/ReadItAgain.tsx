@@ -6,8 +6,8 @@ import { BookCard, FlatListLoader } from '@workspace/ui';
 
 import useKeyExtractor from '../common/useKeyExtractor';
 
-import { ReadItAgainPaginationQuery } from './__generated__/ReadItAgainPaginationQuery.graphql';
 import { ReadItAgain_query$key } from './__generated__/ReadItAgain_query.graphql';
+import { ReadItAgainPaginationQuery } from './__generated__/ReadItAgainPaginationQuery.graphql';
 
 interface ReadItAgainProps {
   query: ReadItAgain_query$key;

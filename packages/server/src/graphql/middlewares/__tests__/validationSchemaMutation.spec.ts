@@ -1,7 +1,7 @@
-import { graphql, GraphQLBoolean, GraphQLNonNull, GraphQLObjectType, GraphQLSchema, GraphQLString } from 'graphql';
+import { GraphQLBoolean, GraphQLNonNull, GraphQLObjectType, GraphQLSchema, GraphQLString, graphql } from 'graphql';
 import * as yup from 'yup';
 
-import { connectMongoose, clearDbAndRestartCounters, disconnectMongoose, gql } from '@workspace/test-utils';
+import { clearDbAndRestartCounters, connectMongoose, disconnectMongoose, gql } from '@workspace/test-utils';
 
 import { getContext } from '../../../test/utils';
 

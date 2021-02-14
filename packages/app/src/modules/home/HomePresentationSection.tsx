@@ -1,17 +1,17 @@
 import React, { useEffect, useMemo } from 'react';
 import { graphql, useRefetchableFragment } from 'react-relay/hooks';
 
-import { Column, Space, Text } from '@workspace/ui';
 import { useTransition } from '@workspace/relay';
+import { Column, Space, Text } from '@workspace/ui';
 
 import useTranslation from '../../locales/useTranslation';
 
+import { HomePresentationSection_query$key } from './__generated__/HomePresentationSection_query.graphql';
+import { HomePresentationSectionRefetchQuery } from './__generated__/HomePresentationSectionRefetchQuery.graphql';
+
+import HomePresentationSectionShimmer from './HomePresentationSectionShimmer';
 import LastReadingSection from './LastReadingSection';
 import TodaysSuggestion from './TodaysSuggestion';
-import HomePresentationSectionShimmer from './HomePresentationSectionShimmer';
-
-import { HomePresentationSectionRefetchQuery } from './__generated__/HomePresentationSectionRefetchQuery.graphql';
-import { HomePresentationSection_query$key } from './__generated__/HomePresentationSection_query.graphql';
 
 interface HomePresentationSectionProps {
   query: HomePresentationSection_query$key;

@@ -5,11 +5,11 @@ import {
   sanitizeTestObject,
 } from '@workspace/test-utils';
 
-import { getContext, createToken, createUser } from '../../../test/utils';
-
-import { TOKEN_SCOPES } from '../TokenModel';
-import * as TokenLoader from '../TokenLoader';
 import { PLATFORM } from '../../../security';
+import { createToken, createUser, getContext } from '../../../test/utils';
+
+import * as TokenLoader from '../TokenLoader';
+import { TOKEN_SCOPES } from '../TokenModel';
 
 beforeAll(connectMongoose);
 

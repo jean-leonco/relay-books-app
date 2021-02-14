@@ -1,18 +1,17 @@
 import 'react-native-gesture-handler';
 import React, { useCallback, useState } from 'react';
+import { I18nextProvider } from 'react-i18next';
 import { StatusBar } from 'react-native';
 import { RelayEnvironmentProvider } from 'react-relay/hooks';
 import { ThemeProvider } from 'styled-components';
-import { I18nextProvider } from 'react-i18next';
 
-import { ErrorBoundary, theme } from '@workspace/ui';
 import { createRelayEnvironment } from '@workspace/relay';
+import { ErrorBoundary, theme } from '@workspace/ui';
 
 import { AUTH_KEY } from './common/config';
-
 import i18n from './i18n';
-import Router from './router/Router';
 import SuspenseFallback from './modules/common/SuspenseFallback';
+import Router from './router/Router';
 
 const App = () => {
   const [relayEnvironment, setRelayEnvironment] = useState(createRelayEnvironment());

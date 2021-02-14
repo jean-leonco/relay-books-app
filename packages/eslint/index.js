@@ -19,6 +19,7 @@ module.exports = {
   rules: {
     'no-console': 'error',
     indent: 'off',
+    'sort-imports': ['error', { ignoreDeclarationSort: true, allowSeparatedGroups: true }],
     '@typescript-eslint/indent': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
@@ -41,8 +42,15 @@ module.exports = {
       'error',
       {
         'newlines-between': 'always-and-inside-groups',
-        pathGroups: [{ pattern: '@workspace/**', group: 'external', position: 'after' }],
+        pathGroups: [
+          { pattern: '@workspace/**', group: 'external', position: 'after' },
+          { pattern: '**/__generated__/**', group: 'sibling', position: 'before' },
+        ],
         pathGroupsExcludedImportTypes: ['builtin'],
+        alphabetize: {
+          order: 'asc',
+          caseInsensitive: true,
+        },
       },
     ],
     'import/no-cycle': 'error',

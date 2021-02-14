@@ -7,13 +7,13 @@ import { BottomSheet, Column } from '@workspace/ui';
 
 import useRouteWithParams from '../hooks/useRouteWithParams';
 
+import { BookDetailsQuery } from './__generated__/BookDetailsQuery.graphql';
+
 import BookHeader from './BookHeader';
 import BookInfo from './BookInfo';
 import BookReviews from './BookReviews';
-import ReadButton from './ReadButton';
 import OptionBottomSheet from './OptionBottomSheet';
-
-import { BookDetailsQuery } from './__generated__/BookDetailsQuery.graphql';
+import ReadButton from './ReadButton';
 
 const containerCss = css`
   padding: 48px 24px 0;

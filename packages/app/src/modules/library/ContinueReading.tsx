@@ -6,9 +6,10 @@ import { FlatListLoader } from '@workspace/ui';
 
 import useKeyExtractor from '../common/useKeyExtractor';
 
-import ReadingCard from './ReadingCard';
 import { ContinueReading_query$key } from './__generated__/ContinueReading_query.graphql';
 import { ContinueReadingPaginationQuery } from './__generated__/ContinueReadingPaginationQuery.graphql';
+
+import ReadingCard from './ReadingCard';
 
 interface ContinueReadingProps {
   query: ContinueReading_query$key;

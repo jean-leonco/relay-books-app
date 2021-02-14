@@ -6,8 +6,8 @@ import { BookCard, FlatListLoader } from '@workspace/ui';
 
 import useKeyExtractor from '../common/useKeyExtractor';
 
-import { ReleasesSectionPaginationQuery } from './__generated__/ReleasesSectionPaginationQuery.graphql';
 import { ReleasesSection_query$key } from './__generated__/ReleasesSection_query.graphql';
+import { ReleasesSectionPaginationQuery } from './__generated__/ReleasesSectionPaginationQuery.graphql';
 
 interface ReleasesSectionProps {
   releases: ReleasesSection_query$key;

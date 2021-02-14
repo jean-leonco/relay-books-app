@@ -1,22 +1,20 @@
 import {
-  connectMongoose,
   clearDbAndRestartCounters,
+  connectMongoose,
   disconnectMongoose,
-  httpRequestGraphql,
   gql,
+  httpRequestGraphql,
 } from '@workspace/test-utils';
 
 import app from '../../../app';
 
+import { PLATFORM } from '../../../security';
+import { createUser, getContext } from '../../../test/utils';
 import TokenModel, { IToken, TOKEN_SCOPES } from '../../token/TokenModel';
 
-import { getContext, createUser } from '../../../test/utils';
-
-import validateJWTToken from '../validateJWTToken';
-import { generateToken } from '../generateToken';
-import { PLATFORM } from '../../../security';
-
 import UserModel from '../../user/UserModel';
+import { generateToken } from '../generateToken';
+import validateJWTToken from '../validateJWTToken';
 
 beforeAll(connectMongoose);
 

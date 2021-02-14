@@ -1,14 +1,15 @@
 import { graphql } from 'graphql';
 
 import {
-  connectMongoose,
   clearDbAndRestartCounters,
+  connectMongoose,
   disconnectMongoose,
   gql,
   sanitizeTestObject,
 } from '@workspace/test-utils';
 
-import { getPlatform, PLATFORM } from '../../../../security';
+import schema from '../../../../schema/schema';
+import { PLATFORM, getPlatform } from '../../../../security';
 
 import { createUser, getContext } from '../../../../test/utils';
 
@@ -16,8 +17,6 @@ import { generateToken } from '../../../auth/generateToken';
 import { TOKEN_SCOPES } from '../../../token/TokenModel';
 
 import * as UserLoader from '../../UserLoader';
-
-import schema from '../../../../schema/schema';
 
 beforeAll(connectMongoose);
 

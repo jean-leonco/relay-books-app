@@ -1,6 +1,6 @@
 import faker from 'faker';
 
-import { connectMongoose, clearDbAndRestartCounters, disconnectMongoose } from '@workspace/test-utils';
+import { clearDbAndRestartCounters, connectMongoose, disconnectMongoose } from '@workspace/test-utils';
 
 import { createBook, createReading, createUser, getContext } from '../../../test/utils';
 

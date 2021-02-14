@@ -1,6 +1,6 @@
 import {
-  connectMongoose,
   clearDbAndRestartCounters,
+  connectMongoose,
   disconnectMongoose,
   sanitizeTestObject,
 } from '@workspace/test-utils';

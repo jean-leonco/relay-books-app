@@ -1,13 +1,11 @@
 import { graphql } from 'graphql';
 import { toGlobalId } from 'graphql-relay';
 
-import { connectMongoose, clearDbAndRestartCounters, disconnectMongoose, gql } from '@workspace/test-utils';
-
-import { createUser, createReading, getContext } from '../../../../test/utils';
-
-import { PLATFORM } from '../../../../security';
+import { clearDbAndRestartCounters, connectMongoose, disconnectMongoose, gql } from '@workspace/test-utils';
 
 import schema from '../../../../schema/schema';
+import { PLATFORM } from '../../../../security';
+import { createReading, createUser, getContext } from '../../../../test/utils';
 
 beforeAll(connectMongoose);
 

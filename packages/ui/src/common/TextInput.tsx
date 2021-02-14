@@ -2,8 +2,8 @@ import React from 'react';
 import { TextInputProps as ReactTextInputProps } from 'react-native';
 import styled, { css, useTheme } from 'styled-components/native';
 
-import Row from './Row';
 import Column from './Column';
+import Row from './Row';
 import Space from './Space';
 import Text from './Text';
 

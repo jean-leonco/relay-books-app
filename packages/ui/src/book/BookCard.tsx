@@ -1,9 +1,9 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import { graphql, useFragment } from 'react-relay/hooks';
 import { FlattenSimpleInterpolation } from 'styled-components';
 import styled from 'styled-components/native';
-import { useNavigation } from '@react-navigation/native';
 
 import Space from '../common/Space';
 import Text from '../common/Text';

@@ -1,17 +1,16 @@
 import {
-  connectMongoose,
   clearDbAndRestartCounters,
+  connectMongoose,
   disconnectMongoose,
-  httpRequestGraphql,
   gql,
+  httpRequestGraphql,
 } from '@workspace/test-utils';
 
 import app from '../../../app';
 
 import { PLATFORM } from '../../../security';
-import TokenModel, { IToken, TOKEN_SCOPES } from '../../token/TokenModel';
-
 import { createUser } from '../../../test/utils';
+import TokenModel, { IToken, TOKEN_SCOPES } from '../../token/TokenModel';
 
 beforeAll(connectMongoose);
 

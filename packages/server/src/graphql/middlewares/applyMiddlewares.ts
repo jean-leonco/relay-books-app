@@ -1,6 +1,5 @@
-import { addMiddleware } from 'graphql-add-middleware';
-
 import { GraphQLSchema } from 'graphql';
+import { addMiddleware } from 'graphql-add-middleware';
 
 import authenticatedOnlyMutation from './authenticatedOnlyMutation';
 import validationSchemaMutation from './validationSchemaMutation';

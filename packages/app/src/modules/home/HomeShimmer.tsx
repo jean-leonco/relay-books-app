@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, FlatList } from 'react-native';
+import { FlatList, ScrollView } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder';
 import { css } from 'styled-components/native';

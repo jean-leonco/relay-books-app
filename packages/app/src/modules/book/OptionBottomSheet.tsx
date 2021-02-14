@@ -1,18 +1,18 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useMemo } from 'react';
 import { ToastAndroid } from 'react-native';
-import styled, { css } from 'styled-components/native';
-import { useNavigation } from '@react-navigation/native';
 import { graphql, useFragment, useMutation } from 'react-relay/hooks';
+import styled, { css } from 'styled-components/native';
 
 import { Column, Text } from '@workspace/ui';
 
 import useTranslation from '../../locales/useTranslation';
 import useRouteWithParams from '../hooks/useRouteWithParams';
 
-import { ReadingRemove, getReadingRemoveMutationUpdater } from './mutations/ReadingRemoveMutation';
+import { OptionBottomSheet_book$key } from './__generated__/OptionBottomSheet_book.graphql';
 import { ReadingRemoveMutation } from './mutations/__generated__/ReadingRemoveMutation.graphql';
 
-import { OptionBottomSheet_book$key } from './__generated__/OptionBottomSheet_book.graphql';
+import { ReadingRemove, getReadingRemoveMutationUpdater } from './mutations/ReadingRemoveMutation';
 
 const containerCss = css`
   background: ${(p) => p.theme.colors.background};

@@ -1,7 +1,7 @@
 import Application from 'koa';
 
-import { GraphQLContext } from '../../types';
 import { t } from '../../locales/helpers';
+import { GraphQLContext } from '../../types';
 
 import { auth } from './sessionManagement';
 

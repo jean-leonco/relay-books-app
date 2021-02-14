@@ -1,16 +1,15 @@
 import { graphql } from 'graphql';
 
 import {
-  sanitizeTestObject,
-  connectMongoose,
   clearDbAndRestartCounters,
+  connectMongoose,
   disconnectMongoose,
   gql,
+  sanitizeTestObject,
 } from '@workspace/test-utils';
 
-import { createUser, getContext } from '../../../test/utils';
-
 import schema from '../../../schema/schema';
+import { createUser, getContext } from '../../../test/utils';
 
 beforeAll(connectMongoose);
 

@@ -1,12 +1,11 @@
+import { connectionDefinitions, objectIdResolver, timestampResolver } from '@entria/graphql-mongo-helpers';
 import { GraphQLObjectType, GraphQLString } from 'graphql';
 import { globalIdField } from 'graphql-relay';
-import { connectionDefinitions, objectIdResolver, timestampResolver } from '@entria/graphql-mongo-helpers';
 
+import i18n from '../../i18n';
 import { GraphQLContext } from '../../types';
 
 import { nodeInterface, registerTypeLoader } from '../node/typeRegister';
-
-import i18n from '../../i18n';
 
 import { load } from './CategoryLoader';
 import { ICategory } from './CategoryModel';

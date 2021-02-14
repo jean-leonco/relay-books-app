@@ -1,19 +1,19 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useMemo, useState } from 'react';
 import { ToastAndroid } from 'react-native';
 import { graphql, useFragment, useMutation } from 'react-relay/hooks';
 import { css } from 'styled-components/native';
-import { useNavigation } from '@react-navigation/native';
 
 import { Button } from '@workspace/ui';
 
 import useTranslation from '../../locales/useTranslation';
 
-import { ReadingAdd, getReadingAddUpdater } from './mutations/ReadingAddMutation';
+import { ReadButton_book$key } from './__generated__/ReadButton_book.graphql';
 import { ReadingAddMutation } from './mutations/__generated__/ReadingAddMutation.graphql';
-import { ReadItAgain, getReadItAgainUpdater } from './mutations/ReadItAgainMutation';
 import { ReadItAgainMutation } from './mutations/__generated__/ReadItAgainMutation.graphql';
 
-import { ReadButton_book$key } from './__generated__/ReadButton_book.graphql';
+import { ReadingAdd, getReadingAddUpdater } from './mutations/ReadingAddMutation';
+import { ReadItAgain, getReadItAgainUpdater } from './mutations/ReadItAgainMutation';
 
 const buttonCss = css`
   position: absolute;

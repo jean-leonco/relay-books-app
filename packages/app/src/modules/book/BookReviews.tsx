@@ -8,8 +8,8 @@ import useKeyExtractor from '../common/useKeyExtractor';
 
 import ReviewCard from '../review/ReviewCard';
 
-import { BookReviewsPaginationQuery } from './__generated__/BookReviewsPaginationQuery.graphql';
 import { BookReviews_book$key } from './__generated__/BookReviews_book.graphql';
+import { BookReviewsPaginationQuery } from './__generated__/BookReviewsPaginationQuery.graphql';
 
 interface BookReviewsProps {
   query: BookReviews_book$key;

@@ -1,13 +1,13 @@
-import { GraphQLNonNull, GraphQLID } from 'graphql';
-import { fromGlobalId, mutationWithClientMutationId, toGlobalId } from 'graphql-relay';
 import { errorField, successField } from '@entria/graphql-mongo-helpers';
+import { GraphQLID, GraphQLNonNull } from 'graphql';
+import { fromGlobalId, mutationWithClientMutationId, toGlobalId } from 'graphql-relay';
 
 import { LoggedGraphQLContext, MutationField } from '../../../types';
 
 import * as BookLoader from '../../book/BookLoader';
 
-import ReadingModel from '../ReadingModel';
 import * as ReadingLoader from '../ReadingLoader';
+import ReadingModel from '../ReadingModel';
 import { ReadingConnection } from '../ReadingType';
 
 interface ReadingAddArgs {

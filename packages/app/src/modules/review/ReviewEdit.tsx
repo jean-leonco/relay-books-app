@@ -1,15 +1,16 @@
+import { useNavigation, useRoute } from '@react-navigation/native';
 import React, { useCallback, useMemo } from 'react';
 import { ToastAndroid } from 'react-native';
 import { graphql, useLazyLoadQuery, useMutation } from 'react-relay/hooks';
-import { useNavigation, useRoute } from '@react-navigation/native';
 
 import useTranslation from '../../locales/useTranslation';
 
-import ReviewForm from './ReviewForm';
-
-import { getReviewEditMutationOptimisticUpdater, ReviewEdit } from './mutations/ReviewEditMutation';
-import { ReviewEditInput, ReviewEditMutation } from './mutations/__generated__/ReviewEditMutation.graphql';
 import { ReviewEditQuery } from './__generated__/ReviewEditQuery.graphql';
+import { ReviewEditInput, ReviewEditMutation } from './mutations/__generated__/ReviewEditMutation.graphql';
+
+import { ReviewEdit, getReviewEditMutationOptimisticUpdater } from './mutations/ReviewEditMutation';
+
+import ReviewForm from './ReviewForm';
 
 const Review = () => {
   const { t } = useTranslation();

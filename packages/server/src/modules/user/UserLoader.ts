@@ -1,7 +1,7 @@
-import { createLoader, DataLoaderKey, getObjectId } from '@entria/graphql-mongo-helpers';
+import { DataLoaderKey, createLoader, getObjectId } from '@entria/graphql-mongo-helpers';
 
-import { GraphQLContext, LoggedGraphQLContext } from '../../types';
 import { isLoggedAndDataIsActiveViewerCanSee } from '../../security';
+import { GraphQLContext, LoggedGraphQLContext } from '../../types';
 
 import { registerLoader } from '../loader/loaderRegister';
 

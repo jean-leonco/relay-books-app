@@ -4,10 +4,10 @@ import { connectDatabase } from '../../src/database';
 
 import { IBook } from '../../src/modules/book/BookModel';
 
-import createUser from './createUser';
-import createCategory from './createCategory';
 import createBook from './createBook';
+import createCategory from './createCategory';
 import createReadingAndReview from './createReadingAndReview';
+import createUser from './createUser';
 
 const categories = [
   {

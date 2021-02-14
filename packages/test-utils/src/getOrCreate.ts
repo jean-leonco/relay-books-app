@@ -1,4 +1,4 @@
-import { Model, Document } from 'mongoose';
+import { Document, Model } from 'mongoose';
 
 export const getOrCreate = async <Type extends Document>(
   model: Model<Type>,

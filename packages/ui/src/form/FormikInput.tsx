@@ -1,5 +1,5 @@
-import React, { useMemo, useState } from 'react';
 import { useField, useFormikContext } from 'formik';
+import React, { useMemo, useState } from 'react';
 
 import TextInput, { TextInputProps } from '../common/TextInput';
 

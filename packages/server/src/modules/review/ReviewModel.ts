@@ -1,8 +1,7 @@
 import mongoose, { Document, Model } from 'mongoose';
 
-import { IStatusSchema, ObjectId } from '../../types';
-
 import isActiveMongooseField from '../../mongoose/isActiveMongooseField';
+import { IStatusSchema, ObjectId } from '../../types';
 
 const Schema = new mongoose.Schema(
   {

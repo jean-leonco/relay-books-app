@@ -1,10 +1,9 @@
-import { graphql, GraphQLBoolean, GraphQLObjectType, GraphQLSchema, GraphQLString } from 'graphql';
+import { GraphQLBoolean, GraphQLObjectType, GraphQLSchema, GraphQLString, graphql } from 'graphql';
 
-import { connectMongoose, clearDbAndRestartCounters, disconnectMongoose, gql } from '@workspace/test-utils';
-
-import applyMiddlewares from '../applyMiddlewares';
+import { clearDbAndRestartCounters, connectMongoose, disconnectMongoose, gql } from '@workspace/test-utils';
 
 import { createUser, getContext } from '../../../test/utils';
+import applyMiddlewares from '../applyMiddlewares';
 
 beforeAll(connectMongoose);
 

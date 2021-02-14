@@ -1,6 +1,5 @@
-const server = require('./webpack.server');
-
 const ReloadServerPlugin = require('./ReloadServerPlugin');
+const server = require('./webpack.server');
 
 module.exports = {
   server,

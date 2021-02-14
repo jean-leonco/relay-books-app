@@ -1,5 +1,5 @@
-const { MongoMemoryServer } = require('mongodb-memory-server');
 const NodeEnvironment = require('jest-environment-node');
+const { MongoMemoryServer } = require('mongodb-memory-server');
 
 class MongoDbEnvironment extends NodeEnvironment {
   constructor(config) {

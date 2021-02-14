@@ -1,8 +1,8 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useCallback } from 'react';
 import { FlatList } from 'react-native';
 import { graphql, useLazyLoadQuery, usePaginationFragment } from 'react-relay/hooks';
 import { css } from 'styled-components';
-import { useNavigation } from '@react-navigation/native';
 
 import { Column, FlatListLoader, Text } from '@workspace/ui';
 
@@ -10,9 +10,9 @@ import useTranslation from '../../locales/useTranslation';
 
 import useKeyExtractor from '../common/useKeyExtractor';
 
-import { ReviewListQuery } from './__generated__/ReviewListQuery.graphql';
-import { ReviewListPaginationQuery } from './__generated__/ReviewListPaginationQuery.graphql';
 import { ReviewList_user$key } from './__generated__/ReviewList_user.graphql';
+import { ReviewListPaginationQuery } from './__generated__/ReviewListPaginationQuery.graphql';
+import { ReviewListQuery } from './__generated__/ReviewListQuery.graphql';
 
 import ReviewCard from './ReviewCard';
 

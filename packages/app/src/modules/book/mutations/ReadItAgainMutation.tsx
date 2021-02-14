@@ -1,7 +1,7 @@
 import { graphql } from 'react-relay';
 import { RecordSourceSelectorProxy } from 'relay-runtime';
 
-import { connectionDeleteEdgeUpdater, connectionAddEdgeUpdater } from '@workspace/relay';
+import { connectionAddEdgeUpdater, connectionDeleteEdgeUpdater } from '@workspace/relay';
 
 export const ReadItAgain = graphql`
   mutation ReadItAgainMutation($input: ReadingEditPageInput!) {

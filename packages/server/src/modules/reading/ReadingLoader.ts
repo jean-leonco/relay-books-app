@@ -2,9 +2,9 @@ import { createLoader, getObjectId } from '@entria/graphql-mongo-helpers';
 
 import { GraphQLContext } from '../../types';
 
+import { IBook } from '../book/BookModel';
 import { registerLoader } from '../loader/loaderRegister';
 
-import { IBook } from '../book/BookModel';
 import ReviewModel from '../review/ReviewModel';
 
 import { readingFilterMapping } from './filters/ReadingFiltersInputType';

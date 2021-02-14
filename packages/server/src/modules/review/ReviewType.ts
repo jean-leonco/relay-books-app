@@ -1,19 +1,18 @@
-import { GraphQLObjectType, GraphQLFloat, GraphQLString } from 'graphql';
-import { globalIdField } from 'graphql-relay';
 import { connectionDefinitions, objectIdResolver, timestampResolver } from '@entria/graphql-mongo-helpers';
+import { GraphQLFloat, GraphQLObjectType, GraphQLString } from 'graphql';
+import { globalIdField } from 'graphql-relay';
 
 import { GraphQLContext } from '../../types';
 
+import * as BookLoader from '../book/BookLoader';
+import BookType from '../book/BookType';
 import { nodeInterface, registerTypeLoader } from '../node/typeRegister';
 
 import * as UserLoader from '../user/UserLoader';
 import UserType from '../user/UserType';
 
-import * as BookLoader from '../book/BookLoader';
-import BookType from '../book/BookType';
-
-import { IReview } from './ReviewModel';
 import { load } from './ReviewLoader';
+import { IReview } from './ReviewModel';
 
 const ReviewType = new GraphQLObjectType<IReview, GraphQLContext>({
   name: 'Review',

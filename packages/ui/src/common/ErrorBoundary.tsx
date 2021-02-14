@@ -1,12 +1,12 @@
+import AsyncStorage from '@react-native-community/async-storage';
 import React from 'react';
 import { css } from 'styled-components/native';
-import AsyncStorage from '@react-native-community/async-storage';
 
 import { InvalidSessionError, UnavailableServiceError } from '@workspace/relay';
 
-import Text from './Text';
-import Space from './Space';
 import Column from './Column';
+import Space from './Space';
+import Text from './Text';
 
 const containerCss = css`
   background: #fff;

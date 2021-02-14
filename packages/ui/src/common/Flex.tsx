@@ -1,5 +1,5 @@
 import React from 'react';
-import { ViewProps, Animated, TouchableOpacityProps } from 'react-native';
+import { Animated, TouchableOpacityProps, ViewProps } from 'react-native';
 import styled, { css } from 'styled-components/native';
 
 const commonCss = css<FlexProps>`

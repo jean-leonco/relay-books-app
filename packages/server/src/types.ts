@@ -1,18 +1,17 @@
-import { GraphQLFieldConfig } from 'graphql';
-import DataLoader from 'dataloader';
-import { Types } from 'mongoose';
-import { Context } from 'koa';
 import { SortDirection } from '@entria/graphql-mongo-helpers';
+import DataLoader from 'dataloader';
+import { GraphQLFieldConfig } from 'graphql';
+import { Context } from 'koa';
+import { Types } from 'mongoose';
 import { ObjectSchema, Shape } from 'yup';
 
-import { IUser } from './modules/user/UserModel';
-import { IToken } from './modules/token/TokenModel';
+import { t } from './locales/helpers';
 import { IBook } from './modules/book/BookModel';
-import { IReview } from './modules/review/ReviewModel';
 import { ICategory } from './modules/category/CategoryModel';
 import { IReading } from './modules/reading/ReadingModel';
-
-import { t } from './locales/helpers';
+import { IReview } from './modules/review/ReviewModel';
+import { IToken } from './modules/token/TokenModel';
+import { IUser } from './modules/user/UserModel';
 
 export type ObjectId = Types.ObjectId;
 

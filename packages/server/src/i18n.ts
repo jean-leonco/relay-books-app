@@ -1,8 +1,8 @@
 import i18next from 'i18next';
 import { Middleware } from 'koa';
 
-import pt from './locales/pt';
 import en from './locales/en';
+import pt from './locales/pt';
 
 i18next.init({
   resources: {

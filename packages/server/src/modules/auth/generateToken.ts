@@ -1,12 +1,12 @@
-import jwt from 'jsonwebtoken';
 import { addMinutes, addSeconds } from 'date-fns';
+import jwt from 'jsonwebtoken';
 
 import { JWT_KEY } from '../../config';
-import { GraphQLContext } from '../../types';
 import { PLATFORM } from '../../security';
+import { GraphQLContext } from '../../types';
 
-import { IUser } from '../user/UserModel';
 import TokenModel, { IToken, TOKEN_SCOPES } from '../token/TokenModel';
+import { IUser } from '../user/UserModel';
 
 export const getExpirationTimeByScope = (scope: TOKEN_SCOPES): number | null => {
   if (Object.values(TOKEN_SCOPES).indexOf(scope) === -1) {

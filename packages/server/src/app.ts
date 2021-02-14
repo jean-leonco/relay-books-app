@@ -1,26 +1,25 @@
 /* eslint-disable no-console */
 
-import Koa from 'koa';
 import cors from '@koa/cors';
-import graphqlHttp from 'koa-graphql';
-import bodyParser from 'koa-bodyparser';
-import logger from 'koa-logger';
 import Router from '@koa/router';
-import i18next from 'i18next';
-import koaI18next from 'koa-i18next';
-import { koaPlayground } from 'graphql-playground-middleware';
 import { GraphQLError } from 'graphql';
+import { koaPlayground } from 'graphql-playground-middleware';
+import i18next from 'i18next';
+import Koa from 'koa';
+import bodyParser from 'koa-bodyparser';
+import graphqlHttp from 'koa-graphql';
+import koaI18next from 'koa-i18next';
+import logger from 'koa-logger';
 
-import { KoaContext } from './types';
 import { NODE_ENV, isProduction } from './config';
-import schema from './schema/schema';
 
-import { getDataloaders } from './modules/loader/loaderRegister';
+import { i18nMiddleware } from './i18n';
+import { t } from './locales/helpers';
 import appPlatformMiddleware from './modules/auth/appPlatformMiddleware';
 import authMiddleware from './modules/auth/authMiddleware';
-
-import { t } from './locales/helpers';
-import { i18nMiddleware } from './i18n';
+import { getDataloaders } from './modules/loader/loaderRegister';
+import schema from './schema/schema';
+import { KoaContext } from './types';
 
 const app = new Koa<any, KoaContext>();
 const router = new Router<any, KoaContext>();

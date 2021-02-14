@@ -1,29 +1,25 @@
+import { connectionArgs } from '@entria/graphql-mongo-helpers';
 import { GraphQLNonNull, GraphQLObjectType } from 'graphql';
 import { globalIdField } from 'graphql-relay';
-import { connectionArgs } from '@entria/graphql-mongo-helpers';
-
-import { GraphQLContext } from '../types';
-
-import { nodeField, nodesField } from '../modules/node/typeRegister';
-
-import * as UserLoader from '../modules/user/UserLoader';
-import UserType from '../modules/user/UserType';
 
 import * as BookLoader from '../modules/book/BookLoader';
 import BookType, { BookConnection } from '../modules/book/BookType';
 import BookFiltersInputType from '../modules/book/filters/BookFiltersInputType';
 
-import * as ReviewLoader from '../modules/review/ReviewLoader';
-import { ReviewConnection } from '../modules/review/ReviewType';
-import ReviewFiltersInputType from '../modules/review/filters/ReviewFiltersInputType';
-
 import * as CategoryLoader from '../modules/category/CategoryLoader';
 import { CategoryConnection } from '../modules/category/CategoryType';
 import CategoryFiltersInputType from '../modules/category/filters/CategoryFiltersInputType';
+import { nodeField, nodesField } from '../modules/node/typeRegister';
 
+import ReadingFiltersInputType from '../modules/reading/filters/ReadingFiltersInputType';
 import * as ReadingLoader from '../modules/reading/ReadingLoader';
 import { ReadingConnection } from '../modules/reading/ReadingType';
-import ReadingFiltersInputType from '../modules/reading/filters/ReadingFiltersInputType';
+import ReviewFiltersInputType from '../modules/review/filters/ReviewFiltersInputType';
+import * as ReviewLoader from '../modules/review/ReviewLoader';
+import { ReviewConnection } from '../modules/review/ReviewType';
+import * as UserLoader from '../modules/user/UserLoader';
+import UserType from '../modules/user/UserType';
+import { GraphQLContext } from '../types';
 
 const QueryType = new GraphQLObjectType({
   name: 'Query',

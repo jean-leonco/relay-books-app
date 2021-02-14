@@ -1,18 +1,19 @@
-import React from 'react';
-import { useMutation } from 'react-relay/hooks';
-import { ToastAndroid, TouchableOpacity, Keyboard } from 'react-native';
-import { FormikProvider, useFormik } from 'formik';
-import * as yup from 'yup';
-import { css } from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
+import { FormikProvider, useFormik } from 'formik';
+import React from 'react';
+import { Keyboard, ToastAndroid, TouchableOpacity } from 'react-native';
+import { useMutation } from 'react-relay/hooks';
+import { css } from 'styled-components/native';
+import * as yup from 'yup';
 
 import { Column, FormikButton, FormikInput, Space, Text } from '@workspace/ui';
 
 import useTranslation from '../../locales/useTranslation';
 import useRouterAuth from '../../router/useRouterAuth';
 
-import { UserRegistration } from './mutations/UserRegistrationMutation';
 import { UserRegistrationMutation } from './mutations/__generated__/UserRegistrationMutation.graphql';
+
+import { UserRegistration } from './mutations/UserRegistrationMutation';
 
 const containerCss = css`
   padding: 0 24px;

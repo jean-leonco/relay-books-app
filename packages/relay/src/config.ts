@@ -1,6 +1,6 @@
 import {
-  GRAPHQL_URL as NATIVE_GRAPHQL_URL,
   AUTH_KEY as NATIVE_AUTH_KEY,
+  GRAPHQL_URL as NATIVE_GRAPHQL_URL,
   I18N_KEY as NATIVE_I18N_KEY,
   // eslint-disable-next-line import/no-unresolved
 } from '@env';

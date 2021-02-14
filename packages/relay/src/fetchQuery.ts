@@ -1,11 +1,11 @@
 import { RequestParameters, UploadableMap, Variables } from 'relay-runtime';
 
+import { GRAPHQL_URL, clientErrorStatus } from './config';
 import fetchWithRetries from './fetchWithRetries';
 import { getRequestBody, handleData, isMutation } from './helpers';
-import { GRAPHQL_URL, clientErrorStatus } from './config';
-import { getLanguage, getToken } from './utils';
-import UnavailableServiceError from './UnavailableServiceError';
 import InvalidSessionError from './InvalidSessionError';
+import UnavailableServiceError from './UnavailableServiceError';
+import { getLanguage, getToken } from './utils';
 
 enum PLATFORM {
   APP = 'APP',

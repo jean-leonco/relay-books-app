@@ -2,16 +2,15 @@ import { graphql } from 'graphql';
 import { toGlobalId } from 'graphql-relay';
 
 import {
-  sanitizeTestObject,
-  connectMongoose,
   clearDbAndRestartCounters,
+  connectMongoose,
   disconnectMongoose,
   gql,
+  sanitizeTestObject,
 } from '@workspace/test-utils';
 
-import { createCategory, createUser, getContext } from '../../../test/utils';
-
 import schema from '../../../schema/schema';
+import { createCategory, createUser, getContext } from '../../../test/utils';
 
 beforeAll(connectMongoose);
 

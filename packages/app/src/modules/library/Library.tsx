@@ -1,17 +1,17 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useMemo } from 'react';
-import { FlatList, TouchableOpacity, ListRenderItem } from 'react-native';
+import { FlatList, ListRenderItem, TouchableOpacity } from 'react-native';
 import { graphql, useLazyLoadQuery } from 'react-relay/hooks';
 import { css } from 'styled-components/native';
-import { useNavigation } from '@react-navigation/native';
 
 import { Column, Space, Text } from '@workspace/ui';
 
 import useTranslation from '../../locales/useTranslation';
 
+import { LibraryQuery } from './__generated__/LibraryQuery.graphql';
+
 import ContinueReading from './ContinueReading';
 import ReadItAgain from './ReadItAgain';
-
-import { LibraryQuery } from './__generated__/LibraryQuery.graphql';
 
 const containerCss = css`
   padding: 24px 0 0;

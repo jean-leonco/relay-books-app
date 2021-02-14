@@ -1,11 +1,11 @@
 import {
-  connectMongoose,
   clearDbAndRestartCounters,
+  connectMongoose,
   disconnectMongoose,
   sanitizeTestObject,
 } from '@workspace/test-utils';
 
-import { createReading, createUser, createBook } from '../../../test/utils';
+import { createBook, createReading, createUser } from '../../../test/utils';
 
 import ReadingModel, { IReading } from '../ReadingModel';
 

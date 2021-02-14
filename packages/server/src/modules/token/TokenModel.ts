@@ -1,9 +1,8 @@
 import mongoose, { Document, Model } from 'mongoose';
 
-import { IStatusSchema, ObjectId } from '../../types';
-
-import { PLATFORM } from '../../security';
 import isActiveMongooseField from '../../mongoose/isActiveMongooseField';
+import { PLATFORM } from '../../security';
+import { IStatusSchema, ObjectId } from '../../types';
 
 export enum TOKEN_SCOPES {
   RESET_PASSWORD = 'BOOKSAPP:RESET_PASSWORD', // used when user requested a password reset

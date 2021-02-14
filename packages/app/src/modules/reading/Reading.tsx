@@ -1,27 +1,27 @@
-import React, { useCallback, useState } from 'react';
-import { Dimensions, ActivityIndicator, TouchableOpacity, ToastAndroid } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import { css, useTheme } from 'styled-components/native';
-import { graphql, useLazyLoadQuery, useMutation } from 'react-relay/hooks';
-import Pdf from 'react-native-pdf';
 import { useNavigation } from '@react-navigation/native';
+import React, { useCallback, useState } from 'react';
+import { ActivityIndicator, Dimensions, ToastAndroid, TouchableOpacity } from 'react-native';
+import Pdf from 'react-native-pdf';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { graphql, useLazyLoadQuery, useMutation } from 'react-relay/hooks';
+import { css, useTheme } from 'styled-components/native';
 
 import { Column, Row, Space, Text } from '@workspace/ui';
 
 import useTranslation from '../../locales/useTranslation';
 import useRouteWithParams from '../hooks/useRouteWithParams';
 
-import {
-  ReadingEditPage,
-  getReadingEditPageOptimisticResponse,
-  getReadingEditPageUpdater,
-} from './mutations/ReadingEditPageMutation';
+import { ReadingQuery } from './__generated__/ReadingQuery.graphql';
 import {
   ReadingEditPageInput,
   ReadingEditPageMutation,
 } from './mutations/__generated__/ReadingEditPageMutation.graphql';
 
-import { ReadingQuery } from './__generated__/ReadingQuery.graphql';
+import {
+  ReadingEditPage,
+  getReadingEditPageOptimisticResponse,
+  getReadingEditPageUpdater,
+} from './mutations/ReadingEditPageMutation';
 
 const headerCss = css`
   background: ${(p) => p.theme.colors.background};

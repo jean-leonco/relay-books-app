@@ -1,5 +1,5 @@
-import faker from 'faker';
 import { getYear } from 'date-fns';
+import faker from 'faker';
 
 import BookModel, { IBook } from '../../src/modules/book/BookModel';
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, Dimensions } from 'react-native';
+import { Dimensions, FlatList } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder';
 import { css } from 'styled-components';

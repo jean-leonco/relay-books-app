@@ -1,11 +1,11 @@
+import { errorField, successField } from '@entria/graphql-mongo-helpers';
 import { GraphQLString } from 'graphql';
 import { mutationWithClientMutationId } from 'graphql-relay';
-import { errorField, successField } from '@entria/graphql-mongo-helpers';
 
 import { LoggedGraphQLContext, MutationField } from '../../../types';
 
-import UserModel from '../UserModel';
 import * as UserLoader from '../UserLoader';
+import UserModel from '../UserModel';
 import UserType from '../UserType';
 
 import UserRegistrationMutationSchema from './validationSchemas/UserRegistrationMutationSchema';

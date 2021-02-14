@@ -1,18 +1,19 @@
-import React from 'react';
-import { graphql, useLazyLoadQuery, useMutation } from 'react-relay/hooks';
-import { ToastAndroid } from 'react-native';
-import { FormikProvider, useFormik } from 'formik';
-import * as yup from 'yup';
-import { css } from 'styled-components/native';
 import { useNavigation } from '@react-navigation/native';
+import { FormikProvider, useFormik } from 'formik';
+import React from 'react';
+import { ToastAndroid } from 'react-native';
+import { graphql, useLazyLoadQuery, useMutation } from 'react-relay/hooks';
+import { css } from 'styled-components/native';
+import * as yup from 'yup';
 
 import { Column, FormikButton, FormikInput, Space, Text } from '@workspace/ui';
 
 import useTranslation from '../../locales/useTranslation';
 
-import { getMeEditOptimisticResponse, MeEdit } from './mutations/MeEditMutation';
-import { MeEditMutation } from './mutations/__generated__/MeEditMutation.graphql';
 import { EditProfileQuery } from './__generated__/EditProfileQuery.graphql';
+import { MeEditMutation } from './mutations/__generated__/MeEditMutation.graphql';
+
+import { MeEdit, getMeEditOptimisticResponse } from './mutations/MeEditMutation';
 
 const containerCss = css`
   padding: 0 24px;

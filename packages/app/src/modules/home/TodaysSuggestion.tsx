@@ -1,9 +1,10 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useCallback } from 'react';
 import { graphql, useFragment } from 'react-relay/hooks';
-import { useNavigation } from '@react-navigation/native';
+
+import { TodaysSuggestion_query$key } from './__generated__/TodaysSuggestion_query.graphql';
 
 import MainBookCard from './MainBookCard';
-import { TodaysSuggestion_query$key } from './__generated__/TodaysSuggestion_query.graphql';
 
 interface TodaysSuggestionProps {
   suggestion: TodaysSuggestion_query$key;

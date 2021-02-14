@@ -1,25 +1,24 @@
-import React, { Suspense } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
+import React, { Suspense } from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
 import { useTheme } from 'styled-components';
 
+import BookDetails from '../modules/book/BookDetails';
 import Home from '../modules/home/Home';
 import HomeShimmer from '../modules/home/HomeShimmer';
-import Search from '../modules/search/Search';
-import SearchShimmer from '../modules/search/SearchShimmer';
+import Language from '../modules/language/Language';
 import Library from '../modules/library/Library';
 import LibraryShimmer from '../modules/library/LibraryShimmer';
+import EditProfile from '../modules/profile/EditProfile';
 import Profile from '../modules/profile/Profile';
 import ProfileShimmer from '../modules/profile/ProfileShimmer';
-import BookDetails from '../modules/book/BookDetails';
 import Reading from '../modules/reading/Reading';
 import ReviewAdd from '../modules/review/ReviewAdd';
 import ReviewEdit from '../modules/review/ReviewEdit';
 import ReviewList from '../modules/review/ReviewList';
-import EditProfile from '../modules/profile/EditProfile';
-import Language from '../modules/language/Language';
+import Search from '../modules/search/Search';
+import SearchShimmer from '../modules/search/SearchShimmer';
 
 const Tab = createBottomTabNavigator();
 

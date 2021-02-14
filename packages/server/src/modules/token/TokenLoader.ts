@@ -1,8 +1,8 @@
-import { createLoader, DataLoaderKey } from '@entria/graphql-mongo-helpers';
+import { DataLoaderKey, createLoader } from '@entria/graphql-mongo-helpers';
 import { isPast } from 'date-fns';
 
+import { PLATFORM, isLoggedAndDataIsActiveViewerCanSee } from '../../security';
 import { GraphQLContext } from '../../types';
-import { isLoggedAndDataIsActiveViewerCanSee, PLATFORM } from '../../security';
 
 import { registerLoader } from '../loader/loaderRegister';
 

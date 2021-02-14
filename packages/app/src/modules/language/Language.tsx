@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 import { FlatList, ListRenderItem } from 'react-native';
-import { css, useTheme } from 'styled-components/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { css, useTheme } from 'styled-components/native';
 
 import { Column, Row, Space, Text } from '@workspace/ui';
 

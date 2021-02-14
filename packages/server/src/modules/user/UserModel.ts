@@ -1,9 +1,8 @@
 import bcrypt from 'bcryptjs';
 import mongoose, { Document, Model, Query } from 'mongoose';
 
-import { IStatusSchema } from '../../types';
-
 import isActiveMongooseField from '../../mongoose/isActiveMongooseField';
+import { IStatusSchema } from '../../types';
 
 const EmailSchema = new mongoose.Schema(
   {
