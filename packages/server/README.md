@@ -4,14 +4,12 @@ The Server is designed to match [Relay Server Specification](https://relay.dev/d
 
 ## General commands
 
-|     command     | function                                    |
-| :-------------: | :------------------------------------------ |
-|      build      | build server                                |
-|      clean      | delete webpack out                          |
-| copy-to-project | copy schema to be accessible to all project |
-|  database:seed  | seed database                               |
-|     graphql     | run development graphql server              |
-|  serve:graphql  | run production graphql server               |
-|      test       | test server                                 |
-|   test:watch    | test server and watch for file changes      |
-|  update-schema  | update GraphQL schema                       |
+|    command    | function                               |
+| :-----------: | :------------------------------------- |
+|     build     | build server                           |
+|     seed      | seed database                          |
+|     start     | run development graphql server         |
+|     test      | test server                            |
+|  test:watch   | test server and watch for file changes |
+| update-schema | update GraphQL schema                  |
+|       w       | run webpack                            |

@@ -3,7 +3,6 @@ import path from 'path';
 import dotEnvSafe from 'dotenv-safe';
 
 const cwd = process.cwd();
-
 const root = path.join.bind(cwd);
 
 dotEnvSafe.config({
@@ -20,8 +19,8 @@ export const isProduction = NODE_ENV === 'production';
 export const GRAPHQL_HOST = process.env.GRAPHQL_HOST || '127.0.0.1';
 export const GRAPHQL_PORT = process.env.GRAPHQL_PORT || 5001;
 
-// Security
-export const JWT_KEY = process.env.JWT_KEY || 'key';
-
 // Database
 export const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost/booksapp-dev';
+
+// Security
+export const JWT_KEY = process.env.JWT_KEY || 'key';

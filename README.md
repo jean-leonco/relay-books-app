@@ -55,30 +55,27 @@ You can run some commands for the app or the server inside the root directory:
 
 ### General commands
 
-|          command          | function                                            |
-| :-----------------------: | :-------------------------------------------------- |
-|          android          | install app on android                              |
-|            app            | start metro bundler server                          |
-|          app:pod          | install pod for ios                                 |
-|       database:seed       | seed database                                       |
-|        delete:all         | run all delete commands                             |
-|       delete:build        | delete build dir                                    |
-|        delete:dist        | delete dist dir                                     |
-|     delete:generated      | delete all relay generated files                    |
-|    delete:metro-cache     | delete metro bundler cache                          |
-|    delete:node_modules    | delete node_modules                                 |
-|      delete:snapshot      | delete test snapshots                               |
-| delete:yarn-offline-cache | delete yarn offline cache                           |
-|     delete:yarn.lock      | delete yarn.lock                                    |
-|          graphql          | run development graphql server                      |
-|            ios            | install app on ios                                  |
-|           lint            | run eslint check                                    |
-|         lint:fix          | run eslint check and fix lint errors                |
-|         prettier          | run prettier                                        |
-|           relay           | compile relay queries and mutations                 |
-|       server:build        | build server                                        |
-|        server:test        | test server                                         |
-|          startup          | install deps and, copy .env and update schema/relay |
-|           test            | test all packages that have tests                   |
-|          update           | update schema/relay                                 |
-|       update-schema       | update GraphQL schema                               |
+|       command       | function                                            |
+| :-----------------: | :-------------------------------------------------- |
+|       android       | install app on android                              |
+|         app         | start metro bundler server                          |
+|       app:pod       | install pod for ios                                 |
+|       db:seed       | seed database                                       |
+|     delete:all      | run all delete commands                             |
+|    delete:build     | delete build dir                                    |
+|  delete:generated   | delete all relay generated files                    |
+| delete:metro-cache  | delete metro bundler cache                          |
+| delete:node_modules | delete node_modules                                 |
+|  delete:yarn.lock   | delete yarn.lock                                    |
+|         ios         | install app on ios                                  |
+|        lint         | run eslint check                                    |
+|      lint:fix       | run eslint check and fix lint errors                |
+|      prettier       | run prettier                                        |
+|        relay        | compile relay queries and mutations                 |
+|       server        | run development graphql server                      |
+|    server:build     | build server                                        |
+|     server:test     | test server                                         |
+|       startup       | install deps and, copy .env and update schema/relay |
+|        test         | test all packages that have tests                   |
+|       update        | update schema/relay                                 |
+|    update-schema    | update GraphQL schema                               |

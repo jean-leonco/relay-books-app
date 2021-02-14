@@ -2,8 +2,10 @@ interface ReloadServerPluginOptions {
   script: string;
 }
 
-declare class ReloadServerPlugin {
+class ReloadServerPlugin {
   constructor(options?: ReloadServerPluginOptions);
 }
 
-export = { ReloadServerPlugin };
+const server: import('webpack').Configuration;
+
+export = { ReloadServerPlugin, server };
