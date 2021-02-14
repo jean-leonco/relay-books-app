@@ -24,6 +24,8 @@ const buttonCss = css`
 const Language = () => {
   const { t, i18n } = useTranslation();
 
+  const theme = useTheme();
+
   const languages = useMemo(
     () => [
       {
@@ -37,8 +39,6 @@ const Language = () => {
     ],
     [],
   );
-
-  const theme = useTheme();
 
   const renderCard = useCallback<ListRenderItem<typeof languages[0]>>(
     ({ item }) => (

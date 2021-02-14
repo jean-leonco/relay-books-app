@@ -38,6 +38,8 @@ const Reading = () => {
   const navigation = useNavigation();
   const route = useRouteWithParams<{ id: string }>();
 
+  const theme = useTheme();
+
   const [readingEditPage] = useMutation<ReadingEditPageMutation>(ReadingEditPage);
 
   const data = useLazyLoadQuery<ReadingQuery>(
@@ -59,9 +61,7 @@ const Reading = () => {
     { id: route.params.id },
   );
 
-  const theme = useTheme();
-
-  const [initialPage] = useState(data.reading.readPages);
+  const [initialPage] = useState(data.reading?.readPages);
 
   const handlePageChange = useCallback(
     (currentPage) => {
@@ -81,17 +81,21 @@ const Reading = () => {
         optimisticResponse: getReadingEditPageOptimisticResponse({
           id: route.params.id,
           currentPage,
-          book: data.reading.book,
+          book: data.reading!.book,
         }),
         updater: getReadingEditPageUpdater({
           input,
-          bookPages: data.reading?.book?.pages,
-          bookId: data.reading?.book?.id,
+          bookPages: data.reading!.book!.pages!,
+          bookId: data.reading!.book!.id,
         }),
       });
     },
     [route.params.id, readingEditPage, data, t],
   );
+
+  if (!data.reading) {
+    return null;
+  }
 
   return (
     <Column flex={1} align="center" justify="flex-start">
@@ -100,7 +104,7 @@ const Reading = () => {
           <Ionicons name="ios-chevron-back-outline" size={24} color={theme.colors.black} />
         </TouchableOpacity>
         <Text size="button" weight="bold">
-          {data.reading.book.name}
+          {data.reading.book!.name}
         </Text>
         <Space />
       </Row>
@@ -109,7 +113,7 @@ const Reading = () => {
         onPageChanged={handlePageChange}
         enablePaging
         horizontal
-        page={initialPage}
+        page={initialPage as number}
         activityIndicator={
           <Column align="center">
             <Space height={10} />

@@ -31,6 +31,8 @@ interface CategoryDropdownProps extends ModalProps {
 const CategoryDropdown = ({ handleClose, handleSelectCategory, catogories }: CategoryDropdownProps) => {
   const { t } = useTranslation();
 
+  const theme = useTheme();
+
   const data = useFragment<CategoryDropdown_query$key>(
     graphql`
       fragment CategoryDropdown_query on Query {
@@ -46,8 +48,6 @@ const CategoryDropdown = ({ handleClose, handleSelectCategory, catogories }: Cat
     `,
     catogories,
   );
-
-  const theme = useTheme();
 
   return (
     <>
@@ -66,7 +66,7 @@ const CategoryDropdown = ({ handleClose, handleSelectCategory, catogories }: Cat
         </TouchableOpacity>
         {data.categories?.edges.map((edge) => (
           <TouchableOpacity
-            key={edge?.node.id}
+            key={edge?.node?.id}
             style={{ padding: 10 }}
             onPress={() => {
               handleSelectCategory(edge?.node);
@@ -74,7 +74,7 @@ const CategoryDropdown = ({ handleClose, handleSelectCategory, catogories }: Cat
             }}
           >
             <Text color="white" size="button">
-              {edge?.node.name}
+              {edge?.node?.name}
             </Text>
           </TouchableOpacity>
         ))}

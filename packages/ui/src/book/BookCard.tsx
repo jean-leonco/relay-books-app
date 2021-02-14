@@ -50,8 +50,7 @@ const BookCard = ({ containerCss, bannerCss, showName = true, route = 'Book', ..
   return (
     <Container css={containerCss} {...props}>
       <TouchableOpacity onPress={() => navigation.navigate(route, { id: data.id })}>
-        <Banner source={{ uri: data.bannerUrl }} css={bannerCss} />
-
+        <Banner source={{ uri: data.bannerUrl! }} css={bannerCss} />
         {
           <>
             <Space height={10} />

@@ -4,6 +4,7 @@ import { ToastAndroid } from 'react-native';
 import { graphql, useLazyLoadQuery, useMutation } from 'react-relay/hooks';
 
 import useTranslation from '../../locales/useTranslation';
+import useRouteWithParams from '../hooks/useRouteWithParams';
 
 import { ReviewAddQuery } from './__generated__/ReviewAddQuery.graphql';
 import { ReviewAddInput, ReviewAddMutation } from './mutations/__generated__/ReviewAddMutation.graphql';
@@ -15,7 +16,7 @@ import ReviewForm from './ReviewForm';
 const Review = () => {
   const { t } = useTranslation();
 
-  const route = useRoute();
+  const route = useRouteWithParams<{ bookId: string }>();
   const navigation = useNavigation();
 
   const [reviewAdd] = useMutation<ReviewAddMutation>(ReviewAdd);
@@ -66,6 +67,10 @@ const Review = () => {
     },
     [data.book, navigation, reviewAdd, route.params, t],
   );
+
+  if (!data.book) {
+    return null;
+  }
 
   return (
     <ReviewForm query={data.book} initialValues={initialValues} onSubmit={handleSubmit} submitLabel={t('review')} />

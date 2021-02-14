@@ -47,7 +47,10 @@ const HomePresentationSection = (props: HomePresentationSectionProps) => {
 
   const hasLastIncompleteReading = useMemo(() => !!data.me?.lastIncompleteReading, [data.me?.lastIncompleteReading]);
 
-  const hasLastReadingSectionFragment = useMemo(() => !!data.me['__fragments']?.LastReadingSection_user, [data.me]);
+  const hasLastReadingSectionFragment = useMemo(
+    () => (data.me ? !!data.me['__fragments']?.LastReadingSection_user : false),
+    [data.me],
+  );
   const hasTodaysSuggestionFragment = useMemo(() => !!data['__fragments']?.TodaysSuggestion_query, [data]);
 
   useEffect(() => {
@@ -75,7 +78,7 @@ const HomePresentationSection = (props: HomePresentationSectionProps) => {
       <Space height={30} />
 
       {hasLastReadingSectionFragment ? (
-        <LastReadingSection lastReading={data.me} />
+        <LastReadingSection lastReading={data.me!} />
       ) : (
         hasTodaysSuggestionFragment && <TodaysSuggestion suggestion={data} />
       )}

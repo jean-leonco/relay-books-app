@@ -35,7 +35,6 @@ interface GetReadingEditPageUpdaterProps {
   input: ReadingEditPageInput;
   bookPages: number;
   bookId: string;
-  meId: string;
 }
 
 export const getReadingEditPageUpdater = ({ input, bookPages, bookId }: GetReadingEditPageUpdaterProps) => (

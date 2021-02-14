@@ -31,6 +31,8 @@ interface SearchBookProps {
 const SearchBook = (props: SearchBookProps) => {
   const { t } = useTranslation();
 
+  const navigation = useNavigation();
+
   const data = useFragment<SearchBook_book$key>(
     graphql`
       fragment SearchBook_book on Book {
@@ -47,12 +49,10 @@ const SearchBook = (props: SearchBookProps) => {
     props.book,
   );
 
-  const navigation = useNavigation();
-
   return (
     <TouchableOpacity onPress={() => navigation.navigate('Book', { id: data.id })}>
       <Row align="center" css={containerCss}>
-        <Banner source={{ uri: data.bannerUrl }} />
+        <Banner source={{ uri: data.bannerUrl! }} />
         <Space width={12} />
         <Column>
           <Text size="button" weight="bold">
@@ -65,7 +65,7 @@ const SearchBook = (props: SearchBookProps) => {
           <Space height={8} />
           <Text color="c2">{t('based_on_reviews', { reviews: data.reviews?.count })}</Text>
           <Space height={4} />
-          <Rating disabled initialRating={data.rating} />
+          <Rating disabled initialRating={data.rating!} />
           <Space height={4} />
         </Column>
       </Row>

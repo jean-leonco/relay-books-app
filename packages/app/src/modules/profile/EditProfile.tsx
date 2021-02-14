@@ -23,6 +23,10 @@ const containerCss = css`
 const EditProfile = () => {
   const { t } = useTranslation();
 
+  const navigation = useNavigation();
+
+  const [meEdit] = useMutation<MeEditMutation>(MeEdit);
+
   const data = useLazyLoadQuery<EditProfileQuery>(
     graphql`
       query EditProfileQuery {
@@ -35,9 +39,6 @@ const EditProfile = () => {
     `,
     {},
   );
-  const [meEdit] = useMutation<MeEditMutation>(MeEdit);
-
-  const navigation = useNavigation();
 
   const formik = useFormik({
     initialValues: {
@@ -73,12 +74,10 @@ const EditProfile = () => {
           setSubmitting(false);
           ToastAndroid.show(error?.message || t('unable_to_update_account'), ToastAndroid.SHORT);
         },
-        optimisticResponse: getMeEditOptimisticResponse({ id: data.me?.id, ...input }),
+        optimisticResponse: getMeEditOptimisticResponse({ id: data.me!.id, ...input }),
       });
     },
   });
-
-  const { handleSubmit } = formik;
 
   return (
     <Column align="center" justify="center" flex={1} css={containerCss}>
@@ -93,7 +92,7 @@ const EditProfile = () => {
         <Space height={10} />
         <FormikInput name="password" label={t('password')} placeholder={t('your_password')} secureTextEntry />
         <Space height={40} />
-        <FormikButton onPress={() => handleSubmit()}>{t('submit')}</FormikButton>
+        <FormikButton>{t('submit')}</FormikButton>
       </FormikProvider>
     </Column>
   );

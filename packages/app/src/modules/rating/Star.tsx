@@ -1,10 +1,10 @@
 import React, { useCallback, useRef } from 'react';
-import { Animated, TouchableOpacity } from 'react-native';
+import { Animated, Image, TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
 
 import star from '../../assets/star.png';
 
-interface IStar {
+interface IStar extends Animated.AnimatedComponent<typeof Image> {
   position: number;
   handleRatingChange(rating: number): void;
   fill: boolean;

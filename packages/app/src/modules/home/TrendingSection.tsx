@@ -29,6 +29,8 @@ interface TrendingSectionProps {
 }
 
 const TrendingSection = (props: TrendingSectionProps) => {
+  const theme = useTheme();
+
   const data = useFragment<TrendingSection_query$key>(
     graphql`
       fragment TrendingSection_query on Query {
@@ -44,8 +46,6 @@ const TrendingSection = (props: TrendingSectionProps) => {
     `,
     props.trending,
   );
-
-  const theme = useTheme();
 
   const renderCard = useCallback(
     ({ index, item }) => (

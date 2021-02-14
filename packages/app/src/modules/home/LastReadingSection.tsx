@@ -41,8 +41,12 @@ const LastReadingSection = (props: LastReadingSectionProps) => {
     navigation.navigate('Reading', { id: lastIncompleteReading?.id });
   }, [lastIncompleteReading, navigation]);
 
+  if (!lastIncompleteReading?.book) {
+    return null;
+  }
+
   return (
-    <MainBookCard book={lastIncompleteReading?.book} percentageCompleted={percentageCompleted} onPress={handlePress} />
+    <MainBookCard book={lastIncompleteReading.book} percentageCompleted={percentageCompleted} onPress={handlePress} />
   );
 };
 

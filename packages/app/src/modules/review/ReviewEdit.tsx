@@ -1,9 +1,10 @@
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useMemo } from 'react';
 import { ToastAndroid } from 'react-native';
 import { graphql, useLazyLoadQuery, useMutation } from 'react-relay/hooks';
 
 import useTranslation from '../../locales/useTranslation';
+import useRouteWithParams from '../hooks/useRouteWithParams';
 
 import { ReviewEditQuery } from './__generated__/ReviewEditQuery.graphql';
 import { ReviewEditInput, ReviewEditMutation } from './mutations/__generated__/ReviewEditMutation.graphql';
@@ -15,7 +16,7 @@ import ReviewForm from './ReviewForm';
 const Review = () => {
   const { t } = useTranslation();
 
-  const route = useRoute();
+  const route = useRouteWithParams<{ id: string }>();
   const navigation = useNavigation();
 
   const [reviewEdit] = useMutation<ReviewEditMutation>(ReviewEdit);
@@ -75,9 +76,13 @@ const Review = () => {
     [navigation, reviewEdit, route.params.id, t],
   );
 
+  if (!data.review || !data.review.book) {
+    return null;
+  }
+
   return (
     <ReviewForm
-      query={data.review?.book}
+      query={data.review.book!}
       initialValues={initialValues}
       onSubmit={handleSubmit}
       submitLabel={t('edit_review')}

@@ -48,6 +48,10 @@ const ReadingCard = (props: ReadingCardProps) => {
   );
 
   const percentageCompleted = useMemo(() => {
+    if (!data.readPages || !data.book || !data.book.pages) {
+      return 0;
+    }
+
     const percentage = ((data.readPages * 100) / data.book.pages).toFixed(0);
     return Number(percentage);
   }, [data]);
@@ -56,23 +60,27 @@ const ReadingCard = (props: ReadingCardProps) => {
     navigation.navigate('Reading', { id: data.id });
   }, [data.id, navigation]);
 
+  if (!data.book) {
+    return null;
+  }
+
   return (
     <TouchableOpacity onPress={handlePress}>
       <Row align="flex-end" css={containerCss}>
-        <Banner source={{ uri: data.book?.bannerUrl }} />
+        <Banner source={{ uri: data.book.bannerUrl! }} />
         <Space width={12} />
         <Column span={17}>
           <Text size="button" weight="bold">
-            {data.book?.name}
+            {data.book.name}
           </Text>
           <Space height={4} />
           <Text size="label" color="c3">
-            {data.book?.author}
+            {data.book.author}
           </Text>
           <Space height={12} />
           <Row align="center" justify="flex-end">
             <Text size="12px" color="c3">
-              {t('read_pages_of_pages', { readPages: data.readPages, pages: data.book?.pages })}
+              {t('read_pages_of_pages', { readPages: data.readPages, pages: data.book.pages })}
             </Text>
           </Row>
           <Space height={8} />

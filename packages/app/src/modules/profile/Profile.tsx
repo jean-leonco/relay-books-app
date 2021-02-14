@@ -37,9 +37,12 @@ const optionCss = css`
 
 const Profile = () => {
   const { t } = useTranslation();
-  const { signOut } = useRouterAuth();
 
   const navigation = useNavigation();
+
+  const { signOut } = useRouterAuth();
+
+  const theme = useTheme();
 
   const data = useLazyLoadQuery<ProfileQuery>(
     graphql`
@@ -79,8 +82,6 @@ const Profile = () => {
     ],
     [navigation, signOut, t],
   );
-
-  const theme = useTheme();
 
   return (
     <Column align="center" justify="center" flex={1} css={containerCss}>

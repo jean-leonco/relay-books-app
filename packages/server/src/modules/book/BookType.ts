@@ -4,7 +4,7 @@ import {
   objectIdResolver,
   timestampResolver,
 } from '@entria/graphql-mongo-helpers';
-import { GraphQLBoolean, GraphQLEnumType, GraphQLFloat, GraphQLInt, GraphQLObjectType, GraphQLString } from 'graphql';
+import { GraphQLBoolean, GraphQLFloat, GraphQLInt, GraphQLObjectType, GraphQLString } from 'graphql';
 import { globalIdField, toGlobalId } from 'graphql-relay';
 
 import { GraphQLContext } from '../../types';

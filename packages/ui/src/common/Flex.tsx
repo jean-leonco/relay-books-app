@@ -2,7 +2,7 @@ import React from 'react';
 import { Animated, TouchableOpacityProps, ViewProps } from 'react-native';
 import styled, { css } from 'styled-components/native';
 
-const commonCss = css<FlexProps>`
+const commonCss = css<FlexPropsAnimated>`
   flex-direction: ${(p) => p.direction};
   ${(p) => p.justify && `justify-content: ${p.justify};`}
   ${(p) => p.align && `align-items: ${p.align};`}
@@ -11,15 +11,15 @@ const commonCss = css<FlexProps>`
   ${(p) => p.css}
 `;
 
-const Container = styled.View<FlexProps>`
+const Container = styled.View<FlexPropsAnimated>`
   ${commonCss}
 `;
 
-const AnimatedContainer = styled(Animated.View)`
+const AnimatedContainer = styled(Animated.View)<FlexPropsAnimated>`
   ${commonCss}
 `;
 
-const TouchableContainer = styled.TouchableOpacity<FlexProps>`
+const TouchableContainer = styled.TouchableOpacity<FlexPropsAnimated>`
   ${commonCss}
 `;
 
@@ -35,9 +35,11 @@ interface FlexProps extends ViewProps, TouchableOpacityProps {
   touchable?: boolean;
 }
 
-export type OmittedDirectionFlexProps = Omit<FlexProps, 'direction'>;
+type FlexPropsAnimated = Animated.AnimatedProps<FlexProps>;
 
-const Flex = ({ direction = 'column', children, animated, touchable, ...props }: FlexProps) => {
+export type OmittedDirectionFlexProps = Omit<FlexPropsAnimated, 'direction'>;
+
+const Flex = ({ direction = 'column', children, animated, touchable, ...props }: FlexPropsAnimated) => {
   if (touchable) {
     return (
       <TouchableContainer direction={direction} {...props}>

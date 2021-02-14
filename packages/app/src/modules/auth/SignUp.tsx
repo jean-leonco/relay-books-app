@@ -22,11 +22,12 @@ const containerCss = css`
 
 const SignUp = () => {
   const { t } = useTranslation();
+
+  const navigation = useNavigation();
+
   const { signIn } = useRouterAuth();
 
   const [userRegistration] = useMutation<UserRegistrationMutation>(UserRegistration);
-
-  const navigation = useNavigation();
 
   const formik = useFormik({
     initialValues: {
@@ -62,8 +63,6 @@ const SignUp = () => {
     },
   });
 
-  const { handleSubmit } = formik;
-
   return (
     <Column align="center" justify="center" flex={1} css={containerCss}>
       <Text size="h2" weight="bold" center>
@@ -77,7 +76,7 @@ const SignUp = () => {
         <Space height={10} />
         <FormikInput name="password" label={t('password')} placeholder={t('your_password')} secureTextEntry />
         <Space height={40} />
-        <FormikButton onPress={() => handleSubmit()}>{t('submit')}</FormikButton>
+        <FormikButton>{t('submit')}</FormikButton>
       </FormikProvider>
       <Space height={30} />
       <TouchableOpacity onPress={() => navigation.navigate('Login')} style={{ paddingVertical: 20 }}>

@@ -57,6 +57,9 @@ const SearchList = ({ category, search, ...props }: SearchListProps) => {
     loadNext(20);
   }, [hasNext, isLoadingNext, loadNext]);
 
+  const renderCard = useCallback(({ item }) => <SearchBook book={item?.node} />, []);
+  const keyExtractor = useKeyExtractor();
+
   useEffect(() => {
     startTransition(() => {
       const variables: SearchListRefetchQueryVariables = {
@@ -67,9 +70,6 @@ const SearchList = ({ category, search, ...props }: SearchListProps) => {
       refetch(variables, { fetchPolicy: 'store-or-network' });
     });
   }, [search, category, refetch]);
-
-  const renderCard = useCallback(({ item }) => <SearchBook book={item?.node} />, []);
-  const keyExtractor = useKeyExtractor();
 
   return (
     <FlatList

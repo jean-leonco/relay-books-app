@@ -25,8 +25,8 @@ const Banner = styled.Image`
 `;
 
 interface FormValues {
-  rating: number;
-  description: string;
+  rating: number | null | undefined;
+  description: string | null | undefined;
 }
 
 interface ReviewFormProps {
@@ -59,13 +59,11 @@ const ReviewForm = ({ query, initialValues, onSubmit, submitLabel }: ReviewFormP
     onSubmit,
   });
 
-  const { handleSubmit } = formik;
-
   return (
     <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
       <Column flex={1} css={containerCss}>
         <Column align="center" justify="center">
-          <Banner source={{ uri: data.bannerUrl }} />
+          <Banner source={{ uri: data.bannerUrl! }} />
           <Space height={15} />
           <Space height={10} />
           <Text size="title" weight="bold" center>
@@ -88,7 +86,7 @@ const ReviewForm = ({ query, initialValues, onSubmit, submitLabel }: ReviewFormP
           />
           <FormikRating label={t('rating')} name="rating" size={25} />
           <Space height={40} />
-          <FormikButton onPress={() => handleSubmit()}>{submitLabel}</FormikButton>
+          <FormikButton>{submitLabel}</FormikButton>
         </FormikProvider>
       </Column>
     </ScrollView>

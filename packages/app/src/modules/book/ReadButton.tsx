@@ -32,10 +32,10 @@ const ReadButton = ({ bookId, ...props }: ReadButtonProps) => {
 
   const { t } = useTranslation();
 
+  const navigation = useNavigation();
+
   const [readingAdd] = useMutation<ReadingAddMutation>(ReadingAdd);
   const [readItAgain] = useMutation<ReadItAgainMutation>(ReadItAgain);
-
-  const navigation = useNavigation();
 
   const { meReading, pages } = useFragment<ReadButton_book$key>(
     graphql`

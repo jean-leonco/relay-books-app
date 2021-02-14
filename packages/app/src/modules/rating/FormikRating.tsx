@@ -1,5 +1,5 @@
 import { useField, useFormikContext } from 'formik';
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import styled from 'styled-components/native';
 
 import { Column, Space, Text } from '@workspace/ui';
@@ -27,16 +27,19 @@ const FormikRating = ({ name, label, ...props }: FormikRatingProps) => {
   const [field, meta] = useField(name);
   const { setFieldValue, setFieldTouched } = useFormikContext<any>();
 
-  const handleChange = (value: number) => {
-    if (!touched) {
-      setFieldTouched(name, true);
-      setTouched(true);
-    }
-
-    setFieldValue(name, value);
-  };
-
   const error = useMemo(() => (meta.error && meta.touched ? meta.error : ''), [meta.error, meta.touched]);
+
+  const handleChange = useCallback(
+    (value: number) => {
+      if (!touched) {
+        setFieldTouched(name, true);
+        setTouched(true);
+      }
+
+      setFieldValue(name, value);
+    },
+    [name, setFieldTouched, setFieldValue, touched],
+  );
 
   return (
     <Column align="flex-start">
