@@ -4,38 +4,32 @@ import mongoose from 'mongoose';
 
 import { MONGO_URI } from './config';
 
-let cachedMongoConn: Promise<typeof import('mongoose')> | null = null;
-
 export const connectDatabase = () => {
   return new Promise((resolve, reject) => {
     mongoose.Promise = global.Promise;
+
     mongoose.connection
       .on('error', (error) => {
-        console.log('❌ ERROR: Connection to DB failed');
+        console.log('\n❌ ERROR: Connection to DB failed');
         reject(error);
       })
+
       .on('close', () => {
-        console.log('🛑 ERROR: Connection to DB lost');
+        console.log('\n🛑 ERROR: Connection to DB lost');
         process.exit(1);
       })
       .once('open', () => {
         const infos = mongoose.connections;
         infos.map((info) => console.log(`⛓️  Connected to ${info.host}:${info.port}/${info.name}`));
-        resolve(cachedMongoConn);
+        resolve(mongoose.connections[0]);
       });
 
-    if (!cachedMongoConn) {
-      cachedMongoConn = mongoose.connect(MONGO_URI, {
-        useNewUrlParser: true,
-        useCreateIndex: true,
-        useUnifiedTopology: true,
-        useFindAndModify: false,
-        connectTimeoutMS: 10000,
-        bufferCommands: false, // Disable mongoose buffering
-        bufferMaxEntries: 0, // and MongoDB driver buffering
-      });
-    } else {
-      resolve(cachedMongoConn);
-    }
+    mongoose.connect(MONGO_URI, {
+      useNewUrlParser: true,
+      useCreateIndex: true,
+      useUnifiedTopology: true,
+      useFindAndModify: false,
+      maxPoolSize: 10000,
+    });
   });
 };

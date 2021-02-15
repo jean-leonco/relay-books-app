@@ -7,7 +7,7 @@
   "module": "src/index.ts",
   "scripts": {
     "build": "yarn w webpack.prod.js",
-    "seed": "yarn b ./scripts/seed/seedDatabase",
+    "seed": "node -r @swc-node/register ./scripts/seed/seedDatabase",
     "start": "yarn w webpack.dev.js",
     "test": "jest",
     "test:watch": "jest --watch",
