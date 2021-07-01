@@ -75,7 +75,7 @@ module.exports = {
     'import/ignore': ['node_modules/react-native/index\\.js$'],
     'import/resolver': {
       node: {
-        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+        extensions: ['.js', '.jsx', '.ts', '.tsx', '.ios.js', '.android.js'],
       },
       'eslint-import-resolver-typescript': true,
     },

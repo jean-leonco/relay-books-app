@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useMemo } from 'react';
 import { ToastAndroid } from 'react-native';
-import { graphql, useLazyLoadQuery, useMutation } from 'react-relay/hooks';
+import { graphql, useLazyLoadQuery, useMutation } from 'react-relay';
 
 import useTranslation from '../../locales/useTranslation';
 import useRouteWithParams from '../hooks/useRouteWithParams';

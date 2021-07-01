@@ -11,10 +11,12 @@
     "react": "0.0.0-experimental-4ead6b530",
     "react-native": "0.63.2",
     "react-native-linear-gradient": "^2.5.6",
-    "react-relay": "0.0.0-experimental-0b967d2e",
+    "react-relay": "11.0.2",
     "styled-components": "^5.2.0"
   },
   "devDependencies": {
+    "@types/react-relay": "^11.0.1",
+    "@types/relay-runtime": "^11.0.0",
     "@types/styled-components": "^5.1.7",
     "@types/styled-components-react-native": "^5.1.0"
   }

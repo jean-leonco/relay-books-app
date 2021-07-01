@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import { FormikProvider, useFormik } from 'formik';
 import React from 'react';
 import { ToastAndroid } from 'react-native';
-import { graphql, useLazyLoadQuery, useMutation } from 'react-relay/hooks';
+import { graphql, useLazyLoadQuery, useMutation } from 'react-relay';
 import { css } from 'styled-components/native';
 import * as yup from 'yup';
 

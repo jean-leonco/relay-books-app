@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useMemo } from 'react';
 import { ToastAndroid } from 'react-native';
-import { graphql, useFragment, useMutation } from 'react-relay/hooks';
+import { graphql, useFragment, useMutation } from 'react-relay';
 import styled, { css } from 'styled-components/native';
 
 import { Column, Text } from '@workspace/ui';

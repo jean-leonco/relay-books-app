@@ -3,7 +3,7 @@ import React, { useCallback, useState } from 'react';
 import { ActivityIndicator, Dimensions, ToastAndroid, TouchableOpacity } from 'react-native';
 import Pdf from 'react-native-pdf';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { graphql, useLazyLoadQuery, useMutation } from 'react-relay/hooks';
+import { graphql, useLazyLoadQuery, useMutation } from 'react-relay';
 import { css, useTheme } from 'styled-components/native';
 
 import { Column, Row, Space, Text } from '@workspace/ui';

@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { Suspense } from 'react';
 import { ScrollView, TouchableOpacity } from 'react-native';
-import { graphql, useLazyLoadQuery } from 'react-relay/hooks';
+import { graphql, useLazyLoadQuery } from 'react-relay';
 import { css } from 'styled-components/native';
 
 import { Column, Row, Space, Text } from '@workspace/ui';

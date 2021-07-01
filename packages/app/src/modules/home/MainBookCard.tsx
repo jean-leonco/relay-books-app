@@ -1,6 +1,6 @@
 import React from 'react';
 import { GestureResponderEvent } from 'react-native';
-import { graphql, useFragment } from 'react-relay/hooks';
+import { graphql, useFragment } from 'react-relay';
 import styled from 'styled-components/native';
 
 import { Column, PercentageCompletedBar, Row, Space, Text } from '@workspace/ui';

@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
-import { graphql, useRefetchableFragment } from 'react-relay/hooks';
+import { graphql, useRefetchableFragment } from 'react-relay';
 
 import { useTransition } from '@workspace/relay';
 import { Column, Space, Text } from '@workspace/ui';

@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback } from 'react';
 import { FlatList } from 'react-native';
-import { graphql, useLazyLoadQuery, usePaginationFragment } from 'react-relay/hooks';
+import { graphql, useLazyLoadQuery, usePaginationFragment } from 'react-relay';
 import { css } from 'styled-components';
 
 import { Column, FlatListLoader, Text } from '@workspace/ui';

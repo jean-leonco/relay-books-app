@@ -1,7 +1,7 @@
 import React, { Suspense, useState } from 'react';
 import { ActivityIndicator, Modal, TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { graphql, useLazyLoadQuery } from 'react-relay/hooks';
+import { graphql, useLazyLoadQuery } from 'react-relay';
 import { css, useTheme } from 'styled-components/native';
 
 import { Column, Space, Text, TextInput } from '@workspace/ui';

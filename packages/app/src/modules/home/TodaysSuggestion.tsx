@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback } from 'react';
-import { graphql, useFragment } from 'react-relay/hooks';
+import { graphql, useFragment } from 'react-relay';
 
 import { TodaysSuggestion_query$key } from './__generated__/TodaysSuggestion_query.graphql';
 

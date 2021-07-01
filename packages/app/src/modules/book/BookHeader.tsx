@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useRef } from 'react';
 import { Animated, Text, TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { graphql, useFragment } from 'react-relay/hooks';
+import { graphql, useFragment } from 'react-relay';
 import { css, useTheme } from 'styled-components/native';
 
 import { Row } from '@workspace/ui';

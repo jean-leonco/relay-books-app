@@ -1,7 +1,7 @@
 import React from 'react';
 import { ModalProps, StatusBar, TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { graphql, useFragment } from 'react-relay/hooks';
+import { graphql, useFragment } from 'react-relay';
 import styled, { useTheme } from 'styled-components/native';
 
 import { Column, Text } from '@workspace/ui';

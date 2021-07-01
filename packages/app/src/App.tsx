@@ -2,7 +2,7 @@ import 'react-native-gesture-handler';
 import React, { useCallback, useState } from 'react';
 import { I18nextProvider } from 'react-i18next';
 import { StatusBar } from 'react-native';
-import { RelayEnvironmentProvider } from 'react-relay/hooks';
+import { RelayEnvironmentProvider } from 'react-relay';
 import { ThemeProvider } from 'styled-components';
 
 import { createRelayEnvironment } from '@workspace/relay';

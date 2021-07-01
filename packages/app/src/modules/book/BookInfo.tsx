@@ -1,5 +1,5 @@
 import React from 'react';
-import { graphql, useFragment } from 'react-relay/hooks';
+import { graphql, useFragment } from 'react-relay';
 import styled from 'styled-components/native';
 
 import { Column, Row, Space, Text } from '@workspace/ui';

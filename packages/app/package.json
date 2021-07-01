@@ -32,7 +32,8 @@
     "react-native-screens": "^2.11.0",
     "react-native-shimmer-placeholder": "^2.0.6",
     "react-native-vector-icons": "^7.1.0",
-    "react-relay": "0.0.0-experimental-0b967d2e",
+    "react-relay": "11.0.2",
+    "relay-runtime": "11.0.2",
     "rn-fetch-blob": "^0.12.0",
     "styled-components": "^5.2.0",
     "yup": "^0.31.0"
@@ -42,8 +43,8 @@
     "@babel/runtime": "^7.14.6",
     "@types/react-native": "^0.63.43",
     "@types/react-native-vector-icons": "^6.4.6",
-    "@types/react-relay": "^7.0.12",
-    "@types/relay-runtime": "^10.0.4",
+    "@types/react-relay": "^11.0.1",
+    "@types/relay-runtime": "^11.0.0",
     "@types/styled-components": "^5.1.7",
     "@types/styled-components-react-native": "^5.1.0",
     "@types/yup": "^0.29.9",
@@ -51,9 +52,8 @@
     "graphql": "15.4.0",
     "metro-react-native-babel-preset": "^0.66.0",
     "react-native-dotenv": "^3.0.0",
-    "relay-compiler": "10.1.0",
-    "relay-compiler-language-typescript": "13.0.2",
-    "relay-config": "10.1.0",
-    "relay-runtime": "10.1.0"
+    "relay-compiler": "11.0.2",
+    "relay-compiler-language-typescript": "14.0.0",
+    "relay-config": "11.0.2"
   }
 }

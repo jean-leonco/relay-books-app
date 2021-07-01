@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { graphql, useFragment } from 'react-relay/hooks';
+import { graphql, useFragment } from 'react-relay';
 import { DefaultTheme, FlattenInterpolation, FlattenSimpleInterpolation, ThemeProps, css } from 'styled-components';
 
 import { Column, Row, Space, Text } from '@workspace/ui';

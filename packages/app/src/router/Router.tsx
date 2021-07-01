@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 import React, { useCallback, useMemo } from 'react';
-import { fetchQuery, graphql, useLazyLoadQuery, useRelayEnvironment } from 'react-relay/hooks';
+import { fetchQuery, graphql, useLazyLoadQuery, useRelayEnvironment } from 'react-relay';
 //import SplashScreen from 'react-native-splash-screen';
 
 import { AUTH_KEY } from '../common/config';

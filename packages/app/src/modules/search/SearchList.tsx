@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import { FlatList } from 'react-native';
-import { graphql, usePaginationFragment } from 'react-relay/hooks';
+import { graphql, usePaginationFragment } from 'react-relay';
 
 import { useTransition } from '@workspace/relay';
 import { FlatListLoader } from '@workspace/ui';
