@@ -1,6 +1,7 @@
-const { server } = require('@workspace/webpack');
+const config = require('./webpack.config');
 
+/** @type {import('webpack').Configuration} */
 module.exports = {
-  ...server,
+  ...config,
   mode: 'production', // Tells webpack to use its built-in optimizations for production
 };

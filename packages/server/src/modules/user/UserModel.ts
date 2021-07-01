@@ -97,7 +97,7 @@ Schema.pre('updateOne', preUpdate);
 Schema.pre('findOneAndUpdate', preUpdate);
 
 Schema.pre<UserModel>('insertMany', async function preInsertMany(_next, docs) {
-  for await (const doc of docs) {
+  for (const doc of docs) {
     if (!doc.password) {
       continue;
     }

@@ -41,7 +41,6 @@
   "devDependencies": {
     "@commitlint/cli": "^12.1.4",
     "@commitlint/config-conventional": "^12.1.4",
-    "@swc-node/register": "^1.0.4",
     "@types/jest": "^26.0.23",
     "husky": "^6.0.0",
     "jest": "^27.0.6",
