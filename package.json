@@ -32,7 +32,8 @@
     "startup": "./scripts/startup.sh",
     "test": "jest",
     "update": "yarn update-schema && yarn relay",
-    "update-schema": "yarn workspace @workspace/server update-schema"
+    "update-schema": "yarn workspace @workspace/server update-schema",
+    "prepare": "husky install"
   },
   "resolutions": {
     "react": "0.0.0-experimental-4ead6b530"
@@ -42,7 +43,7 @@
     "@commitlint/config-conventional": "^12.1.4",
     "@swc-node/register": "^1.0.4",
     "@types/jest": "^26.0.23",
-    "husky": "^4.3.0",
+    "husky": "^6.0.0",
     "jest": "^27.0.6",
     "lint-staged": "^11.0.0",
     "patch-package": "^6.4.7",
