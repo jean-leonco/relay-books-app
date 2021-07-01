@@ -59,6 +59,8 @@ module.exports = {
     'react/prop-types': 'off',
     'react/display-name': ['off', { ignoreTranspilerName: false }],
     'react/no-unescaped-entities': 'off',
+    'react/react-in-jsx-scope': 'off',
+    'react/jsx-uses-react': 'off',
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
     'relay/graphql-syntax': 'error',

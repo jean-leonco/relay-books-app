@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, { useCallback, useState } from 'react';
+import { Suspense, useCallback, useState } from 'react';
 import { I18nextProvider } from 'react-i18next';
 import { StatusBar } from 'react-native';
 import { RelayEnvironmentProvider } from 'react-relay';
@@ -26,9 +26,9 @@ const App = () => {
       <I18nextProvider i18n={i18n}>
         <ThemeProvider theme={theme}>
           <ErrorBoundary authKey={AUTH_KEY} resetRelayEnvironment={resetRelayEnvironment}>
-            <React.Suspense fallback={<SuspenseFallback />}>
+            <Suspense fallback={<SuspenseFallback />}>
               <Router resetRelayEnvironment={resetRelayEnvironment} />
-            </React.Suspense>
+            </Suspense>
           </ErrorBoundary>
         </ThemeProvider>
       </I18nextProvider>

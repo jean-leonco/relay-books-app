@@ -35,9 +35,6 @@
     "update-schema": "yarn workspace @workspace/server update-schema",
     "prepare": "husky install"
   },
-  "resolutions": {
-    "react": "0.0.0-experimental-4ead6b530"
-  },
   "devDependencies": {
     "@commitlint/cli": "^12.1.4",
     "@commitlint/config-conventional": "^12.1.4",

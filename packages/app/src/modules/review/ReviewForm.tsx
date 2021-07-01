@@ -1,5 +1,4 @@
 import { FormikHelpers, FormikProvider, useFormik } from 'formik';
-import React from 'react';
 import { ScrollView } from 'react-native';
 import { graphql, useFragment } from 'react-relay';
 import styled, { css } from 'styled-components/native';

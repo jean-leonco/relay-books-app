@@ -1,4 +1,3 @@
-import React from 'react';
 import { FlattenSimpleInterpolation } from 'styled-components';
 import styled from 'styled-components/native';
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { graphql, useRefetchableFragment } from 'react-relay';
 
 import { useTransition } from '@workspace/relay';

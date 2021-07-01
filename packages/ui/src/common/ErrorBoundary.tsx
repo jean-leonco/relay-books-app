@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-community/async-storage';
-import React from 'react';
+import * as React from 'react';
 import { css } from 'styled-components/native';
 
 import { InvalidSessionError, UnavailableServiceError } from '@workspace/relay';

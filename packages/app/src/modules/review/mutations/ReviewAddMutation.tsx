@@ -17,37 +17,37 @@ export const ReviewAdd = graphql`
   }
 `;
 
-export const getReviewAddMutationUpdater = (bookId: string): SelectorStoreUpdater => (
-  store: RecordSourceSelectorProxy,
-) => {
-  const edge = store.getRootField('ReviewAdd')?.getLinkedRecord('reviewEdge');
+export const getReviewAddMutationUpdater =
+  (bookId: string): SelectorStoreUpdater =>
+  (store: RecordSourceSelectorProxy) => {
+    const edge = store.getRootField('ReviewAdd')?.getLinkedRecord('reviewEdge');
 
-  if (!edge) {
-    return;
-  }
+    if (!edge) {
+      return;
+    }
 
-  const meProxy = store.getRoot().getLinkedRecord('me')!;
+    const meProxy = store.getRoot().getLinkedRecord('me')!;
 
-  const meReviewsProxy = meProxy?.getLinkedRecord('reviews(first:1)');
-  if (meReviewsProxy) {
-    const count = meReviewsProxy.getValue('count') as number;
-    meReviewsProxy.setValue(count + 1, 'count');
-  }
+    const meReviewsProxy = meProxy?.getLinkedRecord('reviews(first:1)');
+    if (meReviewsProxy) {
+      const count = meReviewsProxy.getValue('count') as number;
+      meReviewsProxy.setValue(count + 1, 'count');
+    }
 
-  const bookProxy = store.get(bookId);
-  if (!bookProxy) {
-    // eslint-disable-next-line no-console
-    console.log(`book ${bookId} not found on store.`);
-    return;
-  }
+    const bookProxy = store.get(bookId);
+    if (!bookProxy) {
+      // eslint-disable-next-line no-console
+      console.log(`book ${bookId} not found on store.`);
+      return;
+    }
 
-  bookProxy.setValue(false, 'meCanReview');
+    bookProxy.setValue(false, 'meCanReview');
 
-  connectionAddEdgeUpdater({ store, rootID: bookId, connectionName: 'BookReviews_reviews', edge });
+    connectionAddEdgeUpdater({ store, rootID: bookId, connectionName: 'BookReviews_reviews', edge });
 
-  const reviewConnection = meProxy ? ConnectionHandler.getConnection(meProxy, 'ReviewList_reviews') : null;
+    const reviewConnection = meProxy ? ConnectionHandler.getConnection(meProxy, 'ReviewList_reviews') : null;
 
-  if (reviewConnection) {
-    connectionAddEdgeUpdater({ store, rootID: meProxy.getDataID(), connectionName: 'ReviewList_reviews', edge });
-  }
-};
+    if (reviewConnection) {
+      connectionAddEdgeUpdater({ store, rootID: meProxy.getDataID(), connectionName: 'ReviewList_reviews', edge });
+    }
+  };

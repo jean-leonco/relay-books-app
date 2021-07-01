@@ -1,5 +1,4 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
 import { TouchableOpacity } from 'react-native';
 import { graphql, useFragment } from 'react-relay';
 import { FlattenSimpleInterpolation } from 'styled-components';

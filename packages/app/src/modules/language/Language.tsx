@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { FlatList, ListRenderItem } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { css, useTheme } from 'styled-components/native';

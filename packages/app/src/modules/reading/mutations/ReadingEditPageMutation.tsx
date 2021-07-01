@@ -37,48 +37,48 @@ interface GetReadingEditPageUpdaterProps {
   bookId: string;
 }
 
-export const getReadingEditPageUpdater = ({ input, bookPages, bookId }: GetReadingEditPageUpdaterProps) => (
-  store: RecordSourceSelectorProxy,
-) => {
-  const edge = store.getRootField('ReadingEditPage')!.getLinkedRecord('readingEdge');
+export const getReadingEditPageUpdater =
+  ({ input, bookPages, bookId }: GetReadingEditPageUpdaterProps) =>
+  (store: RecordSourceSelectorProxy) => {
+    const edge = store.getRootField('ReadingEditPage')!.getLinkedRecord('readingEdge');
 
-  if (input.currentPage === bookPages) {
-    const meReadingsProxy = store.getRoot().getLinkedRecord(`readings(filters:{\"finished\":true},first:1)`);
-    if (meReadingsProxy) {
-      const count = meReadingsProxy.getValue('count') as number;
-      meReadingsProxy.setValue(count + 1, 'count');
-    }
-
-    const meProxy = store.getRoot().getLinkedRecord('me');
-    const lastReadingProxy = meProxy!.getLinkedRecord('lastIncompleteReading');
-
-    if (lastReadingProxy) {
-      const lastReadingBookId = lastReadingProxy.getLinkedRecord('book')!.getDataID();
-
-      if (lastReadingBookId === bookId) {
-        meProxy!.setValue(null, 'lastIncompleteReading');
+    if (input.currentPage === bookPages) {
+      const meReadingsProxy = store.getRoot().getLinkedRecord(`readings(filters:{\"finished\":true},first:1)`);
+      if (meReadingsProxy) {
+        const count = meReadingsProxy.getValue('count') as number;
+        meReadingsProxy.setValue(count + 1, 'count');
       }
-    }
 
-    connectionDeleteEdgeUpdater({ store, connectionName: 'ContinueReading_unfinished', nodeID: input.id });
-    connectionAddEdgeUpdater({ store, connectionName: 'ReadItAgain_finished', edge });
-  } else {
-    const rootProxy = store.getRoot();
-    const finishedConnectionProxy = ConnectionHandler.getConnection(rootProxy, 'ReadItAgain_finished');
+      const meProxy = store.getRoot().getLinkedRecord('me');
+      const lastReadingProxy = meProxy!.getLinkedRecord('lastIncompleteReading');
 
-    if (finishedConnectionProxy) {
-      const finishedConnectionEdgesProxy = finishedConnectionProxy.getLinkedRecords('edges')!;
+      if (lastReadingProxy) {
+        const lastReadingBookId = lastReadingProxy.getLinkedRecord('book')!.getDataID();
 
-      for (let i = 0; i < finishedConnectionEdgesProxy.length; i++) {
-        const finishedConnectionEdgeProxy = finishedConnectionEdgesProxy[i].getLinkedRecord('node')!;
-        const finishedConnectionEdgeBookProxy = finishedConnectionEdgeProxy.getLinkedRecord('book')!;
+        if (lastReadingBookId === bookId) {
+          meProxy!.setValue(null, 'lastIncompleteReading');
+        }
+      }
 
-        if (finishedConnectionEdgeBookProxy.getDataID() === bookId) {
-          connectionDeleteEdgeUpdater({ store, connectionName: 'ReadItAgain_finished', nodeID: input.id });
-          connectionAddEdgeUpdater({ store, connectionName: 'ContinueReading_unfinished', edge });
-          break;
+      connectionDeleteEdgeUpdater({ store, connectionName: 'ContinueReading_unfinished', nodeID: input.id });
+      connectionAddEdgeUpdater({ store, connectionName: 'ReadItAgain_finished', edge });
+    } else {
+      const rootProxy = store.getRoot();
+      const finishedConnectionProxy = ConnectionHandler.getConnection(rootProxy, 'ReadItAgain_finished');
+
+      if (finishedConnectionProxy) {
+        const finishedConnectionEdgesProxy = finishedConnectionProxy.getLinkedRecords('edges')!;
+
+        for (let i = 0; i < finishedConnectionEdgesProxy.length; i++) {
+          const finishedConnectionEdgeProxy = finishedConnectionEdgesProxy[i].getLinkedRecord('node')!;
+          const finishedConnectionEdgeBookProxy = finishedConnectionEdgeProxy.getLinkedRecord('book')!;
+
+          if (finishedConnectionEdgeBookProxy.getDataID() === bookId) {
+            connectionDeleteEdgeUpdater({ store, connectionName: 'ReadItAgain_finished', nodeID: input.id });
+            connectionAddEdgeUpdater({ store, connectionName: 'ContinueReading_unfinished', edge });
+            break;
+          }
         }
       }
     }
-  }
-};
+  };

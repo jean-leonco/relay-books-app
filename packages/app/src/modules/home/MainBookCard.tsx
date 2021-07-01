@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { GestureResponderEvent } from 'react-native';
 import { graphql, useFragment } from 'react-relay';
 import styled from 'styled-components/native';

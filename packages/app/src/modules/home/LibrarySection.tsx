@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import { useCallback } from 'react';
 import { FlatList } from 'react-native';
 import { graphql, useFragment } from 'react-relay';
 

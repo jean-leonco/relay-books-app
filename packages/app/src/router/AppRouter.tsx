@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import React, { Suspense } from 'react';
+import { Suspense } from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useTheme } from 'styled-components';
 

@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { Suspense } from 'react';
+import { Suspense } from 'react';
 import { ScrollView, TouchableOpacity } from 'react-native';
 import { graphql, useLazyLoadQuery } from 'react-relay';
 import { css } from 'styled-components/native';

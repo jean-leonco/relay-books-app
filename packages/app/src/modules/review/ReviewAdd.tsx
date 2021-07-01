@@ -1,5 +1,5 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
-import React, { useCallback, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { ToastAndroid } from 'react-native';
 import { graphql, useLazyLoadQuery, useMutation } from 'react-relay';
 

@@ -5,6 +5,7 @@
   "module": "src/index.ts",
   "dependencies": {
     "@react-native-community/async-storage": "^1.12.1",
+    "react": "^17.0.2",
     "react-relay": "11.0.2",
     "relay-runtime": "11.0.2"
   },

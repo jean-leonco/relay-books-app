@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { graphql, useLazyLoadQuery } from 'react-relay';
 import { useTheme } from 'styled-components';

@@ -1,5 +1,3 @@
-import React from 'react';
-
 import Flex, { OmittedDirectionFlexProps } from './Flex';
 
 const Row = (props: OmittedDirectionFlexProps) => {

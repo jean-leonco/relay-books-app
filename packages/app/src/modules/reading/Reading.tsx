@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { ActivityIndicator, Dimensions, ToastAndroid, TouchableOpacity } from 'react-native';
 import Pdf from 'react-native-pdf';
 import Ionicons from 'react-native-vector-icons/Ionicons';

@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { TextInputProps as ReactTextInputProps } from 'react-native';
 import styled, { css, useTheme } from 'styled-components/native';
 

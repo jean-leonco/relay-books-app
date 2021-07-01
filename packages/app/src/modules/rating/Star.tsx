@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import { useCallback, useRef } from 'react';
 import { Animated, Image, TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
 

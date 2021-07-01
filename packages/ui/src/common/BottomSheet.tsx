@@ -1,4 +1,3 @@
-import React from 'react';
 import Modal, { ModalProps } from 'react-native-modal';
 import { css } from 'styled-components';
 

@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { ToastAndroid } from 'react-native';
 import { graphql, useFragment, useMutation } from 'react-relay';
 import { css } from 'styled-components/native';

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { css } from 'styled-components/native';
 
 import Flex, { OmittedDirectionFlexProps } from './Flex';

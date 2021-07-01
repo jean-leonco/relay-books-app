@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useCallback, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { FlatList, ListRenderItem, TouchableOpacity } from 'react-native';
 import { graphql, useLazyLoadQuery } from 'react-relay';
 import { css } from 'styled-components/native';

@@ -1,6 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
 import { FormikProvider, useFormik } from 'formik';
-import React from 'react';
 import { Keyboard, ToastAndroid, TouchableOpacity } from 'react-native';
 import { useMutation } from 'react-relay';
 import { css } from 'styled-components/native';

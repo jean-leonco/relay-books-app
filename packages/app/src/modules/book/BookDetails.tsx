@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { Animated, StatusBar } from 'react-native';
 import { graphql, useLazyLoadQuery } from 'react-relay';
 import { css } from 'styled-components/native';

@@ -1,4 +1,3 @@
-import React from 'react';
 import { ModalProps, StatusBar, TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { graphql, useFragment } from 'react-relay';

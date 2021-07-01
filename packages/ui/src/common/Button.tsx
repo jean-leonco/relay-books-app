@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { ActivityIndicator, TouchableOpacityProps } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import styled, { css, useTheme } from 'styled-components/native';
