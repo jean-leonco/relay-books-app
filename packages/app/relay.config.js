@@ -1,7 +1,5 @@
-const path = require('path');
-
 let workspaces = ['app', 'ui']; // Workspaces that should be bundled/watched by webpack.
-workspaces = workspaces.map((ws) => path.resolve(__dirname, ws, 'src', '**')); // Transform workspace name into absolute path.
+workspaces = workspaces.map((ws) => `./${ws}/**`); // Transform workspace name into absolute path.
 
 module.exports = {
   schema: '../schema/schema.graphql', // Path to schema.graphql or schema.json.

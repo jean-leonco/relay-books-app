@@ -20,6 +20,7 @@
     "delete:metro-cache": "find . -name \"metro-cache\" -exec rm -rf '{}' +",
     "delete:node_modules": "find . -name \"node_modules\" -exec rm -rf '{}' +",
     "delete:yarn.lock": "find . -name \"yarn.lock\" -exec rm -rf '{}' +",
+    "postinstall": "yarn patch-package",
     "ios": "yarn workspace @workspace/app ios",
     "lint": "eslint --fix --ext .js,.ts,.tsx",
     "lint:fix": "eslint --fix --ext .js,.ts,.tsx .",

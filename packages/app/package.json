@@ -38,6 +38,8 @@
     "yup": "^0.31.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.14.6",
+    "@babel/runtime": "^7.14.6",
     "@types/react-native": "^0.63.43",
     "@types/react-native-vector-icons": "^6.4.6",
     "@types/react-relay": "^7.0.12",
@@ -45,8 +47,10 @@
     "@types/styled-components": "^5.1.7",
     "@types/styled-components-react-native": "^5.1.0",
     "@types/yup": "^0.29.9",
-    "@workspace/babel": "^0.0.1",
+    "babel-plugin-relay": "^11.0.2",
     "graphql": "15.4.0",
+    "metro-react-native-babel-preset": "^0.66.0",
+    "react-native-dotenv": "^3.0.0",
     "relay-compiler": "10.1.0",
     "relay-compiler-language-typescript": "13.0.2",
     "relay-config": "10.1.0",
