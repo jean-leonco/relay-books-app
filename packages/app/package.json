@@ -20,7 +20,7 @@
     "@workspace/ui": "^0.0.1",
     "formik": "^2.2.9",
     "i18next": "^20.3.2",
-    "react": "^17.0.2",
+    "react": "0.0.0-experimental-7ec4c5597",
     "react-i18next": "^11.11.0",
     "react-native": "0.64.2",
     "react-native-gesture-handler": "^1.10.3",

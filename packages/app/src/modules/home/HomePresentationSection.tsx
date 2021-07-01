@@ -1,7 +1,6 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useTransition } from 'react';
 import { graphql, useRefetchableFragment } from 'react-relay';
 
-import { useTransition } from '@workspace/relay';
 import { Column, Space, Text } from '@workspace/ui';
 
 import useTranslation from '../../locales/useTranslation';

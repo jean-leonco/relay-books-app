@@ -1,8 +1,7 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useTransition } from 'react';
 import { FlatList } from 'react-native';
 import { graphql, usePaginationFragment } from 'react-relay';
 
-import { useTransition } from '@workspace/relay';
 import { FlatListLoader } from '@workspace/ui';
 
 import useKeyExtractor from '../common/useKeyExtractor';
