@@ -20,7 +20,7 @@ const createBook = (args: Partial<IBook>) => {
   const author = args.author || faker.name.findName();
   const description = args.description || faker.commerce.productDescription();
   const releaseYear = args.releaseYear || getYear(faker.date.past());
-  //const pages = args.pages || faker.random.number(400);
+  //const pages = args.pages || faker.datatype.number(400);
   const pages = 21;
   const bannerUrl = args.bannerUrl || faker.image.image();
 

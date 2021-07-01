@@ -79,11 +79,11 @@ const mutation = mutationWithClientMutationId({
 });
 
 const mutationField: MutationField = {
+  ...mutation,
   extensions: {
     authenticatedOnly: true,
     validationSchema: ReviewAddMutationSchema,
   },
-  ...mutation,
 };
 
 export default mutationField;

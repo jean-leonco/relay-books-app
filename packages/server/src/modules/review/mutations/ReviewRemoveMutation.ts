@@ -46,10 +46,10 @@ const mutation = mutationWithClientMutationId({
 });
 
 const mutationField: MutationField = {
+  ...mutation,
   extensions: {
     authenticatedOnly: true,
   },
-  ...mutation,
 };
 
 export default mutationField;

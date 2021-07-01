@@ -42,19 +42,19 @@ interface CreateReadingAndReviewProps {
 }
 
 const createReadingAndReview = ({ book, user }: CreateReadingAndReviewProps) => {
-  const shouldReadBook = faker.random.boolean();
+  const shouldReadBook = faker.datatype.boolean();
 
   if (!shouldReadBook) {
     return null;
   }
 
-  const shouldFinishBook = faker.random.boolean();
-  const shouldReviewBook = faker.random.boolean();
+  const shouldFinishBook = faker.datatype.boolean();
+  const shouldReviewBook = faker.datatype.boolean();
 
   const reading = createReading({
     bookId: book._id,
     userId: user._id,
-    readPages: shouldFinishBook ? book.pages : faker.random.number({ min: 1, max: book.pages - 1 }),
+    readPages: shouldFinishBook ? book.pages : faker.datatype.number({ min: 1, max: book.pages - 1 }),
   });
 
   if (shouldFinishBook) {

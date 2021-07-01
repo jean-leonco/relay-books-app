@@ -95,13 +95,13 @@ describe('ReadingLoader', () => {
     const user = await createUser();
 
     for (let i = 0; i < 6; i++) {
-      const bookPages = faker.random.number({ min: 2, max: 100 });
+      const bookPages = faker.datatype.number({ min: 2, max: 100 });
       const book = await createBook({ pages: bookPages });
 
-      const shouldFinishBook = faker.random.boolean();
+      const shouldFinishBook = faker.datatype.boolean();
       await createReading({
         bookId: book._id,
-        readPages: shouldFinishBook ? bookPages : faker.random.number({ min: 1, max: bookPages - 1 }),
+        readPages: shouldFinishBook ? bookPages : faker.datatype.number({ min: 1, max: bookPages - 1 }),
       });
     }
 
@@ -118,13 +118,13 @@ describe('ReadingLoader', () => {
 
   it('should not be able to load last incomplete reading without user', async () => {
     for (let i = 0; i < 6; i++) {
-      const bookPages = faker.random.number({ min: 2, max: 100 });
+      const bookPages = faker.datatype.number({ min: 2, max: 100 });
       const book = await createBook({ pages: bookPages });
 
-      const shouldFinishBook = faker.random.boolean();
+      const shouldFinishBook = faker.datatype.boolean();
       await createReading({
         bookId: book._id,
-        readPages: shouldFinishBook ? bookPages : faker.random.number({ min: 1, max: bookPages - 1 }),
+        readPages: shouldFinishBook ? bookPages : faker.datatype.number({ min: 1, max: bookPages - 1 }),
       });
     }
 
@@ -138,7 +138,7 @@ describe('ReadingLoader', () => {
     const user = await createUser();
 
     for (let i = 0; i < 6; i++) {
-      const bookPages = faker.random.number({ min: 2, max: 100 });
+      const bookPages = faker.datatype.number({ min: 2, max: 100 });
       const book = await createBook({ pages: bookPages });
       await createReading({ bookId: book._id, readPages: bookPages });
     }
@@ -160,13 +160,13 @@ describe('ReadingLoader', () => {
 
   it('should not be able to load another user last incomplete reading', async () => {
     for (let i = 0; i < 6; i++) {
-      const bookPages = faker.random.number({ min: 2, max: 100 });
+      const bookPages = faker.datatype.number({ min: 2, max: 100 });
       const book = await createBook({ pages: bookPages });
 
-      const shouldFinishBook = faker.random.boolean();
+      const shouldFinishBook = faker.datatype.boolean();
       await createReading({
         bookId: book._id,
-        readPages: shouldFinishBook ? bookPages : faker.random.number({ min: 1, max: bookPages - 1 }),
+        readPages: shouldFinishBook ? bookPages : faker.datatype.number({ min: 1, max: bookPages - 1 }),
       });
     }
 

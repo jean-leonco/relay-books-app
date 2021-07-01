@@ -82,10 +82,10 @@ const mutation = mutationWithClientMutationId({
 });
 
 const mutationField: MutationField = {
+  ...mutation,
   extensions: {
     validationSchema: UserRegistrationMutationSchema,
   },
-  ...mutation,
 };
 
 export default mutationField;

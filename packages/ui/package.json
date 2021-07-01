@@ -5,19 +5,19 @@
   "module": "src/index.ts",
   "dependencies": {
     "@react-native-community/async-storage": "^1.12.1",
-    "@react-navigation/native": "^5.8.10",
+    "@react-navigation/native": "^5.9.4",
     "@workspace/relay": "^0.0.1",
-    "formik": "^2.2.6",
+    "formik": "^2.2.9",
     "react": "0.0.0-experimental-4ead6b530",
     "react-native": "0.63.2",
     "react-native-linear-gradient": "^2.5.6",
     "react-relay": "11.0.2",
-    "styled-components": "^5.2.0"
+    "styled-components": "^5.3.0"
   },
   "devDependencies": {
     "@types/react-relay": "^11.0.1",
     "@types/relay-runtime": "^11.0.0",
-    "@types/styled-components": "^5.1.7",
-    "@types/styled-components-react-native": "^5.1.0"
+    "@types/styled-components": "^5.1.10",
+    "@types/styled-components-react-native": "^5.1.1"
   }
 }
