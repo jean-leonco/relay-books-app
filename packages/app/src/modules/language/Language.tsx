@@ -3,7 +3,7 @@ import { FlatList, ListRenderItem } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { css, useTheme } from 'styled-components/native';
 
-import { Column, Row, Space, Text } from '@workspace/ui';
+import { Column, Header, Row, Space, Text } from '@workspace/ui';
 
 import useTranslation from '../../locales/useTranslation';
 
@@ -12,7 +12,7 @@ const containerCss = css`
   background: ${(p) => p.theme.colors.background};
 `;
 
-const titleCss = css`
+const headerCss = css`
   margin-bottom: 20px;
 `;
 
@@ -58,9 +58,12 @@ const Language = () => {
       <FlatList
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={
-          <Text size="title" weight="bold" css={titleCss}>
-            {t('available_languages')}
-          </Text>
+          <Header containerCss={headerCss}>
+            <Text size="title" weight="bold">
+              {t('available_languages')}
+            </Text>
+            <Space />
+          </Header>
         }
         data={languages}
         keyExtractor={(item) => item.label}

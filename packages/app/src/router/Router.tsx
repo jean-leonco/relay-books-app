@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 import { useCallback, useMemo } from 'react';
+import { SafeAreaView } from 'react-native';
 import { fetchQuery, graphql, useLazyLoadQuery, useRelayEnvironment } from 'react-relay';
 //import SplashScreen from 'react-native-splash-screen';
 
@@ -51,7 +52,9 @@ const Router = ({ resetRelayEnvironment }) => {
 
   return (
     <AuthContext.Provider value={authContext}>
-      <NavigationContainer>{data?.me ? <App /> : <Auth />}</NavigationContainer>
+      <SafeAreaView style={{ flex: 1 }}>
+        <NavigationContainer>{data?.me ? <App /> : <Auth />}</NavigationContainer>
+      </SafeAreaView>
     </AuthContext.Provider>
   );
 };

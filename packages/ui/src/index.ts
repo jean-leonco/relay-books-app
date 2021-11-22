@@ -10,6 +10,7 @@ export { default as Text } from './common/Text';
 export { default as TextInput } from './common/TextInput';
 export { default as FlatListLoader } from './common/FlatListLoader';
 export { default as BottomSheet } from './common/BottomSheet';
+export { default as Header } from './common/Header';
 
 // Form
 export { default as FormikButton } from './form/FormikButton';

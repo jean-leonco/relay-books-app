@@ -4,7 +4,7 @@ import { FlatList } from 'react-native';
 import { graphql, useLazyLoadQuery, usePaginationFragment } from 'react-relay';
 import { css } from 'styled-components';
 
-import { Column, FlatListLoader, Text } from '@workspace/ui';
+import { Column, FlatListLoader, Header, Space, Text } from '@workspace/ui';
 
 import useTranslation from '../../locales/useTranslation';
 
@@ -21,7 +21,7 @@ const containerCss = css`
   background: ${(p) => p.theme.colors.background};
 `;
 
-const titleCss = css`
+const headerCss = css`
   margin-bottom: 20px;
 `;
 
@@ -81,9 +81,12 @@ const ReviewList = () => {
     <Column flex={1} css={containerCss}>
       <FlatList
         ListHeaderComponent={
-          <Text size="title" weight="bold" css={titleCss}>
-            {t('my_reviews')}
-          </Text>
+          <Header containerCss={headerCss}>
+            <Text size="title" weight="bold">
+              {t('my_reviews')}
+            </Text>
+            <Space />
+          </Header>
         }
         showsVerticalScrollIndicator={false}
         data={data?.reviews.edges}

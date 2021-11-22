@@ -1,10 +1,11 @@
 import { FormikHelpers, FormikProvider, useFormik } from 'formik';
 import { ScrollView } from 'react-native';
 import { graphql, useFragment } from 'react-relay';
+import { useTheme } from 'styled-components';
 import styled, { css } from 'styled-components/native';
 import * as yup from 'yup';
 
-import { Column, FormikButton, FormikInput, Space, Text } from '@workspace/ui';
+import { Column, FormikButton, FormikInput, Header, Space, Text } from '@workspace/ui';
 
 import useTranslation from '../../locales/useTranslation';
 
@@ -12,8 +13,9 @@ import FormikRating from '../rating/FormikRating';
 
 import { ReviewForm_book$key } from './__generated__/ReviewForm_book.graphql';
 
-const containerCss = css`
-  padding: 60px 24px 24px;
+const wrapperCss = css`
+  padding: 40px 24px 0;
+  background: ${(p) => p.theme.colors.background};
 `;
 
 const Banner = styled.Image`
@@ -38,6 +40,8 @@ interface ReviewFormProps {
 const ReviewForm = ({ query, initialValues, onSubmit, submitLabel }: ReviewFormProps) => {
   const { t } = useTranslation();
 
+  const theme = useTheme();
+
   const data = useFragment(
     graphql`
       fragment ReviewForm_book on Book {
@@ -59,36 +63,40 @@ const ReviewForm = ({ query, initialValues, onSubmit, submitLabel }: ReviewFormP
   });
 
   return (
-    <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-      <Column flex={1} css={containerCss}>
-        <Column align="center" justify="center">
-          <Banner source={{ uri: data.bannerUrl! }} />
-          <Space height={15} />
-          <Space height={10} />
-          <Text size="title" weight="bold" center>
-            {data.name}
-          </Text>
-          <Space height={10} />
-          <Text size="button" color="c3" center>
-            {data.author}
-          </Text>
-        </Column>
-        <Space height={30} />
+    <Column flex={1} css={wrapperCss}>
+      <Header />
+      <Space height={20} />
+      <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+        <Column>
+          <Column align="center" justify="center">
+            <Banner source={{ uri: data.bannerUrl! }} />
+            <Space height={15} />
+            <Space height={10} />
+            <Text size="title" weight="bold" center>
+              {data.name}
+            </Text>
+            <Space height={10} />
+            <Text size="button" color="c3" center>
+              {data.author}
+            </Text>
+          </Column>
+          <Space height={30} />
 
-        <FormikProvider value={formik}>
-          <FormikInput
-            name="description"
-            label={t('description')}
-            placeholder={t('how_would_you_describe_your_experience')}
-            multiline
-            style={{ height: 100, textAlignVertical: 'top', paddingTop: 10 }}
-          />
-          <FormikRating label={t('rating')} name="rating" size={25} />
-          <Space height={40} />
-          <FormikButton>{submitLabel}</FormikButton>
-        </FormikProvider>
-      </Column>
-    </ScrollView>
+          <FormikProvider value={formik}>
+            <FormikInput
+              name="description"
+              label={t('description')}
+              placeholder={t('how_would_you_describe_your_experience')}
+              multiline
+              style={{ height: 100, textAlignVertical: 'top', paddingTop: 10 }}
+            />
+            <FormikRating label={t('rating')} name="rating" size={25} />
+            <Space height={40} />
+            <FormikButton>{submitLabel}</FormikButton>
+          </FormikProvider>
+        </Column>
+      </ScrollView>
+    </Column>
   );
 };
 

@@ -5,7 +5,7 @@ import { graphql, useLazyLoadQuery, useMutation } from 'react-relay';
 import { css } from 'styled-components/native';
 import * as yup from 'yup';
 
-import { Column, FormikButton, FormikInput, Space, Text } from '@workspace/ui';
+import { Column, FormikButton, FormikInput, Header, Space, Text } from '@workspace/ui';
 
 import useTranslation from '../../locales/useTranslation';
 
@@ -15,7 +15,7 @@ import { MeEditMutation } from './mutations/__generated__/MeEditMutation.graphql
 import { MeEdit, getMeEditOptimisticResponse } from './mutations/MeEditMutation';
 
 const containerCss = css`
-  padding: 0 24px;
+  padding: 40px 24px 0;
   background: ${(p) => p.theme.colors.background};
 `;
 
@@ -79,20 +79,25 @@ const EditProfile = () => {
   });
 
   return (
-    <Column align="center" justify="center" flex={1} css={containerCss}>
-      <Text size="h2" weight="bold" center>
-        {t('edit_profile')}
-      </Text>
+    <Column flex={1} css={containerCss}>
+      <Header>
+        <Text size="h2" weight="bold" center>
+          {t('edit_profile')}
+        </Text>
+        <Space />
+      </Header>
       <Space height={40} />
-      <FormikProvider value={formik}>
-        <FormikInput name="name" label={t('name')} placeholder={t('full_name')} textContentType="name" />
-        <Space height={10} />
-        <FormikInput name="email" label={t('email')} placeholder="email@example.com" textContentType="emailAddress" />
-        <Space height={10} />
-        <FormikInput name="password" label={t('password')} placeholder={t('your_password')} secureTextEntry />
-        <Space height={40} />
-        <FormikButton>{t('submit')}</FormikButton>
-      </FormikProvider>
+      <Column align="center" justify="center" flex={1}>
+        <FormikProvider value={formik}>
+          <FormikInput name="name" label={t('name')} placeholder={t('full_name')} textContentType="name" />
+          <Space height={10} />
+          <FormikInput name="email" label={t('email')} placeholder="email@example.com" textContentType="emailAddress" />
+          <Space height={10} />
+          <FormikInput name="password" label={t('password')} placeholder={t('your_password')} secureTextEntry />
+          <Space height={40} />
+          <FormikButton>{t('submit')}</FormikButton>
+        </FormikProvider>
+      </Column>
     </Column>
   );
 };

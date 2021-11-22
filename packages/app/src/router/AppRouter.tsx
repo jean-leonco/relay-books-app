@@ -95,7 +95,7 @@ const Stack = createStackNavigator();
 
 const App = () => {
   return (
-    <Stack.Navigator screenOptions={{ headerBackTitle: false, headerShown: false }} mode="modal">
+    <Stack.Navigator screenOptions={{ headerBackTitle: '', headerShown: false }} mode="modal">
       <Stack.Screen name="App" component={AppTabs} />
       <Stack.Screen name="Book" component={BookDetails} />
       <Stack.Screen name="Reading" component={Reading} />

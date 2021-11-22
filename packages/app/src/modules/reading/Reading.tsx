@@ -1,12 +1,10 @@
-import { useNavigation } from '@react-navigation/native';
 import { useCallback, useState } from 'react';
-import { ActivityIndicator, Dimensions, ToastAndroid, TouchableOpacity } from 'react-native';
+import { ActivityIndicator, Dimensions, ToastAndroid } from 'react-native';
 import Pdf from 'react-native-pdf';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import { graphql, useLazyLoadQuery, useMutation } from 'react-relay';
-import { css, useTheme } from 'styled-components/native';
+import { useTheme } from 'styled-components/native';
 
-import { Column, Row, Space, Text } from '@workspace/ui';
+import { Column, Header, Space, Text } from '@workspace/ui';
 
 import useTranslation from '../../locales/useTranslation';
 import useRouteWithParams from '../hooks/useRouteWithParams';
@@ -23,19 +21,12 @@ import {
   getReadingEditPageUpdater,
 } from './mutations/ReadingEditPageMutation';
 
-const headerCss = css`
-  background: ${(p) => p.theme.colors.background};
-  padding: 24px 24px 12px;
-  width: 100%;
-`;
-
 const { width, height } = Dimensions.get('window');
 const source = { uri: 'http://samples.leanpub.com/thereactnativebook-sample.pdf', cache: true };
 
 const Reading = () => {
   const { t } = useTranslation();
 
-  const navigation = useNavigation();
   const route = useRouteWithParams<{ id: string }>();
 
   const theme = useTheme();
@@ -99,15 +90,12 @@ const Reading = () => {
 
   return (
     <Column flex={1} align="center" justify="flex-start">
-      <Row align="center" justify="space-between" css={headerCss}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Ionicons name="ios-chevron-back-outline" size={24} color={theme.colors.black} />
-        </TouchableOpacity>
+      <Header>
         <Text size="button" weight="bold">
           {data.reading.book!.name}
         </Text>
         <Space />
-      </Row>
+      </Header>
       <Pdf
         source={source}
         onPageChanged={handlePageChange}

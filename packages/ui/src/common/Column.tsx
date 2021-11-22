@@ -19,7 +19,7 @@ const Column = ({ span, css: containerCss, ...props }: ColumnProps) => {
     [containerCss, span],
   );
 
-  return <Flex {...props} direction="column" css={flexCss} />;
+  return <Flex {...props} flexDirection="column" css={flexCss} />;
 };
 
 export default Column;

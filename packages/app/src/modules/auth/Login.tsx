@@ -67,9 +67,23 @@ const Login = () => {
       </Text>
       <Space height={40} />
       <FormikProvider value={formik}>
-        <FormikInput name="email" label={t('email')} placeholder="email@example.com" textContentType="emailAddress" />
+        <FormikInput
+          name="email"
+          label={t('email')}
+          placeholder="email@example.com"
+          textContentType="emailAddress"
+          autoCapitalize="none"
+          autoCorrect={false}
+        />
         <Space height={10} />
-        <FormikInput name="password" label={t('password')} placeholder={t('your_password')} secureTextEntry />
+        <FormikInput
+          name="password"
+          label={t('password')}
+          placeholder={t('your_password')}
+          secureTextEntry
+          autoCapitalize="none"
+          autoCorrect={false}
+        />
         <Space height={40} />
         <FormikButton>{t('submit')}</FormikButton>
       </FormikProvider>
